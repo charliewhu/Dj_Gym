@@ -1,0 +1,35 @@
+
+
+App to keep track of workouts.
+
+
+Initial (Log as you go):
+User can log Workouts as they go.
+RoutineDays consist of multiple RoutineItems/Exercises
+RoutineItems consist of various Sets / Reps / Weight / RIR
+
+Add RoutineDay --> Add RoutineItem --> Add Sets
+
+
+Phase 2 (Pre-plan eg 4-week Routine):
+User can make many Routines
+Routines consist of multiple RoutineWeeks
+RoutineWeeks consist of multiple RoutineDays
+RoutineDays consist of multiple RoutineItems/Exercises
+RoutineItems consist of various Sets / Reps / Weight / RIR
+
+
+Phase 3a (App generates based on User inputted details):
+User can specify which type of Cycle the Routine is
+User can specify how many Weeks the Routine has
+User can specify how many Days per Week the Routine has 
+User can specify which Exercises to do on each Day 
+User can specify ProgressionScheme 
+    - this impacts how the RoutineItems change each Week
+
+
+Phase 3b (App generates based on User questionnaire)
+
+
+Phase 4 (User can track weight and physical stats):
+
