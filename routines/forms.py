@@ -1,18 +1,23 @@
 from django import forms
-from .models import RoutineItem
+from .models import Workout, WorkoutItem
 
 
-class RoutineItemCreateForm(forms.ModelForm):
+class WorkoutForm(forms.ModelForm):
     class Meta:
-        model = RoutineItem
+        model = Workout
+        fields = '__all__'
+
+
+class WorkoutItemForm(forms.ModelForm):
+    class Meta:
+        model = WorkoutItem
+        fields = ['exercise', 'sets', 'reps', 'weight', 'rir',]
         #fields = '__all__'
-        fields = ['routine_day', 'muscle_group', 'exercise',]
+        #fields = ['muscle_group', 'exercise',]
 
 
-class RoutineItemUpdateForm(RoutineItemCreateForm):
-
-    class Meta(RoutineItemCreateForm.Meta):
-        # show all the fields!
+class WorkoutItemUpdateForm(WorkoutItemForm):
+    class Meta(WorkoutItemForm.Meta):
         fields = '__all__'
         #fields = ['sets', 'reps', 'weight', 'rir',]
     

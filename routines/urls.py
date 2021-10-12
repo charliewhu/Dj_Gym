@@ -7,9 +7,15 @@ from . import views
 app_name = 'accounts'
 
 urlpatterns = [
-    path('', views.RoutineItemListView.as_view(), name='routine_list'),
-    path('create/', views.RoutineItemCreateView.as_view(), name='routine_create'),
-    path('<int:pk>/update/', views.RoutineItemUpdateView.as_view(), name='routine_update'),
+
+    path('workouts/', views.WorkoutListView.as_view(), name='workout_list'),
+    path('workouts/create/', views.WorkoutCreateView.as_view(), name='workout_create'),
+
+    path('workouts/<int:pk>/', views.WorkoutItemListView.as_view(), name='workout_item_list'),
+    path('workouts/<int:pk>/add/', views.WorkoutItemCreateView.as_view(), name='workout_item_add'),
+
+    path('workouts/<int:pk>/update/', views.WorkoutUpdateView.as_view(), name='workout_update'),
+
 ]
 
 

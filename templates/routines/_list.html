@@ -1,0 +1,17 @@
+{% extends "base.html" %} 
+{% block content %}
+
+<div class="container my-5">
+  <ul>
+    {% for o in object_list %}
+      <li>ID: {{ o.id }} - {{ o.name }} + {{o}}</li>
+    {% endfor %}
+  </ul>
+</div>
+
+
+<a href="{% url 'routines:workout_list' %}">View Workouts</a>
+<br>
+<a href="{% url 'routines:workout_create' %}">Create Workout</a>
+
+{% endblock content %}
