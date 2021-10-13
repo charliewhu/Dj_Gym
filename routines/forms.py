@@ -1,23 +1,25 @@
 from django import forms
-from .models import Workout, WorkoutItem
+from django.forms import widgets
+from .models import Workout, WorkoutItem, Exercise
 
 
 class WorkoutForm(forms.ModelForm):
     class Meta:
-        model = Workout
-        fields = '__all__'
+        model   = Workout
+        fields  = '__all__'
+        widgets = {
+            'date': widgets.DateInput(attrs={'type': 'date'})
+        }
 
 
 class WorkoutItemForm(forms.ModelForm):
     class Meta:
-        model = WorkoutItem
+        model  = WorkoutItem
         fields = ['exercise', 'sets', 'reps', 'weight', 'rir',]
-        #fields = '__all__'
-        #fields = ['muscle_group', 'exercise',]
 
 
-class WorkoutItemUpdateForm(WorkoutItemForm):
-    class Meta(WorkoutItemForm.Meta):
-        fields = '__all__'
-        #fields = ['sets', 'reps', 'weight', 'rir',]
-    
+class ExerciseForm(forms.ModelForm):
+    class Meta:
+        model  = Exercise
+        fields = ['name']
+

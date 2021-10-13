@@ -1,0 +1,29 @@
+{% extends "base.html" %} 
+{% block content %}
+
+
+<div class="container text-center my-5">
+  <h1>{{ title }}</h1>
+</div>
+
+<div class="container my-5">
+  <ul>
+    {% for o in object_list %}
+
+      <li class="d-flex justify-content-between">
+        <a href="{% url 'routines:workout_item_list' o.pk %}"> {{o}} </a> 
+        <a href="{% url 'routines:workout_update' o.pk %}">Update</a>
+      </li> 
+      
+      <hr>
+
+    {% endfor %}
+  </ul>
+</div>
+
+<div class="text-center mb-3">
+  <a href="{% url 'routines:workout_create' %}">Create Workout</a>
+</div>
+
+
+{% endblock content %}

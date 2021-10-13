@@ -1,0 +1,28 @@
+{% extends "base.html" %} 
+{% block content %}
+
+
+<h1>
+  Exercise
+</h1>
+
+
+
+<div class="form-group my-5">
+  <div class="col-md-offset-2 col-md-4">
+    <form action="" method="post">
+      <div class="mb-3">{% csrf_token %} {{ form.as_p }}</div>
+      <br />
+      <button type="submit" class="btn btn-outline-primary">Submit</button>
+    </form>
+  </div>
+</div>
+
+<div class="text-center mb-3">
+  <a class="text-center" href="{% url 'routines:workout_item_list' object.pk %}">Back to exercises for this workout</a>
+</div>
+<hr>
+
+
+
+{% endblock content %}

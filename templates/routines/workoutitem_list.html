@@ -1,0 +1,39 @@
+{% extends "base.html" %} 
+{% block content %}
+
+
+<div class="container text-center my-5">
+  <h1>{{ object }}</h1>
+</div>
+
+<div class="container d-flex justify-content-evenly">
+  <a href="{% url 'routines:workout_item_create' object.id %}">Add Exercise</a>
+</div>
+
+
+{% if object_list %}
+
+  <div class="container my-5 ">
+    <ul>
+      {% for o in object_list %}
+
+        <li class="d-flex justify-content-between">
+          ID: {{ o.id }} - {{o}} 
+          <a href="{% url 'routines:workout_item_update' o.pk %}">Update</a>
+        </li>
+        <hr>
+        
+      {% endfor %}
+    </ul>
+  </div>
+
+{% else %}
+  <div class="container my-5 text-center">
+    <span>
+      No exercises yet... Would you like to <a href="{% url 'routines:workout_item_create' object.id %}">add one</a>?
+    </span>
+  </div>
+{% endif %}
+ 
+
+{% endblock content %}

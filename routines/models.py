@@ -27,9 +27,10 @@ class Workout(models.Model):
     # routine_week    = models.ForeignKey(RoutineWeek, on_delete=models.CASCADE)
     # number          = models.PositiveIntegerField()
     name            = models.CharField(max_length=40, null=True)
+    date            = models.DateField(null=True)
     date_created    = models.DateField(auto_now_add=True, null=True)
     def __str__(self):
-        return self.name
+        return f'{self.date} - {self.name}'
 
 
 class MuscleGroup(models.Model):
@@ -53,4 +54,4 @@ class WorkoutItem(models.Model):
     weight          = models.DecimalField(max_digits=5, decimal_places=1, blank=True, null=True)
     rir             = models.PositiveIntegerField(blank=True, null=True)
     def __str__(self):
-        return f'{self.workout} - {self.exercise} - {self.sets}x{self.reps}x{self.weight} @{self.rir}RIR'
+        return f'{self.exercise} - {self.sets} x {self.reps} x {self.weight}kg @{self.rir}RIR'

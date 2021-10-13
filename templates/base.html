@@ -24,10 +24,11 @@
 {% include 'navbar.html' %}
 
 
-<div class="container mt-5">
+<div class="container mt-5" style="max-width:600px">
   {% block content %}{% endblock content %}
-</div>
 
+  {% include 'footer.html' %}
+</div>
 
 
 <script 

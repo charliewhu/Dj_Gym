@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
-from django.views.generic import CreateView, UpdateView, ListView
-from .forms import WorkoutForm, WorkoutItemForm, WorkoutItemUpdateForm
-from .models import Workout, WorkoutItem
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from .forms import WorkoutForm, WorkoutItemForm, ExerciseForm
+from .models import MuscleGroup, Exercise, Workout, WorkoutItem
 
 
 def home(request):
@@ -11,13 +11,13 @@ def home(request):
 
 class WorkoutListView(ListView):
     model         = Workout
-    template_name = 'routines/_list.html'
-    extra_context = {'title':'Workout List'}
+    ordering      = ['-date']
+    extra_context = {'title':'My Workouts'}
 
 
 class WorkoutCreateView(CreateView):
-    form_class = WorkoutForm
-    template_name = 'routines/_form.html'
+    model         = Workout
+    form_class    = WorkoutForm
     extra_context = {'title':'Create Workout'}
 
     def get_success_url(self):
@@ -25,37 +25,73 @@ class WorkoutCreateView(CreateView):
 
 
 class WorkoutUpdateView(UpdateView):
-    model = Workout
-    form_class = WorkoutForm
-    template_name = 'routines/_form.html'
-    extra_context = {'title':'Update Workout'}
+    model           = Workout
+    form_class      = WorkoutForm
+    extra_context   = {'title':'Update Workout'}
+
     def get_success_url(self):
         return reverse('routines:workout_list')
 
 
 class WorkoutItemListView(ListView):
-    model = WorkoutItem
-    template_name = 'routines/_list.html'
+    model         = WorkoutItem
     extra_context = {'title':'Workout Items'}
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        w = Workout.objects.get(pk=self.kwargs['pk'])
+        context['object'] = w
+        context['object_list'] = WorkoutItem.objects.filter(workout_id=w.id)
+        return context
 
 
 class WorkoutItemCreateView(CreateView):
-    model = WorkoutItem
-    form_class = WorkoutItemForm
-    template_name = 'routines/_form.html'
+    model         = WorkoutItem
+    form_class    = WorkoutItemForm
     extra_context = {'title':'Add Items To Workout'}
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        w = Workout.objects.get(pk=self.kwargs['pk'])
+        context['object'] = w
+        return context
 
     def form_valid(self, form):
         form.instance.workout = Workout.objects.get(pk=self.kwargs['pk'])
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy('routines:workout_list')
+        pk = self.kwargs['pk']
+        return reverse_lazy('routines:workout_item_list', kwargs={'pk':pk})
 
 
 class WorkoutItemUpdateView(UpdateView):
-    model = WorkoutItem
-    form_class = WorkoutItemUpdateForm
+    model      = WorkoutItem
+    form_class = WorkoutItemForm
 
     def get_success_url(self):
-        return reverse('routines:workout_list')
+        pk = self.kwargs['pk']
+        return reverse_lazy('routines:workout_item_list', kwargs={'pk':pk})
+
+    
+class ExerciseListView(ListView):
+    queryset = MuscleGroup.objects.all().prefetch_related('exercise_set').order_by('name')
+
+
+class ExerciseCreateView(CreateView):
+    model         = Exercise
+    form_class    = ExerciseForm
+    extra_context = {'title':'Add Items To Workout'}
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        e = MuscleGroup.objects.get(id=self.kwargs['pk'])
+        context['object'] = e
+        return context
+
+    def form_valid(self, form):
+        form.instance.muscle_group = MuscleGroup.objects.get(id=self.kwargs['pk'])
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('routines:exercise_list')
