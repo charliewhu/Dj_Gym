@@ -48,6 +48,7 @@ class Exercise(models.Model):
 
 
 class WorkoutItem(models.Model):
+    muscle_group    = models.ForeignKey(MuscleGroup, on_delete=models.CASCADE, null=True)
     workout         = models.ForeignKey(Workout, on_delete=models.CASCADE)
     exercise        = models.ForeignKey(Exercise, on_delete=models.CASCADE)
     sets            = models.PositiveIntegerField(blank=True, null=True)

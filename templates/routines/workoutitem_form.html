@@ -1,28 +1,39 @@
-{% extends "base.html" %} 
+{% extends 'base.html' %}
+
 {% block content %}
 
+  <h2>Workout Form</h2>
 
-<h1>
-  Exercise
-</h1>
+  <form method="post" id="workoutItemForm" data-exercises-url="{% url 'routines:ajax_load_exercises' %}" novalidate>
+    {% csrf_token %}
+    <table>
+      {{ form.as_table }}
+    </table>
+    <button type="submit" class="btn btn-outline-primary">Save</button>
+  </form>
 
-
-
-<div class="form-group my-5">
-  <div class="col-md-offset-2 col-md-4">
-    <form action="" method="post">
-      <div class="mb-3">{% csrf_token %} {{ form.as_p }}</div>
-      <br />
-      <button type="submit" class="btn btn-outline-primary">Submit</button>
-    </form>
+  <div class="text-center mb-3">
+    <a href="{% url 'routines:workout_item_list' object.id %}">Back to this Workout</a>
   </div>
-</div>
-
-<div class="text-center mb-3">
-  <a class="text-center" href="{% url 'routines:workout_item_list' object.pk %}">Back to exercises for this workout</a>
-</div>
-<hr>
 
 
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script>
+    $("#id_muscle_group").change(function () {
+      var url = $("#workoutItemForm").attr("data-exercises-url");  // get the url of the `load_exercises` view
+      var mg_Id = $(this).val();  // get the selected muscle_group ID from the HTML input
 
-{% endblock content %}
+      $.ajax({                       // initialize an AJAX request
+        url: url,                    // set the url of the request 
+        data: {
+          'muscle_group': mg_Id       // add the muscle_group id to the GET parameters
+        },
+        success: function (data) {   // `data` is the return of the `load_exercises` view function
+          $("#id_exercise").html(data);  // replace the contents of the exercise input with the data that came from the server
+        }
+      });
+
+    });
+  </script>
+
+{% endblock %}

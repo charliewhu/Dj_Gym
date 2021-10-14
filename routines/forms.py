@@ -15,8 +15,11 @@ class WorkoutForm(forms.ModelForm):
 class WorkoutItemForm(forms.ModelForm):
     class Meta:
         model  = WorkoutItem
-        fields = ['exercise', 'sets', 'reps', 'weight', 'rir',]
+        fields = ['muscle_group', 'exercise', 'sets', 'reps', 'weight', 'rir',]
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['exercise'].queryset = Exercise.objects.none()
 
 class ExerciseForm(forms.ModelForm):
     class Meta:
