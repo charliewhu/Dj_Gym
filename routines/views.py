@@ -3,6 +3,7 @@ from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from .forms import WorkoutForm, WorkoutItemForm, ExerciseForm
 from .models import MuscleGroup, Exercise, Workout, WorkoutItem
+from accounts.models import User
 
 
 def home(request):
@@ -11,14 +12,24 @@ def home(request):
 
 class WorkoutListView(ListView):
     model         = Workout
-    ordering      = ['-date']
+    ordering      = ['-date', '-id']
     extra_context = {'title':'My Workouts'}
+
+    def get_queryset(self):
+        """only get user's workouts"""
+        qs = super().get_queryset()
+        qs = qs.filter(user=self.request.user)
+        return qs
 
 
 class WorkoutCreateView(CreateView):
     model         = Workout
     form_class    = WorkoutForm
     extra_context = {'title':'Create Workout'}
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
 
     def get_success_url(self):
         return reverse('routines:workout_list')

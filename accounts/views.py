@@ -1,5 +1,6 @@
 from accounts.forms import RegistrationForm
 from datetime import datetime
+from django.urls import reverse
 from django.shortcuts import render, redirect
 from django.contrib.auth import  logout
 from django.contrib import messages
@@ -13,8 +14,8 @@ def register(request):
         if form.is_valid():
             user = form.save()
             username = form.cleaned_data.get('username')
-            messages.success(request, 'Account created for ' + username )
-            return redirect('login')
+            messages.success(request, f'Account created for {username}')
+            return redirect('accounts:login')
 
     context={
         'form':form,

@@ -4,7 +4,7 @@ from django.conf.urls.static import static
 from . import views
 
 
-app_name = 'accounts'
+app_name = 'routines'
 
 urlpatterns = [
 

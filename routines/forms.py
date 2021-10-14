@@ -6,7 +6,7 @@ from .models import Workout, WorkoutItem, Exercise
 class WorkoutForm(forms.ModelForm):
     class Meta:
         model   = Workout
-        fields  = '__all__'
+        fields  = ['name', 'date']
         widgets = {
             'date': widgets.DateInput(attrs={'type': 'date'})
         }

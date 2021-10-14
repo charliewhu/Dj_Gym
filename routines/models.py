@@ -26,6 +26,7 @@ class CycleType(models.Model):
 class Workout(models.Model):
     # routine_week    = models.ForeignKey(RoutineWeek, on_delete=models.CASCADE)
     # number          = models.PositiveIntegerField()
+    user            = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     name            = models.CharField(max_length=40, null=True)
     date            = models.DateField(null=True)
     date_created    = models.DateField(auto_now_add=True, null=True)

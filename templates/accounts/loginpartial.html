@@ -1,24 +1,24 @@
 {% if user.is_authenticated %}
 
-<form id="logoutForm" action="/logout/" method="post" class="navbar-right">
+
+<li class="nav-item">
+  <form id="logoutForm" action="{% url 'accounts:logout' %}" method="post">
   {% csrf_token %}
-  <ul class="nav navbar-nav navbar-right">
-    <li><span class="navbar-brand">Hello {{ user.username }}!</span></li>
-    <li>
-      <a href="javascript:document.getElementById('logoutForm').submit()"
-        >Log off</a
-      >
-    </li>
-  </ul>
-</form>
+    <a class="nav-link" href="javascript:document.getElementById('logoutForm').submit()">
+      Log out
+    </a>
+  </form>
+</li>
 
 {% else %}
 
-<ul class="nav navbar-nav navbar-right">
-  <li>
-    <a href="{% url 'login' %}">Login</a>
-    <a href="{% url 'register' %}">Register</a>
-  </li>
-</ul>
+
+<li class="nav-item">
+  <a class="nav-link" href="{% url 'accounts:login' %}">Login</a>
+</li>
+
+<li class="nav-item">
+  <a class="nav-link" href="{% url 'accounts:register' %}">Register</a>
+</li>
 
 {% endif %}

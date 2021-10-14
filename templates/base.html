@@ -23,6 +23,22 @@
   
 {% include 'navbar.html' %}
 
+{% if messages %}
+
+<div class="container">
+  <ul class="messages">
+      {% for msg in messages %}
+      <li>
+          <div class="alert alert-{{msg.level_tag}}" role="alert">
+          {{msg.message}}
+          </div>
+      </li>
+      {% endfor %}
+  </ul>
+</div>
+{% endif %}
+
+
 
 <div class="container mt-5" style="max-width:600px">
   {% block content %}{% endblock content %}

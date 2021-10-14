@@ -10,6 +10,13 @@ RoutineItems consist of various Sets / Reps / Weight / RIR
 
 Add RoutineDay --> Add RoutineItem --> Add Sets
 
+    Thoughts on completion:
+        - forgot to add User to Workout. This is due to building out all models in advance
+        - better way to add Exercise to Workout. HTMX required to add on-page
+        - potentially add javascript to reorder exercises. Would need to 
+
+
+
 
 Phase 2 (Pre-plan eg 4-week Routine):
 User can make many Routines
