@@ -16,15 +16,19 @@
     {% for o in object_list %}
 
       <li class="d-flex justify-content-between">
-        <a href="{% url 'routines:workout_item_list' o.pk %}"> {{o}} </a> 
-        <a href="{% url 'routines:workout_update' o.pk %}">Update</a>
+        <a href="{% url 'routines:workout_item_list' o.pk %}"> {{o}} </a>
+        <div>
+          <a class="btn btn-outline-primary" href="{% url 'routines:workout_update' o.pk %}">Update</a>
+          <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteWorkoutModal{{o.id}}">Delete</button>
+        </div>
       </li> 
       
       <hr>
-
+      {% include 'routines/utils/workout_delete_modal.html' %}
     {% endfor %}
   </ul>
 </div>
+
 
 
 

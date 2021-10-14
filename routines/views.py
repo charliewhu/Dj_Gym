@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from .forms import WorkoutForm, WorkoutItemForm, ExerciseForm
@@ -42,6 +42,12 @@ class WorkoutUpdateView(UpdateView):
 
     def get_success_url(self):
         return reverse('routines:workout_list')
+
+
+def workout_delete(request, pk):
+    workout = Workout.objects.get(id=pk)
+    workout.delete()
+    return redirect('routines:workout_list')
 
 
 class WorkoutItemListView(ListView):
