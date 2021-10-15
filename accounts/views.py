@@ -13,7 +13,7 @@ def register(request):
         form = RegistrationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            username = form.cleaned_data.get('username')
+            username = form.cleaned_data.get('email')
             messages.success(request, f'Account created for {username}')
             return redirect('accounts:login')
 

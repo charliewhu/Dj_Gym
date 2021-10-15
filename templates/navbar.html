@@ -11,9 +11,11 @@
     
     <div class="collapse navbar-collapse" id="navmenu">
       <ul class="navbar-nav ms-auto">
+        {% if user.is_superuser %}
         <li class="nav-item">
           <a href="{% url 'admin:index' %}" class="nav-link">Admin</a>
         </li>
+        {% endif %}
 
         {% include 'accounts/loginpartial.html' %}
 
