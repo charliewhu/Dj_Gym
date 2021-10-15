@@ -9,7 +9,7 @@ class RegistrationForm(UserCreationForm):
         model = User
         fields = ("email", "password1", "password2")
 
-    email = forms.CharField(max_length=254,
+    email = forms.EmailField(max_length=254,
                                widget=forms.TextInput({
                                    'class': 'form-control mb-2',
                                    'placeholder': 'User name'}))
@@ -26,7 +26,7 @@ class RegistrationForm(UserCreationForm):
 
 class BootstrapAuthenticationForm(AuthenticationForm):
     """Authentication form which uses boostrap CSS."""
-    username = forms.CharField(max_length=254,
+    username = forms.EmailField(max_length=254,
                                widget=forms.TextInput({
                                    'class': 'form-control',
                                    'placeholder': 'User name'}))
