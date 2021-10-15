@@ -36,9 +36,10 @@ DEBUG = os.environ['DEBUG']
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
-    'https://ca-gym.herokuapp.com/',
 ]
 
+if not DEBUG:
+    ALLOWED_HOSTS += [os.environ.get('ALLOWED_HOSTS')]
 
 AUTH_USER_MODEL = 'accounts.User'
 
