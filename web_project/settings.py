@@ -38,8 +38,7 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
     'https://ca-gym.herokuapp.com/',
 ]
-if not DEBUG:
-    ALLOWED_HOSTS += [os.environ.get('ALLOWED_HOSTS')]
+
 
 AUTH_USER_MODEL = 'accounts.User'
 
@@ -146,7 +145,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
 MEDIA_URL = '/staticfiles/images/'
 MEDIA_ROOT = BASE_DIR / 'static' / 'images'
-PROTECTED_MEDIA = BASE_DIR / 'cdn' / 'protected'
+PROTECTED_MEDIA = BASE_DIR / 'static' / 'protected'
 
 
 # Default primary key field type
