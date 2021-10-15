@@ -34,7 +34,10 @@ SECRET_KEY = os.environ['SECRET_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ['DEBUG']
 
-ALLOWED_HOSTS = ['https://ca-gym.herokuapp.com/']
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    'https://ca-gym.herokuapp.com/',
+]
 if not DEBUG:
     ALLOWED_HOSTS += [os.environ.get('ALLOWED_HOSTS')]
 
@@ -136,14 +139,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    BASE_DIR / 'staticfiles'
-]
-STATIC_ROOT = BASE_DIR / 'cdn' / 'static'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+
 
 MEDIA_URL = '/staticfiles/images/'
-MEDIA_ROOT = BASE_DIR / 'staticfiles' / 'images'
+MEDIA_ROOT = BASE_DIR / 'static' / 'images'
 PROTECTED_MEDIA = BASE_DIR / 'cdn' / 'protected'
 
 
@@ -162,4 +164,3 @@ LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
 
 
-django_heroku.settings(locals())
