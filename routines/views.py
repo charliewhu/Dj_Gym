@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import user_passes_test
 
 
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from django.views.generic.edit import DeleteView
 from .forms import WorkoutForm, WorkoutItemForm, ExerciseForm
 from .models import MuscleGroup, Exercise, Workout, WorkoutItem
 from .mixins import UserWorkoutMixin, UserWorkoutItemMixin
@@ -49,10 +50,10 @@ class WorkoutUpdateView(LoginRequiredMixin, UserWorkoutMixin, UpdateView):
         return reverse('routines:workout_list')
 
 
-def workout_delete(request, pk):
-    workout = Workout.objects.get(id=pk)
-    workout.delete()
-    return redirect('routines:workout_list')
+class WorkoutDeleteView(LoginRequiredMixin, UserWorkoutMixin, DeleteView):
+    model       = Workout
+    def get_success_url(self):
+        return reverse_lazy('routines:workout_list')
 
 
 class WorkoutItemListView(LoginRequiredMixin, UserWorkoutMixin, ListView):
@@ -108,6 +109,8 @@ class WorkoutItemUpdateView(LoginRequiredMixin, UserWorkoutItemMixin, UpdateView
         pk = wi.workout_id
         return reverse_lazy('routines:workout_item_list', kwargs={'pk':pk})
 
+
+#class WorkoutItemDeleteView():
 
 def workout_item_delete(request, pk):
     workout = Workout.objects.get(id=pk)

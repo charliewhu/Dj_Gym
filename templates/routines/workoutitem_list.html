@@ -18,7 +18,7 @@
       {% for o in object_list %}
 
         <li class="d-flex justify-content-between">
-          ID: {{ o.id }} - {{o}} 
+          {{o}} 
           <a href="{% url 'routines:workout_item_update' o.pk %}">Update</a>
         </li>
         <hr>
