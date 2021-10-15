@@ -39,7 +39,7 @@ ALLOWED_HOSTS = [
 ]
 
 if not DEBUG:
-    ALLOWED_HOSTS += [os.environ.get('ALLOWED_HOSTS')]
+    ALLOWED_HOSTS += [os.environ['ALLOWED_HOSTS']]
 
 AUTH_USER_MODEL = 'accounts.User'
 
