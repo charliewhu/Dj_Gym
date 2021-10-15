@@ -9,10 +9,10 @@
     <table>
       {{ form.as_table }}
     </table>
-    <button type="submit" class="btn btn-outline-primary">Save</button>
+    <button type="submit" class="btn btn-outline-primary mt-2">Add to workout</button>
   </form>
 
-  <div class="text-center mb-3">
+  <div class="text-center my-3">
     <a href="{% url 'routines:workout_item_list' object.id %}">Back to this Workout</a>
   </div>
 

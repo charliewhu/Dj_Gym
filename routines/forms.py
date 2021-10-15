@@ -21,6 +21,16 @@ class WorkoutItemForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['exercise'].queryset = Exercise.objects.none()
 
+        if 'muscle_group' in self.data:
+            try:
+                muscle_group_id = int(self.data.get('muscle_group'))
+                self.fields['exercise'].queryset = Exercise.objects.filter(muscle_group_id=muscle_group_id).order_by('name')
+            except (ValueError, TypeError):
+                pass  # invalid input from the client; ignore and fallback to empty Exercise queryset
+        elif self.instance.pk:
+            self.fields['exercise'].queryset = Exercise.objects.filter(muscle_group=self.instance.muscle_group).order_by('name')
+
+
 class ExerciseForm(forms.ModelForm):
     class Meta:
         model  = Exercise
