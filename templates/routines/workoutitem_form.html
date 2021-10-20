@@ -2,11 +2,11 @@
 
 {% block content %}
 
-  <h2>Workout Form</h2>
+  <h2>Add Exercise</h2>
 
   <form method="post" id="workoutItemForm" data-exercises-url="{% url 'routines:ajax_load_exercises' %}" novalidate>
     {% csrf_token %}
-    <table>
+    <table class="mb-3">
       {{ form.as_table }}
     </table>
     <button type="submit" class="btn btn-outline-primary mt-2">Add to workout</button>

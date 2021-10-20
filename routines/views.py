@@ -51,7 +51,7 @@ class WorkoutUpdateView(LoginRequiredMixin, UserWorkoutMixin, UpdateView):
 
 
 class WorkoutDeleteView(LoginRequiredMixin, UserWorkoutMixin, DeleteView):
-    model       = Workout
+    model = Workout
     def get_success_url(self):
         return reverse_lazy('routines:workout_list')
 
@@ -69,6 +69,10 @@ class WorkoutItemListView(LoginRequiredMixin, UserWorkoutMixin, ListView):
 
 
 def load_exercises(request):
+    """
+    For AJAX request to allow dependent dropdown
+    MuscleGroup --> Exercise
+    """
     muscle_group_id = request.GET.get('muscle_group')
     exercises = Exercise.objects.filter(muscle_group_id=muscle_group_id).order_by('name')
     return render(request, 'routines/partials/exercises_dropdown.html', {'exercises': exercises})
@@ -110,7 +114,11 @@ class WorkoutItemUpdateView(LoginRequiredMixin, UserWorkoutItemMixin, UpdateView
         return reverse_lazy('routines:workout_item_list', kwargs={'pk':pk})
 
 
-#class WorkoutItemDeleteView():
+class WorkoutItemDeleteView(LoginRequiredMixin, UserWorkoutMixin, DeleteView):
+    model = WorkoutItem
+    def get_success_url(self):
+        return reverse_lazy('routines:workout_list')
+        
 
 def workout_item_delete(request, pk):
     workout = Workout.objects.get(id=pk)

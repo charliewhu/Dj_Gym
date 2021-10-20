@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import widgets
-from .models import Workout, WorkoutItem, Exercise
+from .models import MuscleGroup, Workout, WorkoutItem, Exercise
 
 
 class WorkoutForm(forms.ModelForm):
@@ -19,6 +19,7 @@ class WorkoutItemForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields['muscle_group'].queryset = self.fields['muscle_group'].queryset.order_by('name')
         self.fields['exercise'].queryset = Exercise.objects.none()
 
         if 'muscle_group' in self.data:

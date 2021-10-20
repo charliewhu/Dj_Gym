@@ -55,5 +55,6 @@ class WorkoutItem(models.Model):
     reps            = models.PositiveIntegerField(blank=True, null=True)
     weight          = models.DecimalField(max_digits=5, decimal_places=1, blank=True, null=True)
     rir             = models.PositiveIntegerField(blank=True, null=True)
+
     def __str__(self):
         return f'{self.exercise} - {self.sets} x {self.reps} x {self.weight}kg @{self.rir}RIR'
