@@ -13,16 +13,31 @@
 
 {% if object_list %}
 
-  <div class="container my-5 ">
+  <div class="container my-5">
     <ul>
       {% for o in object_list %}
-
-        <li class="d-flex justify-content-between">
-          {{o}} 
-          <a href="{% url 'routines:workout_item_update' o.pk %}">Update</a>
-        </li>
-        <hr>
+  
+        <div class="row d-flex justify-content-between align-items-center">
+  
+          <div class="col-9">
+            {{o}}
+          </div>
+  
+          <div class="col-3">
+  
+            <div class="row py-1">
+              <a class="btn btn-outline-primary" href="{% url 'routines:workout_item_update' o.pk %}">Update</a>
+            </div>
+  
+            <div class="row py-1">
+              <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteWorkoutItemModal{{o.id}}">X</button>
+            </div>
+  
+          </div>
+        </div> 
         
+        <hr>
+        {% include 'routines/utils/workoutitem_delete_modal.html' %}
       {% endfor %}
     </ul>
   </div>

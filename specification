@@ -17,8 +17,6 @@ Add RoutineDay --> Add RoutineItem --> Add Sets
         - potentially add javascript to reorder exercises. NOT ADDING
 
 
-
-
 Phase 2 (Pre-plan eg 4-week Routine):
     User can make many Routines
     Routines consist of multiple RoutineWeeks
@@ -26,6 +24,20 @@ Phase 2 (Pre-plan eg 4-week Routine):
     RoutineDays consist of multiple RoutineItems/Exercises
     RoutineItems consist of various Sets / Reps / Weight / RIR
 
+Features:
+    - Readiness Questionnaire
+        - Sleep
+        - Energy
+        - Mood
+        - Soreness
+        - Stress
+        - Nutrition
+        - Hydration
+        - Weight
+
+
+
+    
 
 Phase 3a (App generates based on User inputted details):
     User can specify which type of Cycle the Routine is

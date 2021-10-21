@@ -81,7 +81,7 @@ def load_exercises(request):
 class WorkoutItemCreateView(LoginRequiredMixin, UserWorkoutMixin, CreateView):
     model         = WorkoutItem
     form_class    = WorkoutItemForm
-    extra_context = {'title':'Add Items To Workout'}
+    extra_context = {'title':'Add Exercise'}
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -101,6 +101,7 @@ class WorkoutItemCreateView(LoginRequiredMixin, UserWorkoutMixin, CreateView):
 class WorkoutItemUpdateView(LoginRequiredMixin, UserWorkoutItemMixin, UpdateView):
     model      = WorkoutItem
     form_class = WorkoutItemForm
+    extra_context = {'title':'Edit Exercise'}
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -114,21 +115,19 @@ class WorkoutItemUpdateView(LoginRequiredMixin, UserWorkoutItemMixin, UpdateView
         return reverse_lazy('routines:workout_item_list', kwargs={'pk':pk})
 
 
-class WorkoutItemDeleteView(LoginRequiredMixin, UserWorkoutMixin, DeleteView):
+class WorkoutItemDeleteView(LoginRequiredMixin, UserWorkoutItemMixin, DeleteView):
     model = WorkoutItem
     def get_success_url(self):
-        return reverse_lazy('routines:workout_list')
+        print(self.kwargs['pk'])
+        wi = WorkoutItem.objects.get(pk=self.kwargs['pk'])
+        pk = wi.workout_id
+        return reverse_lazy('routines:workout_item_list', kwargs={'pk':pk})
         
-
-def workout_item_delete(request, pk):
-    workout = Workout.objects.get(id=pk)
-    workout.delete()
-    return redirect('routines:workout_list')
-
     
 class ExerciseListView(LoginRequiredMixin, ListView):
     queryset = MuscleGroup.objects.all().prefetch_related('exercise_set').order_by('name')
     template_name = 'routines/exercise_list.html'
+    extra_context = {'title':'Exercises'}
 
 
 class ExerciseCreateView(LoginRequiredMixin, CreateView):
@@ -138,8 +137,8 @@ class ExerciseCreateView(LoginRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        e = MuscleGroup.objects.get(id=self.kwargs['pk'])
-        context['object'] = e
+        mg = MuscleGroup.objects.get(id=self.kwargs['pk'])
+        context['object'] = mg
         return context
 
     def form_valid(self, form):

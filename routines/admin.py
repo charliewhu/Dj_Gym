@@ -11,7 +11,6 @@ class MuscleGroupAdmin(admin.ModelAdmin):
 
 admin.site.register(models.MuscleGroup, MuscleGroupAdmin)
 admin.site.register(models.Exercise)
-admin.site.register(models.CycleType)
 admin.site.register(models.Workout)
 admin.site.register(models.WorkoutItem)
 

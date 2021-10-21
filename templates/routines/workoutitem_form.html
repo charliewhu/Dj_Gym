@@ -2,7 +2,7 @@
 
 {% block content %}
 
-  <h2>Add Exercise</h2>
+  <h2>{{ title }}</h2>
 
   <form method="post" id="workoutItemForm" data-exercises-url="{% url 'routines:ajax_load_exercises' %}" novalidate>
     {% csrf_token %}
