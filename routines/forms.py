@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import widgets
-from .models import MuscleGroup, Workout, WorkoutItem, Exercise
+from .models import MuscleGroup, Workout, WorkoutExercise, Exercise
 
 
 class WorkoutForm(forms.ModelForm):
@@ -12,10 +12,10 @@ class WorkoutForm(forms.ModelForm):
         }
 
 
-class WorkoutItemForm(forms.ModelForm):
+class WorkoutExerciseForm(forms.ModelForm):
     class Meta:
-        model  = WorkoutItem
-        fields = ['muscle_group', 'exercise', 'sets', 'reps', 'weight', 'rir',]
+        model  = WorkoutExercise
+        fields = ['muscle_group', 'exercise', ]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

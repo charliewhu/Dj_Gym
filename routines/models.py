@@ -26,10 +26,23 @@ class Exercise(models.Model):
         return f'{self.name}'
 
 
-# class WorkoutExercise(models.Model):
-#     workout      = models.ForeignKey(Workout, on_delete=models.CASCADE)
-#     muscle_group = models.ForeignKey(MuscleGroup, on_delete=models.CASCADE, null=True)
-#     exercise     = models.ForeignKey(Exercise, on_delete=models.CASCADE)
+class WorkoutExercise(models.Model):
+    workout      = models.ForeignKey(Workout, on_delete=models.CASCADE)
+    muscle_group = models.ForeignKey(MuscleGroup, on_delete=models.CASCADE, null=True)
+    exercise     = models.ForeignKey(Exercise, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.exercise}'
+
+
+class WorkoutExerciseSet(models.Model):
+    workout_exercise = models.ForeignKey(WorkoutExercise, on_delete=models.CASCADE)
+    reps             = models.PositiveIntegerField(blank=True, null=True)
+    weight           = models.DecimalField(max_digits=5, decimal_places=1, blank=True, null=True)
+    rir              = models.PositiveIntegerField(blank=True, null=True) 
+
+    def __str__(self):
+        return f'{self.workout_exercise} - {self.reps} x {self.weight}kg @{self.rir}RIR'
 
 
 class WorkoutItem(models.Model):

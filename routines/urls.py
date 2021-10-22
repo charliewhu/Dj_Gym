@@ -13,10 +13,10 @@ urlpatterns = [
     path('workouts/<int:pk>/update/', views.WorkoutUpdateView.as_view(), name='workout_update'),
     path('workouts/<int:pk>/delete/', views.WorkoutDeleteView.as_view(), name='workout_delete'),
 
-    path('workouts/<int:pk>/', views.WorkoutItemListView.as_view(), name='workout_item_list'),
-    path('workouts/<int:pk>/add', views.WorkoutItemCreateView.as_view(), name='workout_item_create'),
-    path('workouts/<int:pk>/items/update/', views.WorkoutItemUpdateView.as_view(), name='workout_item_update'),
-    path('workouts/<int:pk>/items/delete/', views.WorkoutItemDeleteView.as_view(), name='workout_item_delete'),
+    path('workouts/<int:pk>/', views.WorkoutExerciseListView.as_view(), name='workout_exercise_list'),
+    path('workouts/<int:pk>/add', views.WorkoutExerciseCreateView.as_view(), name='workout_exercise_create'),
+    path('workouts/<int:pk>/exercise/update/', views.WorkoutExerciseUpdateView.as_view(), name='workout_exercise_update'),
+    path('workouts/<int:pk>/exercise/delete/', views.WorkoutExerciseDeleteView.as_view(), name='workout_exercise_delete'),
 
     path('ajax/load-exercises/', views.load_exercises, name='ajax_load_exercises'),
 

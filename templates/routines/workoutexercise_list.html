@@ -1,0 +1,54 @@
+{% extends "base.html" %} 
+{% block content %}
+
+
+<div class="container text-center my-5">
+  <h1>{{ object }}</h1>
+</div>
+
+<div class="container d-flex justify-content-evenly">
+  <a href="{% url 'routines:workout_exercise_create' object.id %}">Add Exercise</a>
+</div>
+
+
+{% if object_list %}
+
+  <div class="container my-5">
+    <ul>
+      {% for o in object_list %}
+  
+        <div class="row d-flex justify-content-between align-items-center">
+  
+          <div class="col-8">
+            {{o}}
+          </div>
+  
+          <div class="col-4">
+  
+            <div class="row py-1">
+              <a class="btn btn-outline-primary" href="{% url 'routines:workout_exercise_update' o.pk %}">Update</a>
+            </div>
+  
+            <div class="row py-1">
+              <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{o.id}}">X</button>
+            </div>
+  
+          </div>
+        </div> 
+        
+        <hr>
+        {% include 'routines/utils/workoutexercise_delete_modal.html' %}
+      {% endfor %}
+    </ul>
+  </div>
+
+{% else %}
+  <div class="container my-5 text-center">
+    <span>
+      No exercises yet... Would you like to <a href="{% url 'routines:workout_exercise_create' object.id %}">add one</a>?
+    </span>
+  </div>
+{% endif %}
+ 
+
+{% endblock content %}

@@ -1,5 +1,5 @@
 from django.contrib.auth.mixins import UserPassesTestMixin
-from .models import MuscleGroup, Exercise, Workout, WorkoutItem
+from .models import MuscleGroup, Exercise, Workout, WorkoutExercise
 
 class UserWorkoutMixin(UserPassesTestMixin):
     def test_func(self):
@@ -7,8 +7,8 @@ class UserWorkoutMixin(UserPassesTestMixin):
         return self.request.user.id == w.user_id
 
 
-class UserWorkoutItemMixin(UserPassesTestMixin):
+class UserWorkoutExerciseMixin(UserPassesTestMixin):
     def test_func(self):
-        wi = WorkoutItem.objects.get(pk=self.kwargs['pk'])
+        wi = WorkoutExercise.objects.get(pk=self.kwargs['pk'])
         w = wi.workout
         return self.request.user.id == w.user_id
