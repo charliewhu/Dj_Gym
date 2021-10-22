@@ -44,12 +44,17 @@
   </div>
 
 {% else %}
+
   <div class="container my-5 text-center">
     <span>
-      No exercises yet... Would you like to <a href="{% url 'routines:workout_exercise_create' object.id %}">add one</a>?
+      No sets yet... Would you like to <a href="{% url 'routines:wo_ex_set_create' object.id %}">add one</a>?
     </span>
   </div>
+  
 {% endif %}
  
+<div>
+  <a href="{% url 'routines:workout_exercise_list' object.workout.id %}">Back to all exercises</a>
+</div>
 
 {% endblock content %}

@@ -58,7 +58,20 @@ class WorkoutItem(models.Model):
         return f'{self.exercise} - {self.sets} x {self.reps} x {self.weight}kg @{self.rir}RIR'
 
 
-# class ReadinessChecklist(models.Model):
-#     name = models.CharField(max_length=40, unique=True)
+class ReadinessChecklist(models.Model):
+    name = models.CharField(max_length=40, unique=True)
+
+
+class WorkoutReadiness(models.Model):
+    class Rating(models.IntegerChoices):
+        LOWEST  = 1
+        LOW     = 2
+        MEDIUM  = 3
+        HIGH    = 4
+        HIGHEST = 5
+
+    workout             = models.OneToOneField(Workout, on_delete=models.CASCADE, null=True)
+    readiness_checklist = models.ForeignKey(ReadinessChecklist, on_delete=models.CASCADE, null=True)
+    rating              = models.IntegerField(choices=Rating.choices)
 
 

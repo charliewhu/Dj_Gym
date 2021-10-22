@@ -156,14 +156,16 @@ class WorkoutExerciseDeleteView(LoginRequiredMixin, UserWorkoutExerciseMixin, De
         
 
 class WorkoutExerciseSetListView(ListView):
-    model = WorkoutExerciseSet
+    model         = WorkoutExerciseSet
     template_name = 'routines/workout_exercise_set/_list.html'
+    extra_context = {'title':'Workout Exercise Sets'}
     #extra_context = {'title':'Workout Items'}
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         we = WorkoutExercise.objects.get(pk=self.kwargs['pk'])
         context['object'] = we
+        context['object_list'] = WorkoutExerciseSet.objects.filter(workout_exercise_id=we.id)
         return context
 
 
@@ -171,6 +173,7 @@ class WorkoutExerciseSetCreateView(CreateView):
     model         = WorkoutExerciseSet
     form_class    = WorkoutExerciseSetForm
     template_name = 'routines/workout_exercise_set/_form.html'
+    extra_context = {'title':'Add Set'}
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -191,6 +194,7 @@ class WorkoutExerciseSetUpdateView(UpdateView):
     model         = WorkoutExerciseSet
     form_class    = WorkoutExerciseSetForm
     template_name = 'routines/workout_exercise_set/_form.html'
+    extra_context = {'title':'Update Set'}
 
     def get_success_url(self):
         wes = WorkoutExerciseSet.objects.get(pk=self.kwargs['pk'])

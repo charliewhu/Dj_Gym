@@ -1,6 +1,7 @@
 from django.contrib.auth.mixins import UserPassesTestMixin
 from .models import MuscleGroup, Exercise, Workout, WorkoutExercise
 
+
 class UserWorkoutMixin(UserPassesTestMixin):
     def test_func(self):
         w = Workout.objects.get(pk=self.kwargs['pk'])

@@ -1,0 +1,25 @@
+
+{% extends "base.html" %} 
+{% block content %}
+
+
+<form action="" method="POST">
+    {% csrf_token %}
+
+    <div class="container">
+      {{ formset.management_form }}
+      {% for form in formset %}
+      <div class="row justify-content-center mb-4">
+          <div class="col-1">{{ form.checked_yes }}</div>
+          <div class="col-3">{{ form.checklist_item }}</div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <button class="btn btn-large">Submit</button>
+
+</form>
+
+
+{% endblock content %}
+
