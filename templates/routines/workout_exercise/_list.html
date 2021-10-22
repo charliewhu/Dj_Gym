@@ -20,7 +20,7 @@
         <div class="row d-flex justify-content-between align-items-center">
   
           <div class="col-8">
-            {{o}}
+            <a href="{% url 'routines:wo_ex_set_list' o.id %}">{{o}}</a>
           </div>
   
           <div class="col-4">
@@ -37,7 +37,7 @@
         </div> 
         
         <hr>
-        {% include 'routines/utils/workoutexercise_delete_modal.html' %}
+        {% include 'routines/workout_exercise/_delete_modal.html' %}
       {% endfor %}
     </ul>
   </div>

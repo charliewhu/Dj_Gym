@@ -24,6 +24,11 @@ Phase 2 (Pre-plan eg 4-week Routine):
     RoutineDays consist of multiple RoutineItems/Exercises
     RoutineItems consist of various Sets / Reps / Weight / RIR
 
+CHANGED to:
+    Pre-workout questionnaire
+    Workout has multiple WorkoutExercises
+    WorkoutExercises have multiple WorkoutExerciseSets
+
 Features:
     - Readiness Questionnaire
         - Sleep
@@ -34,7 +39,13 @@ Features:
         - Nutrition
         - Hydration
         - Weight
-
+    - Stats
+        - Number of hard sets (RIR <= 3)
+        - Relative intensity (%) of Workout
+        - Max intensity (%)
+        - Relative effort (RIR)
+        - Max effort (RIR)
+        - Number of lifts (NOL)                
 
 
     

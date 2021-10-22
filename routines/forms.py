@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import widgets
-from .models import MuscleGroup, Workout, WorkoutExercise, Exercise
+from .models import Exercise, Workout, WorkoutExercise, WorkoutExerciseSet
 
 
 class WorkoutForm(forms.ModelForm):
@@ -30,6 +30,12 @@ class WorkoutExerciseForm(forms.ModelForm):
                 pass  # invalid input from the client; ignore and fallback to empty Exercise queryset
         elif self.instance.pk:
             self.fields['exercise'].queryset = Exercise.objects.filter(muscle_group=self.instance.muscle_group).order_by('name')
+
+
+class WorkoutExerciseSetForm(forms.ModelForm):
+    class Meta:
+        model  = WorkoutExerciseSet
+        fields = ['weight', 'reps', 'rir']
 
 
 class ExerciseForm(forms.ModelForm):

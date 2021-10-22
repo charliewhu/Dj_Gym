@@ -7,7 +7,7 @@
 </div>
 
 <div class="container d-flex justify-content-evenly">
-  <a href="{% url 'routines:workout_exercise_create' object.id %}">Add Exercise</a>
+  <a href="{% url 'routines:wo_ex_set_create' object.id %}">Add Set</a>
 </div>
 
 
@@ -26,7 +26,7 @@
           <div class="col-4">
   
             <div class="row py-1">
-              <a class="btn btn-outline-primary" href="{% url 'routines:workout_exercise_update' o.pk %}">Update</a>
+              <a class="btn btn-outline-primary" href="{% url 'routines:wo_ex_set_update' o.pk %}">Update</a>
             </div>
   
             <div class="row py-1">
@@ -37,7 +37,8 @@
         </div> 
         
         <hr>
-        {% include 'routines/utils/workoutexercise_delete_modal.html' %}
+        {% include 'routines/workout_exercise_set/_delete_modal.html' %}
+
       {% endfor %}
     </ul>
   </div>
