@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.db import models
 from django.db.models.fields import DateField
 from accounts.models import User
@@ -5,12 +7,15 @@ from accounts.models import User
 
 class Workout(models.Model):
     user         = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    name         = models.CharField(max_length=40, null=True)
-    date         = models.DateField(null=True)
+    date         = models.DateField(auto_now_add=True, null=True)
     date_created = models.DateTimeField(auto_now_add=True, null=True)
 
+    def readiness(self):
+        return self.workoutreadiness_set.all().aggregate(sum=models.Sum('rating'))['sum']
+
     def __str__(self):
-        return f'{self.date} - {self.name}'
+        str = self.date_created.strftime("%Y-%m-%d - %H:%M:%S")
+        return f'{str}'
 
 
 class MuscleGroup(models.Model):
@@ -58,20 +63,47 @@ class WorkoutItem(models.Model):
         return f'{self.exercise} - {self.sets} x {self.reps} x {self.weight}kg @{self.rir}RIR'
 
 
-class ReadinessChecklist(models.Model):
+class ReadinessQuestion(models.Model):
     name = models.CharField(max_length=40, unique=True)
+    def __str__(self):
+        return f'{self.name}'
 
 
 class WorkoutReadiness(models.Model):
     class Rating(models.IntegerChoices):
         LOWEST  = 1
-        LOW     = 2
+        LOWER   = 2
         MEDIUM  = 3
-        HIGH    = 4
+        HIGHER  = 4
         HIGHEST = 5
 
-    workout             = models.OneToOneField(Workout, on_delete=models.CASCADE, null=True)
-    readiness_checklist = models.ForeignKey(ReadinessChecklist, on_delete=models.CASCADE, null=True)
-    rating              = models.IntegerField(choices=Rating.choices)
+    workout            = models.ForeignKey(Workout, on_delete=models.CASCADE, null=True, blank=True)
+    readiness_question = models.ForeignKey(ReadinessQuestion, on_delete=models.CASCADE, null=True, blank=True)
+    rating             = models.IntegerField(choices=Rating.choices)
+
+    def __str__(self):
+        return f'{self.workout}'
 
 
+
+
+
+# class WorkoutReadiness(models.Model):
+#     class Rating(models.IntegerChoices):
+#         LOWEST  = 1
+#         LOWER   = 2
+#         MEDIUM  = 3
+#         HIGHER  = 4
+#         HIGHEST = 5
+
+#     workout   = models.ForeignKey(Workout, on_delete=models.CASCADE, null=True, blank=True)
+#     sleep     = models.IntegerField(choices=Rating.choices)
+#     energy    = models.IntegerField(choices=Rating.choices)
+#     mood      = models.IntegerField(choices=Rating.choices)
+#     soreness  = models.IntegerField(choices=Rating.choices)
+#     stress    = models.IntegerField(choices=Rating.choices)
+#     nutrition = models.IntegerField(choices=Rating.choices)
+#     hydration = models.IntegerField(choices=Rating.choices)
+#     weight    = models.IntegerField()
+#     def __str__(self):
+#         return f'{self.workout}'

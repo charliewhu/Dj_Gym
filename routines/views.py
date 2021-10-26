@@ -1,3 +1,6 @@
+from django.http import HttpResponse, HttpResponseRedirect
+from django.forms import fields
+from django.forms.models import modelformset_factory
 from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
 from django.core.exceptions import PermissionDenied
@@ -6,10 +9,12 @@ from django.contrib.auth.decorators import user_passes_test
 
 
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
-from django.views.generic.edit import DeleteView
-from .forms import WorkoutExerciseSetForm, WorkoutForm, WorkoutExerciseForm, ExerciseForm
-from .models import MuscleGroup, Exercise, Workout, WorkoutExercise, WorkoutExerciseSet
+from django.views.generic.edit import DeleteView, FormView
+from .forms import ReadinessQuestionForm, WRFormSet, WorkoutExerciseSetForm, WorkoutForm, WorkoutExerciseForm, ExerciseForm, WorkoutReadinessForm
+from .models import MuscleGroup, Exercise, ReadinessQuestion, Workout, WorkoutExercise, WorkoutExerciseSet, WorkoutReadiness
 from .mixins import UserWorkoutMixin, UserWorkoutExerciseMixin
+from extra_views import ModelFormSetView
+from django.forms.formsets import INITIAL_FORM_COUNT, formset_factory
 
 
 def home(request):
@@ -208,3 +213,72 @@ class WorkoutExerciseSetDeleteView(DeleteView):
         wes = WorkoutExerciseSet.objects.get(pk=self.kwargs['pk'])
         pk = wes.workout_exercise_id
         return reverse_lazy('routines:wo_ex_set_list', kwargs={'pk':pk})
+
+
+class WorkoutReadinessCreateView(CreateView):
+    model         = WorkoutReadiness
+    fields        = ['readiness_question','rating']
+    template_name = 'routines/workout_readiness/_form.html'
+    initial_data = [{'readiness_question':q} for q in ReadinessQuestion.objects.all()]
+
+    def post(self, request, *args, **kwargs):
+        formset = WRFormSet(request.POST)
+        if formset.is_valid():            
+            return self.form_valid(formset)
+        return super().post(request, *args, **kwargs)
+    
+    def form_valid(self, formset):
+        workout = Workout.objects.create(user=self.request.user)
+        for idx, form in enumerate(formset):
+            cd = form.cleaned_data
+            readiness_question = self.initial_data[idx]['readiness_question']
+            rating = cd.get('rating')
+            w_readiness = WorkoutReadiness(
+                workout=workout,
+                readiness_question=readiness_question,
+                rating=rating
+            )
+            w_readiness.save()
+        return HttpResponseRedirect(
+            reverse_lazy(
+                'routines:workout_exercise_list', 
+                kwargs={'pk':workout.id})
+            )
+
+    def get_context_data(self, **kwargs):
+        """Render initial form"""
+        context = super().get_context_data(**kwargs)
+        context['formset'] = WRFormSet(
+            initial =self.initial_data
+        )
+        return context
+
+
+def create_workoutreadiness(request):
+    questions = ReadinessQuestion.objects.all()
+    initial_data = [{'readiness_question':q} for q in questions]
+    
+    if request.method == 'POST':
+        formset = WRFormSet(request.POST, initial=initial_data)
+        workout = Workout.objects.create(user=request.user)
+        if formset.is_valid():
+            for idx, form in enumerate(formset):
+                cd = form.cleaned_data
+                readiness_question = initial_data[idx]['readiness_question']
+                rating = cd.get('rating')
+                w_readiness = WorkoutReadiness(
+                    workout=workout,
+                    readiness_question=readiness_question,
+                    rating=rating
+                )
+                w_readiness.save()
+
+        return HttpResponseRedirect(reverse_lazy('routines:workout_exercise_list', kwargs={'pk':workout.id}))
+    else:
+        formset = WRFormSet(initial=initial_data)
+          
+    context = {
+        'questions':questions,
+        'formset':formset,
+    }
+    return render(request, 'routines/workout_readiness/_form.html', context)

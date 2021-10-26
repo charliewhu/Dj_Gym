@@ -1,12 +1,20 @@
 from django import forms
 from django.forms import widgets
-from .models import Exercise, Workout, WorkoutExercise, WorkoutExerciseSet, WorkoutReadiness
+from .models import Exercise, Workout, WorkoutExercise, WorkoutExerciseSet, WorkoutReadiness, ReadinessQuestion
+
+
+
+
+class ReadinessQuestionForm(forms.ModelForm):
+    class Meta:
+        model  = ReadinessQuestion
+        fields = [ 'name',]
 
 
 class WorkoutReadinessForm(forms.ModelForm):
     class Meta:
         model  = WorkoutReadiness
-        fields = ['readiness_checklist', 'rating',]
+        fields = ['readiness_question','rating']
 
 WRFormSet = forms.formset_factory(WorkoutReadinessForm, extra=0)
 
@@ -14,7 +22,7 @@ WRFormSet = forms.formset_factory(WorkoutReadinessForm, extra=0)
 class WorkoutForm(forms.ModelForm):
     class Meta:
         model   = Workout
-        fields  = ['name', 'date']
+        fields  = []
         widgets = {
             'date': widgets.DateInput(attrs={'type': 'date'})
         }

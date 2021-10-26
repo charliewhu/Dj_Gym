@@ -8,6 +8,9 @@ app_name = 'routines'
 
 urlpatterns = [
 
+    path('readiness/create/', views.WorkoutReadinessCreateView.as_view(), name='wo_readiness_create'),
+    #path('readiness/create/', views.create_workoutreadiness, name='wo_readiness_create'),
+
     path('workouts/', views.WorkoutListView.as_view(), name='workout_list'),
     path('workouts/create/', views.WorkoutCreateView.as_view(), name='workout_create'),
     path('workouts/<int:pk>/update/', views.WorkoutUpdateView.as_view(), name='workout_update'),

@@ -14,6 +14,9 @@ admin.site.register(models.Exercise)
 admin.site.register(models.Workout)
 admin.site.register(models.WorkoutExercise)
 admin.site.register(models.WorkoutExerciseSet)
+admin.site.register(models.ReadinessQuestion)
+admin.site.register(models.WorkoutReadiness)
+
 
 
 

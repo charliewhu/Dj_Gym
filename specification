@@ -28,6 +28,7 @@ CHANGED to:
     Pre-workout questionnaire
     Workout has multiple WorkoutExercises
     WorkoutExercises have multiple WorkoutExerciseSets
+    Generate Sets for that Workout
 
 Features:
     - Readiness Questionnaire
@@ -45,7 +46,8 @@ Features:
         - Max intensity (%)
         - Relative effort (RIR)
         - Max effort (RIR)
-        - Number of lifts (NOL)                
+        - Number of lifts (NOL)  
+        - Exertion Load (EL) - ROM x sum(sets) x e^-0.215(set x setreps x repno)
 
 
 Phase 3a (App generates based on User inputted details):

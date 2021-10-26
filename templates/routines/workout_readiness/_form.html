@@ -3,22 +3,23 @@
 {% block content %}
 
 
-<form action="" method="POST">
-    {% csrf_token %}
-
-    <div class="container">
+<div class="form-group my-5">
+  <form action="" method="post">
+    <table class="mb-3">
+      {% csrf_token %}
       {{ formset.management_form }}
       {% for form in formset %}
-      <div class="row justify-content-center mb-4">
-          <div class="col-1">{{ form.checked_yes }}</div>
-          <div class="col-3">{{ form.checklist_item }}</div>
-      </div>
+        <tr>
+          <td>{{ form.initial.readiness_question }}</td> 
+          <td>{{ form.rating }}</td> 
+        </tr>
       {% endfor %}
-    </div>
+    </table>
+    <button type="submit" class="btn btn-outline-primary">Submit</button>
+  </form>
+</div>
 
-    <button class="btn btn-large">Submit</button>
 
-</form>
 
 
 {% endblock content %}

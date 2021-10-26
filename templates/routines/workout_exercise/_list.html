@@ -6,6 +6,10 @@
   <h1>{{ object }}</h1>
 </div>
 
+<div class="container text-center my-5">
+  <h3>Readiness - {{ object.readiness }}</h3>
+</div>
+
 <div class="container d-flex justify-content-evenly">
   <a href="{% url 'routines:workout_exercise_create' object.id %}">Add Exercise</a>
 </div>

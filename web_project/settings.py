@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'accounts',
     'routines',
 
+    'extra_views',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
