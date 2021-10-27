@@ -47,7 +47,8 @@ Features:
         - Relative effort (RIR)
         - Max effort (RIR)
         - Number of lifts (NOL)  
-        - Exertion Load (EL) - ROM x sum(sets) x e^-0.215(set x setreps x repno)
+        - Exertion Load (EL) - ROM * sum(sets) * e^-0.215(set * setreps * repno)
+        - E1RM - Epley Formula = weight * (1 + reps/30)
 
 
 Phase 3a (App generates based on User inputted details):

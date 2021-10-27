@@ -95,6 +95,15 @@ class WorkoutExerciseListView(LoginRequiredMixin, UserWorkoutMixin, ListView):
     template_name = 'routines/workout_exercise/_list.html'
     extra_context = {'title':'Workout Items'}
 
+    def post(self, request, *args, **kwargs):
+        w = Workout.objects.get(pk=self.kwargs['pk'])
+        w.end_workout()
+        return HttpResponseRedirect(
+            reverse_lazy(
+                'routines:workout_exercise_list', 
+                kwargs={'pk':w.id})
+            )
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         w = Workout.objects.get(pk=self.kwargs['pk'])
@@ -253,32 +262,3 @@ class WorkoutReadinessCreateView(CreateView):
         )
         return context
 
-
-def create_workoutreadiness(request):
-    questions = ReadinessQuestion.objects.all()
-    initial_data = [{'readiness_question':q} for q in questions]
-    
-    if request.method == 'POST':
-        formset = WRFormSet(request.POST, initial=initial_data)
-        workout = Workout.objects.create(user=request.user)
-        if formset.is_valid():
-            for idx, form in enumerate(formset):
-                cd = form.cleaned_data
-                readiness_question = initial_data[idx]['readiness_question']
-                rating = cd.get('rating')
-                w_readiness = WorkoutReadiness(
-                    workout=workout,
-                    readiness_question=readiness_question,
-                    rating=rating
-                )
-                w_readiness.save()
-
-        return HttpResponseRedirect(reverse_lazy('routines:workout_exercise_list', kwargs={'pk':workout.id}))
-    else:
-        formset = WRFormSet(initial=initial_data)
-          
-    context = {
-        'questions':questions,
-        'formset':formset,
-    }
-    return render(request, 'routines/workout_readiness/_form.html', context)

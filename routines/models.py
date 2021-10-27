@@ -9,9 +9,54 @@ class Workout(models.Model):
     user         = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     date         = models.DateField(auto_now_add=True, null=True)
     date_created = models.DateTimeField(auto_now_add=True, null=True)
+    is_active    = models.BooleanField(default=1)
+    
+    def end_workout(self):
+        self.is_active = False
+        self.save()
 
+    """Wanted readiness methods to be DRYer but it means repetition in Views"""
     def readiness(self):
-        return self.workoutreadiness_set.all().aggregate(sum=models.Sum('rating'))['sum']
+
+        set = self.workoutreadiness_set.all()
+        readiness = set.aggregate(avg=models.Avg('rating'))['avg']
+        return round(readiness*20)
+
+    def squat_readiness(self):
+        set = self.workoutreadiness_set.all()
+        ovr_readiness = set.aggregate(avg=models.Avg('rating'))['avg']
+        ex_sum = self.workoutreadiness_set\
+                .filter(readiness_question__name__icontains='Squat')\
+                .aggregate(avg=models.Avg('rating'))['avg']
+        combined_readiness = (ex_sum + ovr_readiness) / 2
+        return round(combined_readiness * 20)
+
+    def bench_readiness(self):
+        set = self.workoutreadiness_set.all()
+        ovr_readiness = set.aggregate(avg=models.Avg('rating'))['avg']
+        ex_sum = self.workoutreadiness_set\
+                .filter(readiness_question__name__icontains='Bench')\
+                .aggregate(avg=models.Avg('rating'))['avg']
+        combined_readiness = (ex_sum + ovr_readiness) / 2
+        return round(combined_readiness * 20)
+
+    def deadlift_readiness(self):
+        set = self.workoutreadiness_set.all()
+        ovr_readiness = set.aggregate(avg=models.Avg('rating'))['avg']
+        ex_sum = self.workoutreadiness_set\
+                .filter(readiness_question__name__icontains='Deadlift')\
+                .aggregate(avg=models.Avg('rating'))['avg']
+        combined_readiness = (ex_sum + ovr_readiness) / 2
+        return round(combined_readiness * 20)
+
+    def pull_readiness(self):
+        set = self.workoutreadiness_set.all()
+        ovr_readiness = set.aggregate(avg=models.Avg('rating'))['avg']
+        ex_sum = self.workoutreadiness_set\
+                .filter(readiness_question__name__icontains='Upper Back')\
+                .aggregate(avg=models.Avg('rating'))['avg']
+        combined_readiness = (ex_sum + ovr_readiness) / 2
+        return round(combined_readiness * 20)
 
     def __str__(self):
         str = self.date_created.strftime("%Y-%m-%d - %H:%M:%S")

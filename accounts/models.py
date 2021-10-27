@@ -49,6 +49,11 @@ class User(AbstractBaseUser, PermissionsMixin):
     def has_module_perms(self, app_label):
         return True
 
+    def has_active_workout(self):
+        set = self.workout_set.all()
+        active_wo = set.aggregate(sum=models.Sum('is_active'))['sum']
+        return active_wo
+
 
 class UserGroup(models.Model):
     description = models.CharField(max_length=100)
