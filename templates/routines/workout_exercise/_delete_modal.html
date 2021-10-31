@@ -3,7 +3,7 @@
 
 
 
-<div class="modal fade" id="deleteModal{{o.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="deleteModal{{object.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -15,7 +15,7 @@
 
       <div class="modal-footer d-flex justify-content-center">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <form action="{% url 'routines:workout_exercise_delete' o.id %}" method=POST>
+        <form action="{% url 'routines:workout_exercise_delete' object.id %}" method=POST>
           {% csrf_token %}
           <input type="submit" class="btn btn-danger" value='Delete'>
         </form>

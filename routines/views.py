@@ -10,10 +10,9 @@ from django.contrib.auth.decorators import user_passes_test
 
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.views.generic.edit import DeleteView, FormView
-from .forms import ReadinessQuestionForm, WRFormSet, WorkoutExerciseSetForm, WorkoutForm, WorkoutExerciseForm, ExerciseForm, WorkoutReadinessForm
+from .forms import WRFormSet, WorkoutExerciseSetForm, WorkoutForm, WorkoutExerciseForm, ExerciseForm, WorkoutReadinessForm
 from .models import MuscleGroup, Exercise, ReadinessQuestion, Workout, WorkoutExercise, WorkoutExerciseSet, WorkoutReadiness
 from .mixins import UserWorkoutMixin, UserWorkoutExerciseMixin
-from extra_views import ModelFormSetView
 from django.forms.formsets import INITIAL_FORM_COUNT, formset_factory
 
 
@@ -112,11 +111,22 @@ class WorkoutExerciseListView(LoginRequiredMixin, UserWorkoutMixin, ListView):
         return context
 
 
+class WorkoutExerciseDetailView(DetailView):
+    model = WorkoutExercise
+    template_name = 'routines/workout_exercise/_detail.html'
+
+
 def load_exercises(request):
     """
     For AJAX request to allow dependent dropdown
     MuscleGroup --> Exercise
     """
+    muscle_group_id = request.GET.get('muscle_group')
+    exercises = Exercise.objects.filter(muscle_group_id=muscle_group_id).order_by('name')
+    return render(request, 'routines/workout_exercise/partials/exercises_dropdown.html', {'exercises': exercises})
+    
+
+def load_exercises2(request):
     muscle_group_id = request.GET.get('muscle_group')
     exercises = Exercise.objects.filter(muscle_group_id=muscle_group_id).order_by('name')
     return render(request, 'routines/workout_exercise/partials/exercises_dropdown.html', {'exercises': exercises})
@@ -139,11 +149,10 @@ class WorkoutExerciseCreateView(LoginRequiredMixin, UserWorkoutMixin, CreateView
         return super().form_valid(form)
 
     def get_success_url(self):
-        pk = self.kwargs['pk']
-        return reverse_lazy('routines:workout_exercise_list', kwargs={'pk':pk})
+        return reverse('routines:workout_exercise_detail', args=(self.object.id,))
 
 
-class WorkoutExerciseUpdateView(LoginRequiredMixin, UserWorkoutExerciseMixin, UpdateView):
+class WorkoutExerciseUpdateView(LoginRequiredMixin, UpdateView):
     model         = WorkoutExercise
     form_class    = WorkoutExerciseForm
     template_name = 'routines/workout_exercise/_form.html'
@@ -151,14 +160,13 @@ class WorkoutExerciseUpdateView(LoginRequiredMixin, UserWorkoutExerciseMixin, Up
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        wi = WorkoutExercise.objects.get(pk=self.kwargs['pk'])
-        context['object'] = wi.workout
+        we = WorkoutExercise.objects.get(pk=self.kwargs['pk'])
+        context['object'] = we.workout
+        context['workout_exercise'] = we
         return context
 
     def get_success_url(self):
-        wi = WorkoutExercise.objects.get(pk=self.kwargs['pk'])
-        pk = wi.workout_id
-        return reverse_lazy('routines:workout_exercise_list', kwargs={'pk':pk})
+        return reverse('routines:workout_exercise_detail', args=(self.object.id,))
 
 
 class WorkoutExerciseDeleteView(LoginRequiredMixin, UserWorkoutExerciseMixin, DeleteView):
@@ -183,6 +191,11 @@ class WorkoutExerciseSetListView(ListView):
         return context
 
 
+class WorkoutExerciseSetDetailView(DetailView):
+    model = WorkoutExerciseSet
+    template_name = 'routines/workout_exercise_set/_detail.html'
+
+
 class WorkoutExerciseSetCreateView(CreateView):
     model         = WorkoutExerciseSet
     form_class    = WorkoutExerciseSetForm
@@ -201,7 +214,7 @@ class WorkoutExerciseSetCreateView(CreateView):
 
     def get_success_url(self):
         pk = self.kwargs['pk']
-        return reverse_lazy('routines:wo_ex_set_list', kwargs={'pk':pk})
+        return reverse('routines:wo_ex_set_detail', args=(self.object.id,))
 
 
 class WorkoutExerciseSetUpdateView(UpdateView):
@@ -210,10 +223,15 @@ class WorkoutExerciseSetUpdateView(UpdateView):
     template_name = 'routines/workout_exercise_set/_form.html'
     extra_context = {'title':'Update Set'}
 
-    def get_success_url(self):
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
         wes = WorkoutExerciseSet.objects.get(pk=self.kwargs['pk'])
-        pk  = wes.workout_exercise_id
-        return reverse_lazy('routines:wo_ex_set_list', kwargs={'pk':pk})
+        context['object'] = wes.workout_exercise
+        context['workout_exercise_set'] = wes
+        return context
+
+    def get_success_url(self):
+        return reverse('routines:wo_ex_set_detail', args=(self.object.id,))
 
 
 class WorkoutExerciseSetDeleteView(DeleteView):

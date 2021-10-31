@@ -1,20 +1,85 @@
-{% extends 'base.html' %}
+{% load static %}
 
-{% block content %}
 
-  <h2>{{ title }}</h2>
+{% if workout_exercise %}
 
-  <form method="post" id="workoutItemForm" data-exercises-url="{% url 'routines:ajax_load_exercises' %}" novalidate>
+<div hx-target="this" hx-swap="outerHTML">
+  <form
+    method="POST"
+    id="workoutItemForm{{forloop.counter}}"
+    data-exercises-url="{% url 'routines:ajax_load_exercises' %}" novalidate
+  >
     {% csrf_token %}
-    <table class="mb-3">
-      {{ form.as_table }}
-    </table>
-    <button type="submit" class="btn btn-outline-primary mt-2">Add to workout</button>
+    <div class="row align-items-center my-3">
+
+      <div class="col-4">
+        {{ form.muscle_group }}
+      </div>
+      <div class="col-5">
+        {{ form.exercise }}
+      </div>
+      <div class="col-2">
+        <button
+          type="submit"
+          hx-post="{% url 'routines:workout_exercise_update' workout_exercise.id %}"
+          class="btn btn-outline-primary mt-2">
+          Add
+        </button>
+      </div>
+      <div class="col-1">
+        <button
+          type="button"
+          hx-get="{% url 'routines:workout_exercise_detail' workout_exercise.id %}"
+          class="btn btn-outline-danger mt-2">
+          X
+        </button>
+      </div>
+
+    </div>
   </form>
+  <hr>
+</div>
+             
+{% else %}
 
-  <div class="text-center my-3">
-    <a href="{% url 'routines:workout_exercise_list' object.id %}">Back to this Workout</a>
-  </div>
+<div hx-target="this" hx-swap="outerHTML" id="createForm">
+  <form
+    method="POST"
+    id="workoutItemForm"
+    data-exercises-url="{% url 'routines:ajax_load_exercises' %}" novalidate
+  >
+    {% csrf_token %}
+    <div class="row align-items-center my-3">
 
+      <div class="col-4">
+        {{ form.muscle_group }}
+      </div>
+      <div class="col-5">
+        {{ form.exercise }}
+      </div>
+      <div class="col-2">
+        <button
+          type="submit"
+          hx-post="{% url 'routines:workout_exercise_create' object.id %}"
+          class="btn btn-outline-primary mt-2">
+          Add
+        </button>
+      </div>
+      <div class="col-1">
+        <button
+          id="clearItemCreateForm"
+          class="btn btn-outline-danger mt-2"
+          onclick="clearContent('createForm')"
+          >
+          X
+        </button>
+      </div>
 
-{% endblock %}
+    </div>
+  </form>
+  <hr>
+</div>
+
+{% endif %}
+
+<script src="{% static 'js/script.js' %}"></script>

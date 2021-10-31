@@ -1,0 +1,33 @@
+<div 
+  class="row align-items-center my-3" 
+  hx-target="this"
+  hx-swap="outerHTML"
+>
+  <div class="col-3">
+    {{ object.weight }}
+  </div>
+  <div class="col-2">
+    {{ object.reps }}
+  </div>
+  <div class="col-2">
+    {{ object.rir }}
+  </div>
+  <div class="col-2">
+    <button 
+      class="btn btn-outline-primary"
+      hx-get="{% url 'routines:wo_ex_set_update' object.id %}">
+      Edit
+    </button>
+  </div>
+  <div class="col-1">
+    <button
+      class="btn btn-outline-danger"
+      data-bs-toggle="modal"
+      data-bs-target="#deleteModal{{object.id}}"
+    >
+    X
+    </button>
+  </div>
+</div>
+
+{% include 'routines/workout_exercise_set/_delete_modal.html' %}

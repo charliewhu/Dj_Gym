@@ -3,14 +3,6 @@ from django.forms import widgets
 from .models import Exercise, Workout, WorkoutExercise, WorkoutExerciseSet, WorkoutReadiness, ReadinessQuestion
 
 
-
-
-class ReadinessQuestionForm(forms.ModelForm):
-    class Meta:
-        model  = ReadinessQuestion
-        fields = [ 'name',]
-
-
 class WorkoutReadinessForm(forms.ModelForm):
     class Meta:
         model  = WorkoutReadiness
@@ -52,6 +44,10 @@ class WorkoutExerciseSetForm(forms.ModelForm):
     class Meta:
         model  = WorkoutExerciseSet
         fields = ['weight', 'reps', 'rir']
+
+    weight = forms.FloatField(widget=forms.NumberInput(attrs={'class':'form-control'}))
+    reps   = forms.IntegerField(widget=forms.NumberInput(attrs={'class':'form-control'}))
+    rir    = forms.IntegerField(widget=forms.NumberInput(attrs={'class':'form-control'}))
 
 
 class ExerciseForm(forms.ModelForm):

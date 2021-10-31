@@ -13,3 +13,9 @@ $("#id_muscle_group").change(function () {
     });
 
   });
+
+
+function clearContent(elementID) {
+  document.getElementById(elementID).outerHTML = "";
+};
+
