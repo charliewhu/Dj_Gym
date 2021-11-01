@@ -1,4 +1,6 @@
 from datetime import datetime
+import math
+import decimal
 
 from django.db import models
 from django.db.models.fields import DateField
@@ -6,7 +8,7 @@ from accounts.models import User
 
 
 class Workout(models.Model):
-    user         = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    user         = models.ForeignKey(User, related_name='workouts', on_delete=models.CASCADE, null=True)
     date         = models.DateField(auto_now_add=True, null=True)
     date_created = models.DateTimeField(auto_now_add=True, null=True)
     is_active    = models.BooleanField(default=1)
@@ -17,7 +19,6 @@ class Workout(models.Model):
 
     """Wanted readiness methods to be DRYer but it means repetition in Views"""
     def readiness(self):
-
         set = self.workoutreadiness_set.all()
         readiness = set.aggregate(avg=models.Avg('rating'))['avg']
         return round(readiness*20)
@@ -93,6 +94,13 @@ class WorkoutExerciseSet(models.Model):
 
     def __str__(self):
         return f'{self.workout_exercise} - {self.reps} x {self.weight}kg @{self.rir}RIR'
+    
+    def exertion_load(self):
+        el = 0
+        for i in range(self.reps):
+            el += math.exp(-0.215 * (self.rir + self.reps - i))
+        el = decimal.Decimal(el) * self.weight
+        return round(el, 1)
 
 
 class WorkoutItem(models.Model):
@@ -116,11 +124,11 @@ class ReadinessQuestion(models.Model):
 
 class WorkoutReadiness(models.Model):
     class Rating(models.IntegerChoices):
-        LOWEST  = 1
-        LOWER   = 2
+        POOREST = 1
+        POORER  = 2
         MEDIUM  = 3
-        HIGHER  = 4
-        HIGHEST = 5
+        BETTER  = 4
+        BEST    = 5
 
     workout            = models.ForeignKey(Workout, on_delete=models.CASCADE, null=True, blank=True)
     readiness_question = models.ForeignKey(ReadinessQuestion, on_delete=models.CASCADE, null=True, blank=True)
@@ -129,26 +137,3 @@ class WorkoutReadiness(models.Model):
     def __str__(self):
         return f'{self.workout}'
 
-
-
-
-
-# class WorkoutReadiness(models.Model):
-#     class Rating(models.IntegerChoices):
-#         LOWEST  = 1
-#         LOWER   = 2
-#         MEDIUM  = 3
-#         HIGHER  = 4
-#         HIGHEST = 5
-
-#     workout   = models.ForeignKey(Workout, on_delete=models.CASCADE, null=True, blank=True)
-#     sleep     = models.IntegerField(choices=Rating.choices)
-#     energy    = models.IntegerField(choices=Rating.choices)
-#     mood      = models.IntegerField(choices=Rating.choices)
-#     soreness  = models.IntegerField(choices=Rating.choices)
-#     stress    = models.IntegerField(choices=Rating.choices)
-#     nutrition = models.IntegerField(choices=Rating.choices)
-#     hydration = models.IntegerField(choices=Rating.choices)
-#     weight    = models.IntegerField()
-#     def __str__(self):
-#         return f'{self.workout}'

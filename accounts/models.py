@@ -1,5 +1,6 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager,PermissionsMixin 
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager,PermissionsMixin
+from django.db.models import aggregates 
 
 
 # define what we want to happen when a new user is created
@@ -50,9 +51,34 @@ class User(AbstractBaseUser, PermissionsMixin):
         return True
 
     def has_active_workout(self):
-        set = self.workout_set.all()
+        set = self.workouts.all()
         active_wo = set.aggregate(sum=models.Sum('is_active'))['sum']
         return active_wo
+
+    def readiness_history(self):
+        u = self.objects.select_related('workout'). prefetch_related('workout_readiness')
+
+
+class Gender(models.Model):
+    name = models.CharField(max_length=40)
+
+
+class TrainingFocus(models.Model):
+    name = models.CharField(max_length=40)
+    
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
+    height = models.PositiveSmallIntegerField(null=True)
+    weight = models.PositiveSmallIntegerField(null=True)
+    birth_date = models.DateField(null=True)
+    gender = models.ForeignKey(Gender, null=True, on_delete=models.SET_NULL)
+    training_focus = models.ForeignKey(TrainingFocus, null=True,  on_delete=models.SET_NULL)
+
+
+
+
+
 
 
 class UserGroup(models.Model):

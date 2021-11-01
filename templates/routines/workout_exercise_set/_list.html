@@ -6,6 +6,14 @@
   <h1>{{ object }}</h1>
 </div>
 
+<div class="row align-items-center my-3 fw-bold">
+  <div class="col-3">Weight</div>
+  <div class="col-2">Reps</div>
+  <div class="col-2">RIR</div>
+  <div class="col-2"></div>
+  <div class="col-1"></div>
+</div>
+<hr>
 
 {% for object in object_list %}
   {% include 'routines/workout_exercise_set/_detail.html' %}

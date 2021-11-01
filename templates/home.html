@@ -16,5 +16,9 @@
   Then, you can add Exercises to that Workout
 </p>
 
+{% for workout in request.user.workouts.all %}
+<p>{{ workout.date }}</p>
+<p>{{ workout.readiness }}</p>
+{% endfor %}
 
 {% endblock content %}

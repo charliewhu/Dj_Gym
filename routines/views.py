@@ -7,7 +7,7 @@ from django.core.exceptions import PermissionDenied
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import user_passes_test
 
-
+from accounts.models import User
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.views.generic.edit import DeleteView, FormView
 from .forms import WRFormSet, WorkoutExerciseSetForm, WorkoutForm, WorkoutExerciseForm, ExerciseForm, WorkoutReadinessForm
@@ -17,7 +17,8 @@ from django.forms.formsets import INITIAL_FORM_COUNT, formset_factory
 
 
 def home(request):
-    return render(request, 'home.html')
+    context = {}
+    return render(request, 'home.html', context)
 
 
 class ExerciseListView(LoginRequiredMixin, ListView):
@@ -213,7 +214,6 @@ class WorkoutExerciseSetCreateView(CreateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        pk = self.kwargs['pk']
         return reverse('routines:wo_ex_set_detail', args=(self.object.id,))
 
 
