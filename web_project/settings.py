@@ -156,13 +156,9 @@ PROTECTED_MEDIA = BASE_DIR / 'static' / 'protected'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-if DEBUG:
-    STATIC_ROOT.mkdir(parents=True, exist_ok=True)
-    MEDIA_ROOT.mkdir(parents=True, exist_ok=True)
-    PROTECTED_MEDIA.mkdir(parents=True, exist_ok=True)
-
 
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
 
-django_heroku.settings(locals())
+if not DEBUG:
+    django_heroku.settings(locals())
