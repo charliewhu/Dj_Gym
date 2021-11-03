@@ -246,7 +246,11 @@ class WorkoutReadinessCreateView(CreateView):
     model         = WorkoutReadiness
     fields        = ['readiness_question','rating']
     template_name = 'routines/workout_readiness/_form.html'
-    initial_data = [{'readiness_question':q} for q in ReadinessQuestion.objects.all()]
+    initial_data = []
+    try:
+        initial_data = [{'readiness_question':q} for q in ReadinessQuestion.objects.all()]
+    except: 
+        pass
 
     def post(self, request, *args, **kwargs):
         formset = WRFormSet(request.POST)
