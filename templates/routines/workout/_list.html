@@ -6,11 +6,9 @@
   <h1>{{ title }}</h1>
 </div>
 
-{% if not user.has_active_workout %}
-<div class="text-center mb-3">
-  <a href="{% url 'routines:wo_readiness_create' %}" class="btn btn-large btn-success">Create New Workout</a>
-</div>
-{% endif %}
+
+<a href="{% url 'routines:wo_readiness_create' %}" class="btn btn-large btn-success">Create New Workout</a>
+
 
 <div class="container my-5">
   <ul>
