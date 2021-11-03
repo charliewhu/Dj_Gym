@@ -44,12 +44,6 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     objects = MyUserManager()
 
-    def has_perm(self, perm, obj=None):
-        return self.is_admin
-
-    def has_module_perms(self, app_label):
-        return True
-
     def has_active_workout(self):
         set = self.workouts.all()
         active_wo = set.aggregate(sum=models.Sum('is_active'))['sum']
@@ -74,11 +68,6 @@ class Profile(models.Model):
     birth_date = models.DateField(null=True)
     gender = models.ForeignKey(Gender, null=True, on_delete=models.SET_NULL)
     training_focus = models.ForeignKey(TrainingFocus, null=True,  on_delete=models.SET_NULL)
-
-
-
-
-
 
 
 class UserGroup(models.Model):

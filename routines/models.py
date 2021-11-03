@@ -83,7 +83,10 @@ class WorkoutExercise(models.Model):
     exercise     = models.ForeignKey(Exercise, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'{self.exercise}'
+        return f'{self.exercise} + {self.workout.date}'
+
+    def exertion_load(self):
+       pass 
 
 
 class WorkoutExerciseSet(models.Model):
