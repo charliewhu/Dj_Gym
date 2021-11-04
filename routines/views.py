@@ -6,6 +6,7 @@ from django.urls import reverse, reverse_lazy
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import user_passes_test
+from django.db.models import Sum
 
 from accounts.models import User
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
@@ -58,6 +59,12 @@ class WorkoutListView(LoginRequiredMixin, ListView):
         qs = super().get_queryset()
         qs = qs.filter(user=self.request.user)
         return qs
+
+    def get_context_data(self, **kwargs):
+        """Need to check if user has an active workout"""
+        context = super().get_context_data(**kwargs)
+        context['active_wo'] = Workout.objects.filter(user=self.request.user).aggregate(sum=Sum('is_active'))['sum']
+        return context
 
 
 class WorkoutCreateView(LoginRequiredMixin, CreateView):
