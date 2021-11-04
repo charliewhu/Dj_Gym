@@ -199,6 +199,8 @@ LOGGING = {
     }
 }
 
+DEBUG_PROPAGATE_EXCEPTIONS = True
+
 
 if not DEBUG:
     django_heroku.settings(locals())
