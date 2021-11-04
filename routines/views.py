@@ -1,3 +1,4 @@
+from django.db.models.aggregates import Count
 from django.http import HttpResponse, HttpResponseRedirect
 from django.forms import fields
 from django.forms.models import modelformset_factory
@@ -63,7 +64,7 @@ class WorkoutListView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         """Need to check if user has an active workout"""
         context = super().get_context_data(**kwargs)
-        context['active_wo'] = Workout.objects.filter(user=self.request.user).aggregate(sum=Sum('is_active'))['sum']
+        context['active_wo'] = Workout.objects.filter(user=self.request.user).aggregate(ct=Count('is_active'))['ct']
         return context
 
 
