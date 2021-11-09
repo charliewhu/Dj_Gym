@@ -5,6 +5,7 @@ import decimal
 from django.db import models
 from django.db.models.fields import DateField
 from accounts.models import User
+from exercises.models import Exercise, MuscleGroup
 
 
 class Workout(models.Model):
@@ -64,17 +65,17 @@ class Workout(models.Model):
         return f'{str}'
 
 
-class MuscleGroup(models.Model):
-    name = models.CharField(max_length=20, unique=True)
-    def __str__(self):
-        return self.name
+# class MuscleGroup(models.Model):
+#     name = models.CharField(max_length=20, unique=True)
+#     def __str__(self):
+#         return self.name
 
 
-class Exercise(models.Model):
-    muscle_group = models.ForeignKey(MuscleGroup, on_delete=models.CASCADE)
-    name         = models.CharField(max_length=40, unique=True)
-    def __str__(self):
-        return f'{self.name}'
+# class Exercise(models.Model):
+#     muscle_group = models.ForeignKey(MuscleGroup, on_delete=models.CASCADE)
+#     name         = models.CharField(max_length=40, unique=True)
+#     def __str__(self):
+#         return f'{self.name}'
 
 
 class WorkoutExercise(models.Model):

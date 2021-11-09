@@ -1,0 +1,27 @@
+{% extends "base.html" %} 
+{% block content %}
+
+<h1>
+  Add an Exercise
+</h1>
+
+
+<div class="form-group my-5">
+  <div class="col-md-offset-2 col-md-4">
+    <form action="" method="post">
+      {% csrf_token %} 
+      <table class="mb-3">
+        {{ form.as_p }}
+      </table>
+      <button type="submit" class="btn btn-outline-primary">Submit</button>
+    </form>
+  </div>
+</div>
+
+
+
+
+
+
+
+{% endblock content %}

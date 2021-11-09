@@ -44,6 +44,12 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     objects = MyUserManager()
 
+    def has_perm(self, perm, obj=None):
+        return True
+
+    def has_module_perms(self, app_label):
+        return True
+
     def has_active_workout(self):
         set = self.workouts.all()
         active_wo = set.aggregate(sum=models.Sum('is_active'))['sum']

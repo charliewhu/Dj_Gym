@@ -1,5 +1,5 @@
 from django.db.models.aggregates import Count
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.forms import fields
 from django.forms.models import modelformset_factory
 from django.shortcuts import render, redirect
@@ -23,32 +23,6 @@ def home(request):
     return render(request, 'home.html', context)
 
 
-class ExerciseListView(LoginRequiredMixin, ListView):
-    queryset = MuscleGroup.objects.all().prefetch_related('exercise_set').order_by('name')
-    template_name = 'routines/exercise/_list.html'
-    extra_context = {'title':'Exercises'}
-
-
-class ExerciseCreateView(LoginRequiredMixin, CreateView):
-    model         = Exercise
-    form_class    = ExerciseForm
-    template_name = 'routines/exercise/_form.html'
-    extra_context = {'title':'Add Items To Workout'}
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        mg = MuscleGroup.objects.get(id=self.kwargs['pk'])
-        context['object'] = mg
-        return context
-
-    def form_valid(self, form):
-        form.instance.muscle_group = MuscleGroup.objects.get(id=self.kwargs['pk'])
-        return super().form_valid(form)
-
-    def get_success_url(self):
-        return reverse_lazy('routines:exercise_list')
-
-
 class WorkoutListView(LoginRequiredMixin, ListView):
     model         = Workout
     ordering      = ['-date', '-id']
@@ -64,7 +38,12 @@ class WorkoutListView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         """Need to check if user has an active workout"""
         context = super().get_context_data(**kwargs)
-        context['active_wo'] = Workout.objects.filter(user=self.request.user).aggregate(ct=Count('is_active'))['ct']
+        user_wo = Workout.objects.filter(user=self.request.user)
+        print(len(user_wo))
+        if len(user_wo) > 0:
+            context['active_wo'] = user_wo.aggregate(ct=Count('is_active'))['ct']
+        else:
+            context['active_wo'] = 0
         return context
 
 
@@ -134,12 +113,6 @@ def load_exercises(request):
     exercises = Exercise.objects.filter(muscle_group_id=muscle_group_id).order_by('name')
     return render(request, 'routines/workout_exercise/partials/exercises_dropdown.html', {'exercises': exercises})
     
-
-def load_exercises2(request):
-    muscle_group_id = request.GET.get('muscle_group')
-    exercises = Exercise.objects.filter(muscle_group_id=muscle_group_id).order_by('name')
-    return render(request, 'routines/workout_exercise/partials/exercises_dropdown.html', {'exercises': exercises})
-
 
 class WorkoutExerciseCreateView(LoginRequiredMixin, UserWorkoutMixin, CreateView):
     model         = WorkoutExercise
@@ -291,3 +264,11 @@ class WorkoutReadinessCreateView(CreateView):
         )
         return context
 
+
+
+def test_view(request):
+    if request.method == "POST":
+        print("this is a post request")
+        return JsonResponse({'Json':'Response'})
+    context = {}
+    return render(request, 'test.html', context)

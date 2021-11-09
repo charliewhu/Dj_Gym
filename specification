@@ -50,6 +50,9 @@ Features:
         - Exertion Load (EL) - ROM * sum(sets) * e^-0.215(set * setreps * repno)
         - E1RM - Epley Formula = weight * (1 + reps/30)
 
+FOR USER Questionnaire
+https://lincolnloop.com/blog/django-anti-patterns-signals/
+
 
 Phase 3a (App generates based on User inputted details):
     User can specify which type of Cycle the Routine is

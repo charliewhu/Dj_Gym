@@ -5,7 +5,8 @@
   <h1>{{ title }}</h1>
 </div>
 
-{% if active_wo > 0 %}
+
+{% if active_wo < 1 %} 
 <div class="container text-center my-5">
   <a class="btn btn-success" href="{% url 'routines:wo_readiness_create'%}">
     Add Workout
