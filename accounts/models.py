@@ -31,6 +31,7 @@ class MyUserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
+    """the default user model, containing essential information"""
     email = models.EmailField(verbose_name="email", max_length=60, unique=True)
     date_joined = models.DateTimeField(
         verbose_name="date joined", auto_now_add=True)
@@ -39,8 +40,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
-    profile_pic = models.ImageField(
-        default="profile1.png", null=True, blank=True)
 
     USERNAME_FIELD = 'email'
 
@@ -53,23 +52,28 @@ class User(AbstractBaseUser, PermissionsMixin):
         return True
 
     def has_active_workout(self):
+        """find out if the user currently has an active Workout instance"""
         set = self.workouts.all()
         active_wo = set.aggregate(sum=models.Sum('is_active'))['sum']
         return active_wo
 
     def readiness_history(self):
-        u = self.objects.select_related('workout'). prefetch_related('workout_readiness')
+        """Get a list of user's workout readiness ratings"""
+        u = self.objects.prefetch_related('workout').prefetch_related('workout_readiness')
 
 
 class Gender(models.Model):
+    """genders to choose from in UserProfile"""
     name = models.CharField(max_length=40)
 
 
 class TrainingPhase(models.Model):
+    """Training phases to choose from in UserProfile"""
     name = models.CharField(max_length=40)
     
 
 class UserProfile(models.Model):
+    """"Profile information for the User to input after signup"""
     user          = models.OneToOneField(User, on_delete=models.SET_NULL, null=True)
     height        = models.PositiveSmallIntegerField(null=True)
     weight        = models.PositiveSmallIntegerField(null=True)
@@ -80,6 +84,10 @@ class UserProfile(models.Model):
 
 
 class UserRM(models.Model):
+    """
+    All of the User's One-Rep-Maxes for specific Exercises.
+    Set by the User until they expire or are beaten.
+    """
     user        = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     exercise    = models.ForeignKey(Exercise)
     one_rep_max = models.PositiveIntegerField()
@@ -87,6 +95,10 @@ class UserRM(models.Model):
 
 
 class UserMetrics(models.Model):
+    """
+    Calculated values based on the User's UserProfile baseline.
+    Will be updated based on Workout performance in the next phase
+    """
     user      = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     exercise  = models.ForeignKey(Exercise, on_delete=models.SET_NULL, null=True)
     phase     = models.ForeignKey(TrainingPhase, on_delete=models.SET_NULL, null=True)
