@@ -6,25 +6,19 @@
   <h1>{{ title }}</h1>
 </div>
 
-<div class="container text-center my-5">
+<ul>
+{% regroup object_list by tier as tier_list %}
+{% for tier in tier_list %}
+  <li>{{ tier.grouper }}
+    <ul>
+      {% for exercise in tier.list  %}
+        <li>{{ exercise.name }}</li>
+      {% endfor %}
+    </ul>
+  </li>
+{% endfor %}
+</ul>
 
-    <a href="{% url 'exercises:exercise_create' %}" class="btn btn-primary mb-5">Add Exercise</a>
-
-    {% for o in object_list %}
-      <h5>{{ o }}</h5>
-   
-      <div class="row d-flex justify-content-center mt-3">
-        {% for e in o.exercise_set.all %}
-          <div class="col-sm-12 col-md-6 gy-2">
-            {{ e }}
-          </div>
-        {% endfor %}
-      </div>
-
-    <hr>
-    {% endfor %}
-
-</div>
 
 <div class="text-center mb-3">
   <a href="{% url 'routines:wo_readiness_create' %}">Create Workout</a>

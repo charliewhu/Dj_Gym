@@ -9,7 +9,7 @@ from .forms import ExerciseForm
 
 # Create your views here.
 class ExerciseListView(LoginRequiredMixin, ListView):
-    queryset = MuscleGroup.objects.all().prefetch_related('exercise_set').order_by('name')
+    queryset      = Exercise.objects.all()
     template_name = 'exercises/_list.html'
     extra_context = {'title':'Exercises'}
 

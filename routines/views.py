@@ -66,15 +66,12 @@ class WorkoutUpdateView(LoginRequiredMixin, UserWorkoutMixin, UpdateView):
     form_class      = WorkoutForm
     template_name   = 'routines/workout/_form.html'
     extra_context   = {'title':'Update Workout'}
-
-    def get_success_url(self):
-        return reverse('routines:workout_list')
+    success_url     = reverse_lazy('routines:workout_list')
 
 
 class WorkoutDeleteView(LoginRequiredMixin, UserWorkoutMixin, DeleteView):
-    model = Workout
-    def get_success_url(self):
-        return reverse_lazy('routines:workout_list')
+    model       = Workout
+    success_url = reverse_lazy('routines:workout_list')
 
 
 class WorkoutExerciseListView(LoginRequiredMixin, UserWorkoutMixin, ListView):
@@ -163,7 +160,6 @@ class WorkoutExerciseSetListView(LoginRequiredMixin, UserWorkoutExerciseMixin, L
     model         = WorkoutExerciseSet
     template_name = 'routines/workout_exercise_set/_list.html'
     extra_context = {'title':'Workout Exercise Sets'}
-    #extra_context = {'title':'Workout Items'}
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

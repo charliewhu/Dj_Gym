@@ -50,7 +50,7 @@ Features:
         - Exertion Load (EL) - ROM * sum(sets) * e^-0.215(set * setreps * repno)
         - E1RM - Epley Formula = weight * (1 + reps/30)
 
-FOR USER Questionnaire
+FOR USER Questionnaire + 1RM calculation? When user ends workout (save IF is_active=False)
 https://lincolnloop.com/blog/django-anti-patterns-signals/
 
 

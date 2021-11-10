@@ -21,7 +21,11 @@ class RegistrationForm(UserCreationForm):
     password2 = forms.CharField(label=_("Please Re-Enter Password"),
                                widget=forms.PasswordInput({
                                    'class': 'form-control mb-2',
-                                   'placeholder': 'Re-Enter Password'}))                               
+                                   'placeholder': 'Re-Enter Password'}))
+
+    def clean_email(self):
+        data = self.cleaned_data['email']
+        return data.lower()                            
 
 
 class BootstrapAuthenticationForm(AuthenticationForm):
@@ -35,14 +39,8 @@ class BootstrapAuthenticationForm(AuthenticationForm):
                                    'class': 'form-control',
                                    'placeholder': 'Password'}))
 
-
-class CustomUserCreationForm(UserCreationForm):
-    class Meta:
-        model = User
-        fields = ('email',)
+    def clean_email(self):
+        data = self.cleaned_data['email']
+        return data.lower()
 
 
-class CustomUserChangeForm(UserChangeForm):
-    class Meta:
-        model = User
-        fields = ('email',)

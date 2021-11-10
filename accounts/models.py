@@ -1,10 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager,PermissionsMixin
-from django.db.models import aggregates 
+from django.core.validators import MaxValueValidator, MinValueValidator
+
+from exercises.models import Exercise 
 
 
-# define what we want to happen when a new user is created
 class MyUserManager(BaseUserManager):
+    """define what we want to happen when a new user is created"""
     def create_user(self, email, password=None):
         if not email:
             raise ValueError("Users must have an email address")
@@ -63,21 +65,32 @@ class Gender(models.Model):
     name = models.CharField(max_length=40)
 
 
-class TrainingFocus(models.Model):
+class TrainingPhase(models.Model):
     name = models.CharField(max_length=40)
     
 
-class Profile(models.Model):
-    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
-    height = models.PositiveSmallIntegerField(null=True)
-    weight = models.PositiveSmallIntegerField(null=True)
-    birth_date = models.DateField(null=True)
-    gender = models.ForeignKey(Gender, null=True, on_delete=models.SET_NULL)
-    training_focus = models.ForeignKey(TrainingFocus, null=True,  on_delete=models.SET_NULL)
+class UserProfile(models.Model):
+    user          = models.OneToOneField(User, on_delete=models.SET_NULL, null=True)
+    height        = models.PositiveSmallIntegerField(null=True)
+    weight        = models.PositiveSmallIntegerField(null=True)
+    birth_date    = models.DateField(null=True)
+    gender        = models.ForeignKey(Gender, null=True, on_delete=models.SET_NULL)
+    training_focus= models.ForeignKey(TrainingPhase, null=True,  on_delete=models.SET_NULL)
+    training_days = models.PositiveIntegerField(default=4, validators=[MinValueValidator(2), MaxValueValidator(7)])
 
 
-class UserGroup(models.Model):
-    description = models.CharField(max_length=100)
-    users       = models.ManyToManyField(User, blank=True)
-    def __str__(self):
-        return self.description
+class UserRM(models.Model):
+    user        = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    exercise    = models.ForeignKey(Exercise)
+    one_rep_max = models.PositiveIntegerField()
+    date        = models.DateField(auto_now=True)
+
+
+class UserMetrics(models.Model):
+    user      = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    exercise  = models.ForeignKey(Exercise, on_delete=models.SET_NULL, null=True)
+    phase     = models.ForeignKey(TrainingPhase, on_delete=models.SET_NULL, null=True)
+    mev       = models.PositiveIntegerField()
+    mrv       = models.PositiveIntegerField()
+    frequency = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(4)])
+    #periodization
