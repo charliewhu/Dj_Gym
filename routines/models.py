@@ -9,6 +9,7 @@ from exercises.models import Exercise, MuscleGroup
 
 
 class Workout(models.Model):
+    """User's Workout. Contains WorkoutExercises"""
     user         = models.ForeignKey(User, related_name='workouts', on_delete=models.CASCADE, null=True)
     date         = models.DateField(auto_now_add=True, null=True)
     date_created = models.DateTimeField(auto_now_add=True, null=True)
@@ -63,19 +64,6 @@ class Workout(models.Model):
     def __str__(self):
         str = self.date_created.strftime("%Y-%m-%d - %H:%M:%S")
         return f'{str}'
-
-
-# class MuscleGroup(models.Model):
-#     name = models.CharField(max_length=20, unique=True)
-#     def __str__(self):
-#         return self.name
-
-
-# class Exercise(models.Model):
-#     muscle_group = models.ForeignKey(MuscleGroup, on_delete=models.CASCADE)
-#     name         = models.CharField(max_length=40, unique=True)
-#     def __str__(self):
-#         return f'{self.name}'
 
 
 class WorkoutExercise(models.Model):

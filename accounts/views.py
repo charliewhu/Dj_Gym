@@ -8,6 +8,7 @@ from django.contrib import messages
 
 
 def register(request):
+    """User registration page"""
     form = RegistrationForm()
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
