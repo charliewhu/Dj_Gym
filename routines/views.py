@@ -12,8 +12,8 @@ from django.db.models import Sum
 from accounts.models import User
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.views.generic.edit import DeleteView, FormView
-from .forms import WRFormSet, WorkoutExerciseSetForm, WorkoutForm, WorkoutExerciseForm, ExerciseForm, WorkoutReadinessForm
-from .models import MuscleGroup, Exercise, ReadinessQuestion, Workout, WorkoutExercise, WorkoutExerciseSet, WorkoutReadiness
+from .forms import WRFormSet, WorkoutExerciseSetForm, WorkoutForm, WorkoutExerciseForm, ExerciseForm, ReadinessForm
+from .models import MuscleGroup, Exercise, ReadinessQuestion, Workout, WorkoutExercise, WorkoutExerciseSet, Readiness
 from .mixins import UserWorkoutExerciseSetMixin, UserWorkoutMixin, UserWorkoutExerciseMixin
 from django.forms.formsets import INITIAL_FORM_COUNT, formset_factory
 
@@ -218,8 +218,8 @@ class WorkoutExerciseSetDeleteView(LoginRequiredMixin, UserWorkoutExerciseSetMix
         return reverse_lazy('routines:wo_ex_set_list', kwargs={'pk':pk})
 
 
-class WorkoutReadinessCreateView(CreateView):
-    model         = WorkoutReadiness
+class ReadinessCreateView(CreateView):
+    model         = Readiness
     fields        = ['readiness_question','rating']
     template_name = 'routines/workout_readiness/_form.html'
     try:
@@ -239,7 +239,7 @@ class WorkoutReadinessCreateView(CreateView):
             cd = form.cleaned_data
             readiness_question = self.initial_data[idx]['readiness_question']
             rating = cd.get('rating')
-            w_readiness = WorkoutReadiness(
+            w_readiness = Readiness(
                 workout=workout,
                 readiness_question=readiness_question,
                 rating=rating

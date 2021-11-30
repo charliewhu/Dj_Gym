@@ -1,14 +1,14 @@
 from django import forms
 from django.forms import widgets
-from .models import Exercise, Workout, WorkoutExercise, WorkoutExerciseSet, WorkoutReadiness, ReadinessQuestion
+from .models import Exercise, Workout, WorkoutExercise, WorkoutExerciseSet, Readiness, ReadinessQuestion
 
 
-class WorkoutReadinessForm(forms.ModelForm):
+class ReadinessForm(forms.ModelForm):
     class Meta:
-        model  = WorkoutReadiness
+        model  = Readiness
         fields = ['readiness_question','rating']
 
-WRFormSet = forms.formset_factory(WorkoutReadinessForm, extra=0)
+WRFormSet = forms.formset_factory(ReadinessForm, extra=0)
 
 
 class WorkoutForm(forms.ModelForm):

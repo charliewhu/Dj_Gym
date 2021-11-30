@@ -7,7 +7,7 @@ from . import views
 app_name = 'routines'
 
 urlpatterns = [
-    path('readiness/create/', views.WorkoutReadinessCreateView.as_view(), name='wo_readiness_create'),
+    path('readiness/create/', views.ReadinessCreateView.as_view(), name='wo_readiness_create'),
 
     path('', views.WorkoutListView.as_view(), name='workout_list'),
     path('create/', views.WorkoutCreateView.as_view(), name='workout_create'),

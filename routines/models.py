@@ -21,15 +21,15 @@ class Workout(models.Model):
 
     def readiness(self):
         """Overall readiness as a percentage"""
-        set = self.workoutreadiness_set.all()
+        set = self.readiness_set.all()
         readiness = set.aggregate(avg=models.Avg('rating'))['avg']
         return round(readiness*20)
 
     def squat_readiness(self):
         """Readiness for Squat as a percentage"""
-        set = self.workoutreadiness_set.all()
+        set = self.readiness_set.all()
         ovr_readiness = set.aggregate(avg=models.Avg('rating'))['avg']
-        ex_sum = self.workoutreadiness_set\
+        ex_sum = self.readiness_set\
                 .filter(readiness_question__name__icontains='Squat')\
                 .aggregate(avg=models.Avg('rating'))['avg']
         combined_readiness = (ex_sum + ovr_readiness) / 2
@@ -37,9 +37,9 @@ class Workout(models.Model):
 
     def bench_readiness(self):
         """Readiness for Bench as a percentage"""
-        set = self.workoutreadiness_set.all()
+        set = self.readiness_set.all()
         ovr_readiness = set.aggregate(avg=models.Avg('rating'))['avg']
-        ex_sum = self.workoutreadiness_set\
+        ex_sum = self.readiness_set\
                 .filter(readiness_question__name__icontains='Bench')\
                 .aggregate(avg=models.Avg('rating'))['avg']
         combined_readiness = (ex_sum + ovr_readiness) / 2
@@ -47,9 +47,9 @@ class Workout(models.Model):
 
     def deadlift_readiness(self):
         """Readiness for Deadlift as a percentage"""
-        set = self.workoutreadiness_set.all()
+        set = self.readiness_set.all()
         ovr_readiness = set.aggregate(avg=models.Avg('rating'))['avg']
-        ex_sum = self.workoutreadiness_set\
+        ex_sum = self.readiness_set\
                 .filter(readiness_question__name__icontains='Deadlift')\
                 .aggregate(avg=models.Avg('rating'))['avg']
         combined_readiness = (ex_sum + ovr_readiness) / 2
@@ -57,9 +57,9 @@ class Workout(models.Model):
 
     def pull_readiness(self):
         """Readiness for Pull as a percentage"""
-        set = self.workoutreadiness_set.all()
+        set = self.readiness_set.all()
         ovr_readiness = set.aggregate(avg=models.Avg('rating'))['avg']
-        ex_sum = self.workoutreadiness_set\
+        ex_sum = self.readiness_set\
                 .filter(readiness_question__name__icontains='Upper Back')\
                 .aggregate(avg=models.Avg('rating'))['avg']
         combined_readiness = (ex_sum + ovr_readiness) / 2
@@ -120,7 +120,7 @@ class ReadinessQuestion(models.Model):
         return f'{self.name}'
 
 
-class WorkoutReadiness(models.Model):
+class Readiness(models.Model):
     class Rating(models.IntegerChoices):
         POOREST = 1
         POORER  = 2
