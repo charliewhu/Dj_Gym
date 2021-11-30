@@ -19,13 +19,14 @@ class Workout(models.Model):
         self.is_active = False
         self.save()
 
-    """Wanted readiness methods to be DRYer but it means repetition in Views"""
     def readiness(self):
+        """Overall readiness as a percentage"""
         set = self.workoutreadiness_set.all()
         readiness = set.aggregate(avg=models.Avg('rating'))['avg']
         return round(readiness*20)
 
     def squat_readiness(self):
+        """Readiness for Squat as a percentage"""
         set = self.workoutreadiness_set.all()
         ovr_readiness = set.aggregate(avg=models.Avg('rating'))['avg']
         ex_sum = self.workoutreadiness_set\
@@ -35,6 +36,7 @@ class Workout(models.Model):
         return round(combined_readiness * 20)
 
     def bench_readiness(self):
+        """Readiness for Bench as a percentage"""
         set = self.workoutreadiness_set.all()
         ovr_readiness = set.aggregate(avg=models.Avg('rating'))['avg']
         ex_sum = self.workoutreadiness_set\
@@ -44,6 +46,7 @@ class Workout(models.Model):
         return round(combined_readiness * 20)
 
     def deadlift_readiness(self):
+        """Readiness for Deadlift as a percentage"""
         set = self.workoutreadiness_set.all()
         ovr_readiness = set.aggregate(avg=models.Avg('rating'))['avg']
         ex_sum = self.workoutreadiness_set\
@@ -53,6 +56,7 @@ class Workout(models.Model):
         return round(combined_readiness * 20)
 
     def pull_readiness(self):
+        """Readiness for Pull as a percentage"""
         set = self.workoutreadiness_set.all()
         ovr_readiness = set.aggregate(avg=models.Avg('rating'))['avg']
         ex_sum = self.workoutreadiness_set\
@@ -74,8 +78,9 @@ class WorkoutExercise(models.Model):
     def __str__(self):
         return f'{self.exercise} + {self.workout.date}'
 
-    def exertion_load(self):
-       pass 
+    def exercise_exertion_load(self):
+        """Must be the sum of set_exertion_load on all child sets"""
+        pass 
 
 
 class WorkoutExerciseSet(models.Model):
@@ -87,7 +92,8 @@ class WorkoutExerciseSet(models.Model):
     def __str__(self):
         return f'{self.workout_exercise} - {self.reps} x {self.weight}kg @{self.rir}RIR'
     
-    def exertion_load(self):
+    def set_exertion_load(self):
+        """Total exertion load for a set"""
         el = 0
         for i in range(self.reps):
             el += math.exp(-0.215 * (self.rir + self.reps - i))

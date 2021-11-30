@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager,PermissionsMixin
 from django.core.validators import MaxValueValidator, MinValueValidator
-
 from exercises.models import Exercise 
 
 
@@ -89,7 +88,7 @@ class UserRM(models.Model):
     Set by the User until they expire or are beaten.
     """
     user        = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    exercise    = models.ForeignKey(Exercise)
+    exercise    = models.ForeignKey(Exercise, on_delete=models.CASCADE)
     one_rep_max = models.PositiveIntegerField()
     date        = models.DateField(auto_now=True)
 
@@ -99,10 +98,11 @@ class UserMetrics(models.Model):
     Calculated values based on the User's UserProfile baseline.
     Will be updated based on Workout performance in the next phase
     """
-    user      = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    exercise  = models.ForeignKey(Exercise, on_delete=models.SET_NULL, null=True)
-    phase     = models.ForeignKey(TrainingPhase, on_delete=models.SET_NULL, null=True)
-    mev       = models.PositiveIntegerField()
-    mrv       = models.PositiveIntegerField()
-    frequency = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(4)])
+    pass
+    # user      = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    # exercise  = models.ForeignKey(Exercise, on_delete=models.SET_NULL, null=True)
+    # phase     = models.ForeignKey(TrainingPhase, on_delete=models.SET_NULL, null=True)
+    # mev       = models.PositiveIntegerField()
+    # mrv       = models.PositiveIntegerField()
+    # frequency = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(4)])
     #periodization

@@ -39,7 +39,6 @@ class WorkoutListView(LoginRequiredMixin, ListView):
         """Need to check if user has an active workout"""
         context = super().get_context_data(**kwargs)
         user_wo = Workout.objects.filter(user=self.request.user)
-        print(len(user_wo))
         if len(user_wo) > 0:
             context['active_wo'] = user_wo.aggregate(ct=Count('is_active'))['ct']
         else:

@@ -1,5 +1,5 @@
 from django.db import models
-from accounts.models import User
+
 
 
 class MuscleGroup(models.Model):
@@ -26,7 +26,9 @@ class Exercise(models.Model):
     muscle_group = models.ForeignKey(MuscleGroup, on_delete=models.CASCADE)
     mechanic = models.CharField(max_length=60, choices=mechanic_choices)
     force = models.CharField(max_length=60, choices=force_choices)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    user = models.ForeignKey("accounts.User", on_delete=models.CASCADE, null=True, blank=True)
+    # User should see exercises where user is NULL (mixed exercises)
+    # and where user==currentUser
 
     class Meta:
         constraints = [
