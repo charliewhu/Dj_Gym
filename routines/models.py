@@ -107,7 +107,7 @@ class Workout(models.Model):
 
 
 class WorkoutExercise(models.Model):
-    workout      = models.ForeignKey(Workout, on_delete=models.CASCADE)
+    workout      = models.ForeignKey(Workout, related_name="exercises", on_delete=models.CASCADE)
     muscle_group = models.ForeignKey(MuscleGroup, on_delete=models.CASCADE, null=True)
     exercise     = models.ForeignKey(Exercise, on_delete=models.CASCADE)
 
@@ -120,7 +120,7 @@ class WorkoutExercise(models.Model):
 
 
 class WorkoutExerciseSet(models.Model):
-    workout_exercise = models.ForeignKey(WorkoutExercise, on_delete=models.CASCADE)
+    workout_exercise = models.ForeignKey(WorkoutExercise, related_name="sets", on_delete=models.CASCADE)
     reps             = models.PositiveIntegerField(blank=True, null=True)
     weight           = models.DecimalField(max_digits=5, decimal_places=1, blank=True, null=True)
     rir              = models.PositiveIntegerField(blank=True, null=True) 

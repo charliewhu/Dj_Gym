@@ -38,6 +38,13 @@ class ReadinessCreateView(CreateView):
         return super().post(request, *args, **kwargs)
     
     def form_valid(self, formset):
+        """
+        When form is submitted:
+        1. create a Readiness object for today
+        2. create a Workout for that Readiness object
+        3. create ReadinessAnswers for that Readiness object
+        (using the initial_data and answers from the form the User submitted)
+        """
         readiness = Readiness.objects.create(user=self.request.user)
         workout = Workout.objects.create(user=self.request.user, readiness=readiness)
         for idx, form in enumerate(formset):
@@ -127,7 +134,7 @@ class WorkoutExerciseListView(LoginRequiredMixin, UserWorkoutMixin, ListView):
         context = super().get_context_data(**kwargs)
         w = Workout.objects.get(pk=self.kwargs['pk'])
         context['object'] = w
-        context['object_list'] = WorkoutExercise.objects.filter(workout_id=w.id)
+        context['object_list'] = w.exercises.all()
         context['workout_readiness'] = w.readiness.percentage()
         return context
 
@@ -200,7 +207,7 @@ class WorkoutExerciseSetListView(LoginRequiredMixin, UserWorkoutExerciseMixin, L
         context = super().get_context_data(**kwargs)
         we = WorkoutExercise.objects.get(pk=self.kwargs['pk'])
         context['object'] = we
-        context['object_list'] = WorkoutExerciseSet.objects.filter(workout_exercise_id=we.id)
+        context['object_list'] = we.sets.all()
         return context
 
 
