@@ -116,19 +116,28 @@ class WorkoutDeleteView(LoginRequiredMixin, UserWorkoutMixin, DeleteView):
     success_url = reverse_lazy('routines:workout_list')
 
 
+def end_workout_view(request, pk):
+    workout = Workout.objects.get(id=pk)
+    user = request.user
+    if request.POST and workout.user==user:
+        workout.end_workout()
+        return HttpResponseRedirect(reverse_lazy('routines:workout_list'))
+    return HttpResponseRedirect(reverse_lazy('routines:workout_list'))
+
+
 class WorkoutExerciseListView(LoginRequiredMixin, UserWorkoutMixin, ListView):
     model         = WorkoutExercise
     template_name = 'routines/workout_exercise/_list.html'
     extra_context = {'title':'Workout Items'}
 
-    def post(self, request, *args, **kwargs):
-        w = Workout.objects.get(pk=self.kwargs['pk'])
-        w.end_workout()
-        return HttpResponseRedirect(
-            reverse_lazy(
-                'routines:workout_exercise_list', 
-                kwargs={'pk':w.id})
-            )
+    # def post(self, request, *args, **kwargs):
+    #     w = Workout.objects.get(pk=self.kwargs['pk'])
+    #     w.end_workout()
+    #     return HttpResponseRedirect(
+    #         reverse_lazy(
+    #             'routines:workout_exercise_list', 
+    #             kwargs={'pk':w.id})
+    #         )
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

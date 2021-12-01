@@ -59,52 +59,6 @@ class Workout(models.Model):
         self.is_active = False
         self.save()
 
-    # def readiness(self):
-    #     """Overall readiness as a percentage"""
-    #     set = self.readiness_set.all()
-    #     readiness = set.aggregate(avg=models.Avg('rating'))['avg']
-    #     return round(readiness*20)
-
-    # def squat_readiness(self):
-    #     """Readiness for Squat as a percentage"""
-    #     set = self.readiness_set.all()
-    #     ovr_readiness = set.aggregate(avg=models.Avg('rating'))['avg']
-    #     ex_sum = self.readiness_set\
-    #             .filter(readiness_question__name__icontains='Squat')\
-    #             .aggregate(avg=models.Avg('rating'))['avg']
-    #     combined_readiness = (ex_sum + ovr_readiness) / 2
-    #     return round(combined_readiness * 20)
-
-    # def bench_readiness(self):
-    #     """Readiness for Bench as a percentage"""
-    #     set = self.readiness_set.all()
-    #     ovr_readiness = set.aggregate(avg=models.Avg('rating'))['avg']
-    #     ex_sum = self.readiness_set\
-    #             .filter(readiness_question__name__icontains='Bench')\
-    #             .aggregate(avg=models.Avg('rating'))['avg']
-    #     combined_readiness = (ex_sum + ovr_readiness) / 2
-    #     return round(combined_readiness * 20)
-
-    # def deadlift_readiness(self):
-    #     """Readiness for Deadlift as a percentage"""
-    #     set = self.readiness_set.all()
-    #     ovr_readiness = set.aggregate(avg=models.Avg('rating'))['avg']
-    #     ex_sum = self.readiness_set\
-    #             .filter(readiness_question__name__icontains='Deadlift')\
-    #             .aggregate(avg=models.Avg('rating'))['avg']
-    #     combined_readiness = (ex_sum + ovr_readiness) / 2
-    #     return round(combined_readiness * 20)
-
-    # def pull_readiness(self):
-    #     """Readiness for Pull as a percentage"""
-    #     set = self.readiness_set.all()
-    #     ovr_readiness = set.aggregate(avg=models.Avg('rating'))['avg']
-    #     ex_sum = self.readiness_set\
-    #             .filter(readiness_question__name__icontains='Upper Back')\
-    #             .aggregate(avg=models.Avg('rating'))['avg']
-    #     combined_readiness = (ex_sum + ovr_readiness) / 2
-    #     return round(combined_readiness * 20)
-
 
 class WorkoutExercise(models.Model):
     workout      = models.ForeignKey(Workout, related_name="exercises", on_delete=models.CASCADE)

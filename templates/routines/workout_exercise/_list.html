@@ -12,7 +12,7 @@
 
 {% if object.is_active %}
 <div class="container text-center my-4">
-  <form action="" method="POST">
+  <form action="{% url 'routines:end_workout' object.id %}" method="POST">
     {% csrf_token %}
     <button type="submit" class="btn btn-outline-success">End Workout</button>
   </form>
