@@ -12,8 +12,8 @@ from django.db.models import Sum
 from accounts.models import User
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.views.generic.edit import DeleteView, FormView
-from .forms import WRFormSet, WorkoutExerciseSetForm, WorkoutForm, WorkoutExerciseForm, ExerciseForm, ReadinessForm
-from .models import MuscleGroup, Exercise, ReadinessQuestion, Workout, WorkoutExercise, WorkoutExerciseSet, Readiness
+from .forms import ReadinessFormSet, WorkoutExerciseSetForm, WorkoutForm, WorkoutExerciseForm, ExerciseForm, ReadinessAnswerForm
+from .models import MuscleGroup, Exercise, ReadinessAnswer, ReadinessQuestion, Workout, WorkoutExercise, WorkoutExerciseSet, Readiness
 from .mixins import UserWorkoutExerciseSetMixin, UserWorkoutMixin, UserWorkoutExerciseMixin
 from django.forms.formsets import INITIAL_FORM_COUNT, formset_factory
 
@@ -21,6 +21,46 @@ from django.forms.formsets import INITIAL_FORM_COUNT, formset_factory
 def home(request):
     context = {}
     return render(request, 'home.html', context)
+
+class ReadinessCreateView(CreateView):
+    model         = ReadinessAnswer
+    fields        = ['readiness_question','rating']
+    template_name = 'routines/workout_readiness/_form.html'
+    try:
+        initial_data = [{'readiness_question':q} for q in ReadinessQuestion.objects.all()]
+    except: 
+        initial_data = []
+
+    def post(self, request, *args, **kwargs):
+        formset = ReadinessFormSet(request.POST)
+        if formset.is_valid():
+            return self.form_valid(formset)
+        return super().post(request, *args, **kwargs)
+    
+    def form_valid(self, formset):
+        readiness = Readiness.objects.create(user=self.request.user)
+        workout = Workout.objects.create(user=self.request.user, readiness=readiness)
+        for idx, form in enumerate(formset):
+            cd = form.cleaned_data
+            readiness_question = self.initial_data[idx]['readiness_question']
+            rating = cd.get('rating')
+            readiness_answer = ReadinessAnswer(
+                readiness=readiness,
+                readiness_question=readiness_question,
+                rating=rating
+            )
+            readiness_answer.save()
+        return HttpResponseRedirect(
+            reverse_lazy(
+                'routines:workout_exercise_list', 
+                kwargs={'pk':workout.id})
+            )
+
+    def get_context_data(self, **kwargs):
+        """Render initial form"""
+        context = super().get_context_data(**kwargs)
+        context['formset'] = ReadinessFormSet(initial=self.initial_data)
+        return context
 
 
 class WorkoutListView(LoginRequiredMixin, ListView):
@@ -38,11 +78,7 @@ class WorkoutListView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         """Need to check if user has an active workout"""
         context = super().get_context_data(**kwargs)
-        user_wo = Workout.objects.filter(user=self.request.user)
-        if len(user_wo) > 0:
-            context['active_wo'] = user_wo.aggregate(ct=Count('is_active'))['ct']
-        else:
-            context['active_wo'] = 0
+        context['active_wo'] = self.request.user.has_active_workout()
         return context
 
 
@@ -92,6 +128,7 @@ class WorkoutExerciseListView(LoginRequiredMixin, UserWorkoutMixin, ListView):
         w = Workout.objects.get(pk=self.kwargs['pk'])
         context['object'] = w
         context['object_list'] = WorkoutExercise.objects.filter(workout_id=w.id)
+        context['workout_readiness'] = w.readiness.percentage()
         return context
 
 
@@ -118,8 +155,7 @@ class WorkoutExerciseCreateView(LoginRequiredMixin, UserWorkoutMixin, CreateView
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        w = Workout.objects.get(pk=self.kwargs['pk'])
-        context['object'] = w
+        context['object'] = Workout.objects.get(pk=self.kwargs['pk'])
         return context
 
     def form_valid(self, form):
@@ -216,49 +252,6 @@ class WorkoutExerciseSetDeleteView(LoginRequiredMixin, UserWorkoutExerciseSetMix
         wes = WorkoutExerciseSet.objects.get(pk=self.kwargs['pk'])
         pk = wes.workout_exercise_id
         return reverse_lazy('routines:wo_ex_set_list', kwargs={'pk':pk})
-
-
-class ReadinessCreateView(CreateView):
-    model         = Readiness
-    fields        = ['readiness_question','rating']
-    template_name = 'routines/workout_readiness/_form.html'
-    try:
-        initial_data = [{'readiness_question':q} for q in ReadinessQuestion.objects.all()]
-    except: 
-        initial_data = []
-
-    def post(self, request, *args, **kwargs):
-        formset = WRFormSet(request.POST)
-        if formset.is_valid():            
-            return self.form_valid(formset)
-        return super().post(request, *args, **kwargs)
-    
-    def form_valid(self, formset):
-        workout = Workout.objects.create(user=self.request.user)
-        for idx, form in enumerate(formset):
-            cd = form.cleaned_data
-            readiness_question = self.initial_data[idx]['readiness_question']
-            rating = cd.get('rating')
-            w_readiness = Readiness(
-                workout=workout,
-                readiness_question=readiness_question,
-                rating=rating
-            )
-            w_readiness.save()
-        return HttpResponseRedirect(
-            reverse_lazy(
-                'routines:workout_exercise_list', 
-                kwargs={'pk':workout.id})
-            )
-
-    def get_context_data(self, **kwargs):
-        """Render initial form"""
-        context = super().get_context_data(**kwargs)
-        context['formset'] = WRFormSet(
-            initial =self.initial_data
-        )
-        return context
-
 
 
 def test_view(request):

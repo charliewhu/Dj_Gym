@@ -8,66 +8,102 @@ from accounts.models import User
 from exercises.models import Exercise, MuscleGroup
 
 
+class ReadinessQuestion(models.Model):
+    name = models.CharField(max_length=40, unique=True)
+    def __str__(self):
+        return f'{self.name}'
+
+
+class Readiness(models.Model):
+    user = models.ForeignKey(User, related_name='readiness', on_delete=models.CASCADE, null=True)
+    date_created = models.DateField(auto_now_add=True, null=True)
+    def __str__(self):
+        return f'{self.date_created}'
+
+    def percentage(self):
+        set = self.readinessanswer_set.all()
+        readiness = set.aggregate(avg=models.Avg('rating'))['avg']
+        readiness_sum = round(readiness*20) #percentage
+        return readiness_sum
+
+
+class ReadinessAnswer(models.Model):
+    class Rating(models.IntegerChoices):
+        POOREST = 1
+        POORER  = 2
+        MEDIUM  = 3
+        BETTER  = 4
+        BEST    = 5
+
+    readiness          = models.ForeignKey(Readiness, on_delete=models.CASCADE, null=True, blank=True)
+    readiness_question = models.ForeignKey(ReadinessQuestion, on_delete=models.CASCADE, null=True, blank=True)
+    rating             = models.IntegerField(choices=Rating.choices)
+
+    def __str__(self):
+        return f'{self.readiness} - {self.readiness_question}'
+
+
 class Workout(models.Model):
     """User's Workout. Contains WorkoutExercises"""
     user         = models.ForeignKey(User, related_name='workouts', on_delete=models.CASCADE, null=True)
+    readiness    = models.OneToOneField(Readiness, on_delete=models.CASCADE, null=True)
     date         = models.DateField(auto_now_add=True, null=True)
     date_created = models.DateTimeField(auto_now_add=True, null=True)
     is_active    = models.BooleanField(default=1)
+
+    def __str__(self):
+        str = self.date_created.strftime("%Y-%m-%d - %H:%M:%S")
+        return f'{str}'
     
     def end_workout(self):
         self.is_active = False
         self.save()
 
-    def readiness(self):
-        """Overall readiness as a percentage"""
-        set = self.readiness_set.all()
-        readiness = set.aggregate(avg=models.Avg('rating'))['avg']
-        return round(readiness*20)
+    # def readiness(self):
+    #     """Overall readiness as a percentage"""
+    #     set = self.readiness_set.all()
+    #     readiness = set.aggregate(avg=models.Avg('rating'))['avg']
+    #     return round(readiness*20)
 
-    def squat_readiness(self):
-        """Readiness for Squat as a percentage"""
-        set = self.readiness_set.all()
-        ovr_readiness = set.aggregate(avg=models.Avg('rating'))['avg']
-        ex_sum = self.readiness_set\
-                .filter(readiness_question__name__icontains='Squat')\
-                .aggregate(avg=models.Avg('rating'))['avg']
-        combined_readiness = (ex_sum + ovr_readiness) / 2
-        return round(combined_readiness * 20)
+    # def squat_readiness(self):
+    #     """Readiness for Squat as a percentage"""
+    #     set = self.readiness_set.all()
+    #     ovr_readiness = set.aggregate(avg=models.Avg('rating'))['avg']
+    #     ex_sum = self.readiness_set\
+    #             .filter(readiness_question__name__icontains='Squat')\
+    #             .aggregate(avg=models.Avg('rating'))['avg']
+    #     combined_readiness = (ex_sum + ovr_readiness) / 2
+    #     return round(combined_readiness * 20)
 
-    def bench_readiness(self):
-        """Readiness for Bench as a percentage"""
-        set = self.readiness_set.all()
-        ovr_readiness = set.aggregate(avg=models.Avg('rating'))['avg']
-        ex_sum = self.readiness_set\
-                .filter(readiness_question__name__icontains='Bench')\
-                .aggregate(avg=models.Avg('rating'))['avg']
-        combined_readiness = (ex_sum + ovr_readiness) / 2
-        return round(combined_readiness * 20)
+    # def bench_readiness(self):
+    #     """Readiness for Bench as a percentage"""
+    #     set = self.readiness_set.all()
+    #     ovr_readiness = set.aggregate(avg=models.Avg('rating'))['avg']
+    #     ex_sum = self.readiness_set\
+    #             .filter(readiness_question__name__icontains='Bench')\
+    #             .aggregate(avg=models.Avg('rating'))['avg']
+    #     combined_readiness = (ex_sum + ovr_readiness) / 2
+    #     return round(combined_readiness * 20)
 
-    def deadlift_readiness(self):
-        """Readiness for Deadlift as a percentage"""
-        set = self.readiness_set.all()
-        ovr_readiness = set.aggregate(avg=models.Avg('rating'))['avg']
-        ex_sum = self.readiness_set\
-                .filter(readiness_question__name__icontains='Deadlift')\
-                .aggregate(avg=models.Avg('rating'))['avg']
-        combined_readiness = (ex_sum + ovr_readiness) / 2
-        return round(combined_readiness * 20)
+    # def deadlift_readiness(self):
+    #     """Readiness for Deadlift as a percentage"""
+    #     set = self.readiness_set.all()
+    #     ovr_readiness = set.aggregate(avg=models.Avg('rating'))['avg']
+    #     ex_sum = self.readiness_set\
+    #             .filter(readiness_question__name__icontains='Deadlift')\
+    #             .aggregate(avg=models.Avg('rating'))['avg']
+    #     combined_readiness = (ex_sum + ovr_readiness) / 2
+    #     return round(combined_readiness * 20)
 
-    def pull_readiness(self):
-        """Readiness for Pull as a percentage"""
-        set = self.readiness_set.all()
-        ovr_readiness = set.aggregate(avg=models.Avg('rating'))['avg']
-        ex_sum = self.readiness_set\
-                .filter(readiness_question__name__icontains='Upper Back')\
-                .aggregate(avg=models.Avg('rating'))['avg']
-        combined_readiness = (ex_sum + ovr_readiness) / 2
-        return round(combined_readiness * 20)
-
-    def __str__(self):
-        str = self.date_created.strftime("%Y-%m-%d - %H:%M:%S")
-        return f'{str}'
+    # def pull_readiness(self):
+    #     """Readiness for Pull as a percentage"""
+    #     set = self.readiness_set.all()
+    #     ovr_readiness = set.aggregate(avg=models.Avg('rating'))['avg']
+    #     ex_sum = self.readiness_set\
+    #             .filter(readiness_question__name__icontains='Upper Back')\
+    #             .aggregate(avg=models.Avg('rating'))['avg']
+    #     combined_readiness = (ex_sum + ovr_readiness) / 2
+    #     return round(combined_readiness * 20)
 
 
 class WorkoutExercise(models.Model):
@@ -112,26 +148,3 @@ class WorkoutItem(models.Model):
 
     def __str__(self):
         return f'{self.exercise} - {self.sets} x {self.reps} x {self.weight}kg @{self.rir}RIR'
-
-
-class ReadinessQuestion(models.Model):
-    name = models.CharField(max_length=40, unique=True)
-    def __str__(self):
-        return f'{self.name}'
-
-
-class Readiness(models.Model):
-    class Rating(models.IntegerChoices):
-        POOREST = 1
-        POORER  = 2
-        MEDIUM  = 3
-        BETTER  = 4
-        BEST    = 5
-
-    workout            = models.ForeignKey(Workout, on_delete=models.CASCADE, null=True, blank=True)
-    readiness_question = models.ForeignKey(ReadinessQuestion, on_delete=models.CASCADE, null=True, blank=True)
-    rating             = models.IntegerField(choices=Rating.choices)
-
-    def __str__(self):
-        return f'{self.workout}'
-
