@@ -6,6 +6,12 @@
   <h1>{{ title }}</h1>
 </div>
 
+<div class="container text-center my-5">
+  <a class="btn btn-success" href="{% url 'exercises:exercise_create'%}">
+    Add Exercise
+  </a>
+</div>
+
 <ul>
 {% regroup exercises by tier as tier_list %}
 {% for tier in tier_list %}
