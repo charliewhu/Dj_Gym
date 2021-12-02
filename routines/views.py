@@ -130,15 +130,6 @@ class WorkoutExerciseListView(LoginRequiredMixin, UserWorkoutMixin, ListView):
     template_name = 'routines/workout_exercise/_list.html'
     extra_context = {'title':'Workout Items'}
 
-    # def post(self, request, *args, **kwargs):
-    #     w = Workout.objects.get(pk=self.kwargs['pk'])
-    #     w.end_workout()
-    #     return HttpResponseRedirect(
-    #         reverse_lazy(
-    #             'routines:workout_exercise_list', 
-    #             kwargs={'pk':w.id})
-    #         )
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         w = Workout.objects.get(pk=self.kwargs['pk'])

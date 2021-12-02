@@ -54,6 +54,12 @@ class Workout(models.Model):
     def __str__(self):
         str = self.date_created.strftime("%Y-%m-%d - %H:%M:%S")
         return f'{str}'
+
+    def exertion_load(self):
+        el = 0
+        for exercise in self.exercises.all():
+            el += exercise.exertion_load()
+        return el
     
     def end_workout(self):
         self.is_active = False
@@ -68,9 +74,11 @@ class WorkoutExercise(models.Model):
     def __str__(self):
         return f'{self.exercise} + {self.workout.date}'
 
-    def exercise_exertion_load(self):
-        """Must be the sum of set_exertion_load on all child sets"""
-        pass 
+    def exertion_load(self):
+        el = 0
+        for set in self.sets.all():
+            el += set.exertion_load()
+        return el
 
 
 class WorkoutExerciseSet(models.Model):
@@ -82,7 +90,7 @@ class WorkoutExerciseSet(models.Model):
     def __str__(self):
         return f'{self.workout_exercise} - {self.reps} x {self.weight}kg @{self.rir}RIR'
     
-    def set_exertion_load(self):
+    def exertion_load(self):
         """Total exertion load for a set"""
         el = 0
         for i in range(self.reps):
