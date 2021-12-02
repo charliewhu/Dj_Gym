@@ -51,7 +51,6 @@ class Workout(models.Model):
     date_created = models.DateTimeField(auto_now_add=True, null=True)
     is_active    = models.BooleanField(default=1)
 
-
     def __str__(self):
         str = self.date_created.strftime("%Y-%m-%d - %H:%M:%S")
         return f'{str}'
