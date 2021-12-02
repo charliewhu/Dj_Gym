@@ -11,7 +11,7 @@
 {% for tier in tier_list %}
   <li>{{ tier.grouper }}
     <ul>
-      {% for exercise in tier  %}
+      {% for exercise in tier.list  %}
         <li>{{ exercise.name }}</li>
       {% endfor %}
     </ul>
