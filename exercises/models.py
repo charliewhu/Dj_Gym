@@ -9,21 +9,16 @@ class MuscleGroup(models.Model):
 
 
 class Exercise(models.Model):
-    class TierChoices(models.IntegerChoices):
-        T1 = 1
-        T2 = 2
-        T3 = 3
-        Other = 4
     purpose_choices = (
         ('Squat', 'Squat'),('Bench', 'Bench'),('Deadlift', 'Deadlift'),)
-    #tier_choices = (('T1', 'T1'), ('T2', 'T2'), ('T3', 'T3'), ('Other', 'Other'),)
+    tier_choices = (('T1', 'T1'), ('T2', 'T2'), ('T3', 'T3'), ('Other', 'Other'),)
     mechanic_choices = (('Compound', 'Compound'), ('Isolation', 'Isolation'))
     force_choices = (('Push', 'Push'), ('Pull', 'Pull'))
 
     name = models.CharField(max_length=60, unique=True)
     purpose = models.CharField(max_length=60, choices=purpose_choices,
         help_text="Which main exercise does this improve?")
-    tier = models.CharField(max_length=60, choices=TierChoices.choices,
+    tier = models.CharField(max_length=60, choices=tier_choices,
         help_text="T1 exercises are the competition exercises.\
             T2 exercises are close variations of the main lifts. \
             T3 exercises develop the musculature eg. quads for squats. \
