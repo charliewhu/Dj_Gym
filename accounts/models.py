@@ -53,10 +53,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     def has_active_workout(self):
         """find out if the user currently has an active Workout instance"""
         set = self.workouts.all()
-        if set.aggregate(sum=models.Sum('is_active'))['sum'] is None:
-            active_wo = []
-        else: 
-            active_wo = set.aggregate(sum=models.Sum('is_active'))['sum'] 
+        active_wo = set.filter(is_active=True).count()
         return active_wo
 
     def readiness_history(self):
