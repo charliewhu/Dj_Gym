@@ -10,12 +10,12 @@ urlpatterns = [
     path('readiness/create/', views.ReadinessCreateView.as_view(), name='wo_readiness_create'),
 
     path('', views.WorkoutListView.as_view(), name='workout_list'),
-    path('create/', views.WorkoutCreateView.as_view(), name='workout_create'),
+    path('add/', views.WorkoutCreateView.as_view(), name='workout_create'),
     path('<int:pk>/update/', views.WorkoutUpdateView.as_view(), name='workout_update'),
     path('<int:pk>/delete/', views.WorkoutDeleteView.as_view(), name='workout_delete'),
 
     path('<int:pk>/', views.WorkoutExerciseListView.as_view(), name='workout_exercise_list'),
-    path('end-workout/<int:pk>/', views.end_workout_view, name='end_workout'),
+    path('<int:pk>/end-workout/', views.end_workout_view, name='end_workout'),
     path('exercise/<int:pk>/detail/', views.WorkoutExerciseDetailView.as_view(), name='workout_exercise_detail'),
     path('<int:pk>/add/', views.WorkoutExerciseCreateView.as_view(), name='workout_exercise_create'),
     path('exercise/<int:pk>/update/', views.WorkoutExerciseUpdateView.as_view(), name='workout_exercise_update'),

@@ -117,6 +117,9 @@ class WorkoutDeleteView(LoginRequiredMixin, UserWorkoutMixin, DeleteView):
 
 
 def end_workout_view(request, pk):
+    """
+    POST to this view to end the workout with id=pk
+    """
     workout = Workout.objects.get(id=pk)
     user = request.user
     if request.POST and workout.user==user:
