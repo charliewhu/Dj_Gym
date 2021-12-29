@@ -67,7 +67,10 @@ class Gender(models.Model):
 
 
 class TrainingPhase(models.Model):
-    """Training phases to choose from in UserProfile"""
+    """
+    Training phases to choose from in UserProfile
+    eg. Hypertrophy, Strength, PPL
+    """
     name = models.CharField(max_length=40)
     
 

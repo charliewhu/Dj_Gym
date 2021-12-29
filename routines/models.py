@@ -4,7 +4,7 @@ import decimal
 
 from django.db import models
 from django.db.models.fields import DateField
-from accounts.models import User
+from accounts.models import User, UserRM
 from exercises.models import Exercise, MuscleGroup
 
 
@@ -50,6 +50,7 @@ class Workout(models.Model):
     date         = models.DateField(auto_now_add=True, null=True)
     date_created = models.DateTimeField(auto_now_add=True, null=True)
     is_active    = models.BooleanField(default=1)
+    is_set_adjust= models.BooleanField(default=0)
 
     def __str__(self):
         str = self.date_created.strftime("%Y-%m-%d - %H:%M:%S")
@@ -89,7 +90,22 @@ class WorkoutExerciseSet(models.Model):
 
     def __str__(self):
         return f'{self.workout_exercise} - {self.reps} x {self.weight}kg @{self.rir}RIR'
-    
+
+    def e_one_rep_max(self):
+        #calculate the estimated 1RM for that exercise for that set
+        reps_divider = decimal.Decimal(self.reps/30)
+        rm = self.weight * (1 + reps_divider)
+        rrm = round(rm)
+        return rrm
+        
+    def save(self, *args, **kwargs):
+        user = self.workout_exercise.workout.user
+        exercise = self.workout_exercise.exercise
+        rm = self.e_one_rep_max()
+        user_rm = UserRM(user=user, exercise=exercise, one_rep_max=rm)
+        user_rm.save()
+        return super().save(*args, **kwargs)
+
     def exertion_load(self):
         """Total exertion load for a set"""
         el = 0
@@ -99,14 +115,16 @@ class WorkoutExerciseSet(models.Model):
         return round(el, 1)
 
 
-class WorkoutItem(models.Model):
-    muscle_group = models.ForeignKey(MuscleGroup, on_delete=models.CASCADE, null=True)
-    workout      = models.ForeignKey(Workout, on_delete=models.CASCADE)
-    exercise     = models.ForeignKey(Exercise, on_delete=models.CASCADE)
-    sets         = models.PositiveIntegerField(blank=True, null=True)
-    reps         = models.PositiveIntegerField(blank=True, null=True)
-    weight       = models.DecimalField(max_digits=5, decimal_places=1, blank=True, null=True)
-    rir          = models.PositiveIntegerField(blank=True, null=True)
 
-    def __str__(self):
-        return f'{self.exercise} - {self.sets} x {self.reps} x {self.weight}kg @{self.rir}RIR'
+
+# class WorkoutItem(models.Model):
+#     muscle_group = models.ForeignKey(MuscleGroup, on_delete=models.CASCADE, null=True)
+#     workout      = models.ForeignKey(Workout, on_delete=models.CASCADE)
+#     exercise     = models.ForeignKey(Exercise, on_delete=models.CASCADE)
+#     sets         = models.PositiveIntegerField(blank=True, null=True)
+#     reps         = models.PositiveIntegerField(blank=True, null=True)
+#     weight       = models.DecimalField(max_digits=5, decimal_places=1, blank=True, null=True)
+#     rir          = models.PositiveIntegerField(blank=True, null=True)
+
+#     def __str__(self):
+#         return f'{self.exercise} - {self.sets} x {self.reps} x {self.weight}kg @{self.rir}RIR'
