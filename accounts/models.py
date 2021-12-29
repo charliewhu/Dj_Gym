@@ -95,6 +95,9 @@ class UserRM(models.Model):
     one_rep_max = models.PositiveIntegerField()
     date        = models.DateField(auto_now=True)
 
+    def __str__(self):
+        return f'{self.user} - {self.exercise} - {self.date}'
+
 
 class UserMetrics(models.Model):
     """
