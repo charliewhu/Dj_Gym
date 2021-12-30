@@ -9,7 +9,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import user_passes_test
 from django.db.models import Sum
 
-from accounts.models import User
+from accounts.models import User, UserRM
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from django.views.generic.edit import DeleteView, FormView
 from .forms import ReadinessFormSet, WorkoutExerciseSetForm, WorkoutForm, WorkoutExerciseForm, ExerciseForm, ReadinessAnswerForm
@@ -204,13 +204,17 @@ class WorkoutExerciseDeleteView(LoginRequiredMixin, UserWorkoutExerciseMixin, De
 class WorkoutExerciseSetListView(LoginRequiredMixin, UserWorkoutExerciseMixin, ListView):
     model         = WorkoutExerciseSet
     template_name = 'routines/workout_exercise_set/_list.html'
-    extra_context = {'title':'Workout Exercise Sets'}
+    extra_context = {
+        'title':'Workout Exercise Sets'
+        }
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         we = WorkoutExercise.objects.get(pk=self.kwargs['pk'])
         context['object'] = we
         context['object_list'] = we.sets.all()
+        # one_rm = UserRM.one_rm_manager.latest_one_rm(user=self.request.user, exercise=we.exercise)
+        # context['one_rm'] = one_rm.get('one_rep_max__max')
         return context
 
 

@@ -1,6 +1,9 @@
+import datetime
+
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager,PermissionsMixin
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.db.models.aggregates import Max
 from exercises.models import Exercise 
 
 
@@ -85,6 +88,13 @@ class UserProfile(models.Model):
     training_days = models.PositiveIntegerField(default=4, validators=[MinValueValidator(2), MaxValueValidator(7)])
 
 
+class UserRMManager(models.Manager):
+    """We want the user's highest rep max in the last 90 days"""
+    def latest_one_rm(self, user, exercise):
+        timeout = datetime.date.today() - datetime.timedelta(days=90)
+        return super().get_queryset().filter(user=user, exercise=exercise, date__gte=timeout).aggregate(Max('one_rep_max'))
+
+
 class UserRM(models.Model):
     """
     All of the User's One-Rep-Maxes for specific Exercises.
@@ -97,6 +107,9 @@ class UserRM(models.Model):
 
     def __str__(self):
         return f'{self.user} - {self.exercise} - {self.date}'
+
+    objects = models.Manager()
+    one_rm_manager = UserRMManager()
 
 
 class UserMetrics(models.Model):
