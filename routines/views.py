@@ -46,7 +46,7 @@ class ReadinessCreateView(CreateView):
         (using the initial_data and answers from the form the User submitted)
         """
         readiness = Readiness.objects.create(user=self.request.user)
-        workout = Workout.objects.create(user=self.request.user, readiness=readiness)
+        
         for idx, form in enumerate(formset):
             cd = form.cleaned_data
             readiness_question = self.initial_data[idx]['readiness_question']
@@ -57,6 +57,7 @@ class ReadinessCreateView(CreateView):
                 rating=rating
             )
             readiness_answer.save()
+        workout = readiness.workout
         return HttpResponseRedirect(
             reverse_lazy(
                 'routines:workout_exercise_list', 

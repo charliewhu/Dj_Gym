@@ -17,8 +17,17 @@ class ReadinessQuestion(models.Model):
 class Readiness(models.Model):
     user = models.ForeignKey(User, related_name='readiness', on_delete=models.CASCADE, null=True)
     date_created = models.DateField(auto_now_add=True, null=True)
+
     def __str__(self):
         return f'{self.date_created}'
+
+    # Need to override in order to create related Workout on save()
+    def save(self, *args, **kwargs):
+        created = not self.pk
+        super().save(*args,**kwargs)
+        if created:
+            # only runs on Readiness creation
+            Workout.objects.create(user=self.user, readiness=self)
 
     def percentage(self):
         set = self.readinessanswer_set.all()
