@@ -21,7 +21,6 @@ class Readiness(models.Model):
     def __str__(self):
         return f'{self.date_created}'
 
-    # Need to override in order to create related Workout on save()
     def save(self, *args, **kwargs):
         created = not self.pk
         super().save(*args,**kwargs)
@@ -59,8 +58,7 @@ class Workout(models.Model):
     date         = models.DateField(auto_now_add=True, null=True)
     date_created = models.DateTimeField(auto_now_add=True, null=True)
     is_active    = models.BooleanField(default=1)
-    is_set_adjust= models.BooleanField(default=0)
-
+    
     def __str__(self):
         str = self.date_created.strftime("%Y-%m-%d - %H:%M:%S")
         return f'{str}'
@@ -80,6 +78,7 @@ class WorkoutExercise(models.Model):
     workout      = models.ForeignKey(Workout, related_name="exercises", on_delete=models.CASCADE)
     muscle_group = models.ForeignKey(MuscleGroup, on_delete=models.CASCADE, null=True)
     exercise     = models.ForeignKey(Exercise, on_delete=models.CASCADE)
+    is_set_adjust= models.BooleanField(default=0)
 
     def __str__(self):
         return f'{self.exercise} + {self.workout.date}'
@@ -122,18 +121,3 @@ class WorkoutExerciseSet(models.Model):
             el += math.exp(-0.215 * (self.rir + self.reps - i))
         el = decimal.Decimal(el) * self.weight
         return round(el, 1)
-
-
-
-
-# class WorkoutItem(models.Model):
-#     muscle_group = models.ForeignKey(MuscleGroup, on_delete=models.CASCADE, null=True)
-#     workout      = models.ForeignKey(Workout, on_delete=models.CASCADE)
-#     exercise     = models.ForeignKey(Exercise, on_delete=models.CASCADE)
-#     sets         = models.PositiveIntegerField(blank=True, null=True)
-#     reps         = models.PositiveIntegerField(blank=True, null=True)
-#     weight       = models.DecimalField(max_digits=5, decimal_places=1, blank=True, null=True)
-#     rir          = models.PositiveIntegerField(blank=True, null=True)
-
-#     def __str__(self):
-#         return f'{self.exercise} - {self.sets} x {self.reps} x {self.weight}kg @{self.rir}RIR'
