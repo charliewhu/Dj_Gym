@@ -34,6 +34,9 @@ class Readiness(models.Model):
         readiness_sum = round(readiness*20) #percentage
         return readiness_sum
 
+    def mean(self):
+        pass
+
 
 class ReadinessAnswer(models.Model):
     class Rating(models.IntegerChoices):
