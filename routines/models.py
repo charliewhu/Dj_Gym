@@ -1,11 +1,10 @@
-from datetime import datetime
 import math
 import decimal
 
 from django.db import models
-from django.db.models.fields import DateField
 from accounts.models import User, UserRM
 from exercises.models import Exercise, MuscleGroup
+from routines.managers import ReadinessAnswerManager
 
 
 class ReadinessQuestion(models.Model):
@@ -15,7 +14,7 @@ class ReadinessQuestion(models.Model):
 
 
 class Readiness(models.Model):
-    user = models.ForeignKey(User, related_name='readiness', on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     date_created = models.DateField(auto_now_add=True, null=True)
 
     def __str__(self):
@@ -34,9 +33,6 @@ class Readiness(models.Model):
         readiness_sum = round(readiness*20) #percentage
         return readiness_sum
 
-    def mean(self):
-        pass
-
 
 class ReadinessAnswer(models.Model):
     class Rating(models.IntegerChoices):
@@ -52,6 +48,9 @@ class ReadinessAnswer(models.Model):
 
     def __str__(self):
         return f'{self.readiness} - {self.readiness_question}'
+
+    objects = models.Manager()
+    manager = ReadinessAnswerManager()
 
 
 class Workout(models.Model):

@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.core.validators import MaxValueValidator, MinValueValidator
 from accounts.managers import MyUserManager, UserRMManager
-from exercises.models import Exercise 
+from exercises.models import Exercise
 
 
 class User(PermissionsMixin, AbstractBaseUser):
@@ -32,9 +32,11 @@ class User(PermissionsMixin, AbstractBaseUser):
         active_wo = set.filter(is_active=True).count()
         return active_wo
 
-    def readiness_history(self):
-        """Get a list of user's workout readiness ratings"""
-        u = self.objects.prefetch_related('workout').prefetch_related('workout_readiness')
+    def mean_readiness(self):
+        """User's mean readiness rating over last 40 instances"""
+        r = self.readiness_set.order_by('-id')[:40]
+        user = User.objects.filter(id=self.pk).prefetch_related("readiness_set")
+        return user
 
 
 class Gender(models.Model):

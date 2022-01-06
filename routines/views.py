@@ -273,5 +273,10 @@ def test_view(request):
     if request.method == "POST":
         print("this is a post request")
         return JsonResponse({'Json':'Response'})
-    context = {}
+
+    mean_readiness = ReadinessAnswer.manager.mean(request.user)
+
+    context = {
+        'context': mean_readiness,
+        }
     return render(request, 'test.html', context)
