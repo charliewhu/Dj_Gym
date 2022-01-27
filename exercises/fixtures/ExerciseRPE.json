@@ -1,0 +1,852 @@
+[
+  {
+    "RPE": 10,
+    "Reps": 1,
+    "Percent": 1
+  },
+  {
+    "RPE": 10,
+    "Reps": 2,
+    "Percent": 0.95
+  },
+  {
+    "RPE": 10,
+    "Reps": 3,
+    "Percent": 0.91
+  },
+  {
+    "RPE": 10,
+    "Reps": 4,
+    "Percent": 0.87
+  },
+  {
+    "RPE": 10,
+    "Reps": 5,
+    "Percent": 0.83
+  },
+  {
+    "RPE": 10,
+    "Reps": 6,
+    "Percent": 0.8
+  },
+  {
+    "RPE": 10,
+    "Reps": 7,
+    "Percent": 0.77
+  },
+  {
+    "RPE": 10,
+    "Reps": 8,
+    "Percent": 0.74
+  },
+  {
+    "RPE": 10,
+    "Reps": 9,
+    "Percent": 0.71
+  },
+  {
+    "RPE": 10,
+    "Reps": 10,
+    "Percent": 0.69
+  },
+  {
+    "RPE": 10,
+    "Reps": 11,
+    "Percent": 0.67
+  },
+  {
+    "RPE": 10,
+    "Reps": 12,
+    "Percent": 0.65
+  },
+  {
+    "RPE": 10,
+    "Reps": 13,
+    "Percent": 0.63
+  },
+  {
+    "RPE": 10,
+    "Reps": 14,
+    "Percent": 0.61
+  },
+  {
+    "RPE": 10,
+    "Reps": 15,
+    "Percent": 0.59
+  },
+  {
+    "RPE": 10,
+    "Reps": 16,
+    "Percent": 0.57
+  },
+  {
+    "RPE": 10,
+    "Reps": 17,
+    "Percent": 0.55
+  },
+  {
+    "RPE": 9,
+    "Reps": 1,
+    "Percent": 0.95
+  },
+  {
+    "RPE": 9,
+    "Reps": 2,
+    "Percent": 0.91
+  },
+  {
+    "RPE": 9,
+    "Reps": 3,
+    "Percent": 0.87
+  },
+  {
+    "RPE": 9,
+    "Reps": 4,
+    "Percent": 0.83
+  },
+  {
+    "RPE": 9,
+    "Reps": 5,
+    "Percent": 0.8
+  },
+  {
+    "RPE": 9,
+    "Reps": 6,
+    "Percent": 0.77
+  },
+  {
+    "RPE": 9,
+    "Reps": 7,
+    "Percent": 0.74
+  },
+  {
+    "RPE": 9,
+    "Reps": 8,
+    "Percent": 0.71
+  },
+  {
+    "RPE": 9,
+    "Reps": 9,
+    "Percent": 0.69
+  },
+  {
+    "RPE": 9,
+    "Reps": 10,
+    "Percent": 0.67
+  },
+  {
+    "RPE": 9,
+    "Reps": 11,
+    "Percent": 0.65
+  },
+  {
+    "RPE": 9,
+    "Reps": 12,
+    "Percent": 0.63
+  },
+  {
+    "RPE": 9,
+    "Reps": 13,
+    "Percent": 0.61
+  },
+  {
+    "RPE": 9,
+    "Reps": 14,
+    "Percent": 0.59
+  },
+  {
+    "RPE": 9,
+    "Reps": 15,
+    "Percent": 0.57
+  },
+  {
+    "RPE": 9,
+    "Reps": 16,
+    "Percent": 0.55
+  },
+  {
+    "RPE": 9,
+    "Reps": 17,
+    "Percent": 0.54
+  },
+  {
+    "RPE": 8,
+    "Reps": 1,
+    "Percent": 0.91
+  },
+  {
+    "RPE": 8,
+    "Reps": 2,
+    "Percent": 0.87
+  },
+  {
+    "RPE": 8,
+    "Reps": 3,
+    "Percent": 0.83
+  },
+  {
+    "RPE": 8,
+    "Reps": 4,
+    "Percent": 0.8
+  },
+  {
+    "RPE": 8,
+    "Reps": 5,
+    "Percent": 0.77
+  },
+  {
+    "RPE": 8,
+    "Reps": 6,
+    "Percent": 0.74
+  },
+  {
+    "RPE": 8,
+    "Reps": 7,
+    "Percent": 0.71
+  },
+  {
+    "RPE": 8,
+    "Reps": 8,
+    "Percent": 0.69
+  },
+  {
+    "RPE": 8,
+    "Reps": 9,
+    "Percent": 0.67
+  },
+  {
+    "RPE": 8,
+    "Reps": 10,
+    "Percent": 0.65
+  },
+  {
+    "RPE": 8,
+    "Reps": 11,
+    "Percent": 0.63
+  },
+  {
+    "RPE": 8,
+    "Reps": 12,
+    "Percent": 0.61
+  },
+  {
+    "RPE": 8,
+    "Reps": 13,
+    "Percent": 0.59
+  },
+  {
+    "RPE": 8,
+    "Reps": 14,
+    "Percent": 0.57
+  },
+  {
+    "RPE": 8,
+    "Reps": 15,
+    "Percent": 0.55
+  },
+  {
+    "RPE": 8,
+    "Reps": 16,
+    "Percent": 0.54
+  },
+  {
+    "RPE": 8,
+    "Reps": 17,
+    "Percent": 0.53
+  },
+  {
+    "RPE": 7,
+    "Reps": 1,
+    "Percent": 0.87
+  },
+  {
+    "RPE": 7,
+    "Reps": 2,
+    "Percent": 0.83
+  },
+  {
+    "RPE": 7,
+    "Reps": 3,
+    "Percent": 0.8
+  },
+  {
+    "RPE": 7,
+    "Reps": 4,
+    "Percent": 0.77
+  },
+  {
+    "RPE": 7,
+    "Reps": 5,
+    "Percent": 0.74
+  },
+  {
+    "RPE": 7,
+    "Reps": 6,
+    "Percent": 0.71
+  },
+  {
+    "RPE": 7,
+    "Reps": 7,
+    "Percent": 0.69
+  },
+  {
+    "RPE": 7,
+    "Reps": 8,
+    "Percent": 0.67
+  },
+  {
+    "RPE": 7,
+    "Reps": 9,
+    "Percent": 0.65
+  },
+  {
+    "RPE": 7,
+    "Reps": 10,
+    "Percent": 0.63
+  },
+  {
+    "RPE": 7,
+    "Reps": 11,
+    "Percent": 0.61
+  },
+  {
+    "RPE": 7,
+    "Reps": 12,
+    "Percent": 0.59
+  },
+  {
+    "RPE": 7,
+    "Reps": 13,
+    "Percent": 0.57
+  },
+  {
+    "RPE": 7,
+    "Reps": 14,
+    "Percent": 0.55
+  },
+  {
+    "RPE": 7,
+    "Reps": 15,
+    "Percent": 0.54
+  },
+  {
+    "RPE": 7,
+    "Reps": 16,
+    "Percent": 0.53
+  },
+  {
+    "RPE": 7,
+    "Reps": 17,
+    "Percent": 0.52
+  },
+  {
+    "RPE": 6,
+    "Reps": 1,
+    "Percent": 0.83
+  },
+  {
+    "RPE": 6,
+    "Reps": 2,
+    "Percent": 0.8
+  },
+  {
+    "RPE": 6,
+    "Reps": 3,
+    "Percent": 0.77
+  },
+  {
+    "RPE": 6,
+    "Reps": 4,
+    "Percent": 0.74
+  },
+  {
+    "RPE": 6,
+    "Reps": 5,
+    "Percent": 0.71
+  },
+  {
+    "RPE": 6,
+    "Reps": 6,
+    "Percent": 0.69
+  },
+  {
+    "RPE": 6,
+    "Reps": 7,
+    "Percent": 0.67
+  },
+  {
+    "RPE": 6,
+    "Reps": 8,
+    "Percent": 0.65
+  },
+  {
+    "RPE": 6,
+    "Reps": 9,
+    "Percent": 0.63
+  },
+  {
+    "RPE": 6,
+    "Reps": 10,
+    "Percent": 0.61
+  },
+  {
+    "RPE": 6,
+    "Reps": 11,
+    "Percent": 0.59
+  },
+  {
+    "RPE": 6,
+    "Reps": 12,
+    "Percent": 0.57
+  },
+  {
+    "RPE": 6,
+    "Reps": 13,
+    "Percent": 0.55
+  },
+  {
+    "RPE": 6,
+    "Reps": 14,
+    "Percent": 0.54
+  },
+  {
+    "RPE": 6,
+    "Reps": 15,
+    "Percent": 0.53
+  },
+  {
+    "RPE": 6,
+    "Reps": 16,
+    "Percent": 0.52
+  },
+  {
+    "RPE": 6,
+    "Reps": 17,
+    "Percent": 0.51
+  },
+  {
+    "RPE": 5,
+    "Reps": 1,
+    "Percent": 0.8
+  },
+  {
+    "RPE": 5,
+    "Reps": 2,
+    "Percent": 0.77
+  },
+  {
+    "RPE": 5,
+    "Reps": 3,
+    "Percent": 0.74
+  },
+  {
+    "RPE": 5,
+    "Reps": 4,
+    "Percent": 0.71
+  },
+  {
+    "RPE": 5,
+    "Reps": 5,
+    "Percent": 0.69
+  },
+  {
+    "RPE": 5,
+    "Reps": 6,
+    "Percent": 0.67
+  },
+  {
+    "RPE": 5,
+    "Reps": 7,
+    "Percent": 0.65
+  },
+  {
+    "RPE": 5,
+    "Reps": 8,
+    "Percent": 0.63
+  },
+  {
+    "RPE": 5,
+    "Reps": 9,
+    "Percent": 0.61
+  },
+  {
+    "RPE": 5,
+    "Reps": 10,
+    "Percent": 0.59
+  },
+  {
+    "RPE": 5,
+    "Reps": 11,
+    "Percent": 0.57
+  },
+  {
+    "RPE": 5,
+    "Reps": 12,
+    "Percent": 0.55
+  },
+  {
+    "RPE": 5,
+    "Reps": 13,
+    "Percent": 0.54
+  },
+  {
+    "RPE": 5,
+    "Reps": 14,
+    "Percent": 0.53
+  },
+  {
+    "RPE": 5,
+    "Reps": 15,
+    "Percent": 0.52
+  },
+  {
+    "RPE": 5,
+    "Reps": 16,
+    "Percent": 0.51
+  },
+  {
+    "RPE": 5,
+    "Reps": 17,
+    "Percent": 0.5
+  },
+  {
+    "RPE": 4,
+    "Reps": 1,
+    "Percent": 0.77
+  },
+  {
+    "RPE": 4,
+    "Reps": 2,
+    "Percent": 0.74
+  },
+  {
+    "RPE": 4,
+    "Reps": 3,
+    "Percent": 0.71
+  },
+  {
+    "RPE": 4,
+    "Reps": 4,
+    "Percent": 0.69
+  },
+  {
+    "RPE": 4,
+    "Reps": 5,
+    "Percent": 0.67
+  },
+  {
+    "RPE": 4,
+    "Reps": 6,
+    "Percent": 0.65
+  },
+  {
+    "RPE": 4,
+    "Reps": 7,
+    "Percent": 0.63
+  },
+  {
+    "RPE": 4,
+    "Reps": 8,
+    "Percent": 0.61
+  },
+  {
+    "RPE": 4,
+    "Reps": 9,
+    "Percent": 0.59
+  },
+  {
+    "RPE": 4,
+    "Reps": 10,
+    "Percent": 0.57
+  },
+  {
+    "RPE": 4,
+    "Reps": 11,
+    "Percent": 0.55
+  },
+  {
+    "RPE": 4,
+    "Reps": 12,
+    "Percent": 0.54
+  },
+  {
+    "RPE": 4,
+    "Reps": 13,
+    "Percent": 0.53
+  },
+  {
+    "RPE": 4,
+    "Reps": 14,
+    "Percent": 0.52
+  },
+  {
+    "RPE": 4,
+    "Reps": 15,
+    "Percent": 0.51
+  },
+  {
+    "RPE": 4,
+    "Reps": 16,
+    "Percent": 0.5
+  },
+  {
+    "RPE": 4,
+    "Reps": 17,
+    "Percent": 0.49
+  },
+  {
+    "RPE": 3,
+    "Reps": 1,
+    "Percent": 0.74
+  },
+  {
+    "RPE": 3,
+    "Reps": 2,
+    "Percent": 0.71
+  },
+  {
+    "RPE": 3,
+    "Reps": 3,
+    "Percent": 0.69
+  },
+  {
+    "RPE": 3,
+    "Reps": 4,
+    "Percent": 0.67
+  },
+  {
+    "RPE": 3,
+    "Reps": 5,
+    "Percent": 0.65
+  },
+  {
+    "RPE": 3,
+    "Reps": 6,
+    "Percent": 0.63
+  },
+  {
+    "RPE": 3,
+    "Reps": 7,
+    "Percent": 0.61
+  },
+  {
+    "RPE": 3,
+    "Reps": 8,
+    "Percent": 0.59
+  },
+  {
+    "RPE": 3,
+    "Reps": 9,
+    "Percent": 0.57
+  },
+  {
+    "RPE": 3,
+    "Reps": 10,
+    "Percent": 0.55
+  },
+  {
+    "RPE": 3,
+    "Reps": 11,
+    "Percent": 0.54
+  },
+  {
+    "RPE": 3,
+    "Reps": 12,
+    "Percent": 0.53
+  },
+  {
+    "RPE": 3,
+    "Reps": 13,
+    "Percent": 0.52
+  },
+  {
+    "RPE": 3,
+    "Reps": 14,
+    "Percent": 0.51
+  },
+  {
+    "RPE": 3,
+    "Reps": 15,
+    "Percent": 0.5
+  },
+  {
+    "RPE": 3,
+    "Reps": 16,
+    "Percent": 0.49
+  },
+  {
+    "RPE": 3,
+    "Reps": 17,
+    "Percent": 0.48
+  },
+  {
+    "RPE": 2,
+    "Reps": 1,
+    "Percent": 0.71
+  },
+  {
+    "RPE": 2,
+    "Reps": 2,
+    "Percent": 0.69
+  },
+  {
+    "RPE": 2,
+    "Reps": 3,
+    "Percent": 0.67
+  },
+  {
+    "RPE": 2,
+    "Reps": 4,
+    "Percent": 0.65
+  },
+  {
+    "RPE": 2,
+    "Reps": 5,
+    "Percent": 0.63
+  },
+  {
+    "RPE": 2,
+    "Reps": 6,
+    "Percent": 0.61
+  },
+  {
+    "RPE": 2,
+    "Reps": 7,
+    "Percent": 0.59
+  },
+  {
+    "RPE": 2,
+    "Reps": 8,
+    "Percent": 0.57
+  },
+  {
+    "RPE": 2,
+    "Reps": 9,
+    "Percent": 0.55
+  },
+  {
+    "RPE": 2,
+    "Reps": 10,
+    "Percent": 0.54
+  },
+  {
+    "RPE": 2,
+    "Reps": 11,
+    "Percent": 0.53
+  },
+  {
+    "RPE": 2,
+    "Reps": 12,
+    "Percent": 0.52
+  },
+  {
+    "RPE": 2,
+    "Reps": 13,
+    "Percent": 0.51
+  },
+  {
+    "RPE": 2,
+    "Reps": 14,
+    "Percent": 0.5
+  },
+  {
+    "RPE": 2,
+    "Reps": 15,
+    "Percent": 0.49
+  },
+  {
+    "RPE": 2,
+    "Reps": 16,
+    "Percent": 0.48
+  },
+  {
+    "RPE": 2,
+    "Reps": 17,
+    "Percent": 0.47
+  },
+  {
+    "RPE": 1,
+    "Reps": 1,
+    "Percent": 0.69
+  },
+  {
+    "RPE": 1,
+    "Reps": 2,
+    "Percent": 0.67
+  },
+  {
+    "RPE": 1,
+    "Reps": 3,
+    "Percent": 0.65
+  },
+  {
+    "RPE": 1,
+    "Reps": 4,
+    "Percent": 0.63
+  },
+  {
+    "RPE": 1,
+    "Reps": 5,
+    "Percent": 0.61
+  },
+  {
+    "RPE": 1,
+    "Reps": 6,
+    "Percent": 0.59
+  },
+  {
+    "RPE": 1,
+    "Reps": 7,
+    "Percent": 0.57
+  },
+  {
+    "RPE": 1,
+    "Reps": 8,
+    "Percent": 0.55
+  },
+  {
+    "RPE": 1,
+    "Reps": 9,
+    "Percent": 0.54
+  },
+  {
+    "RPE": 1,
+    "Reps": 10,
+    "Percent": 0.53
+  },
+  {
+    "RPE": 1,
+    "Reps": 11,
+    "Percent": 0.52
+  },
+  {
+    "RPE": 1,
+    "Reps": 12,
+    "Percent": 0.51
+  },
+  {
+    "RPE": 1,
+    "Reps": 13,
+    "Percent": 0.5
+  },
+  {
+    "RPE": 1,
+    "Reps": 14,
+    "Percent": 0.49
+  },
+  {
+    "RPE": 1,
+    "Reps": 15,
+    "Percent": 0.48
+  },
+  {
+    "RPE": 1,
+    "Reps": 16,
+    "Percent": 0.47
+  },
+  {
+    "RPE": 1,
+    "Reps": 17,
+    "Percent": 0.46
+  }
+ ]

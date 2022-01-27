@@ -47,7 +47,27 @@ class Gender(models.Model):
 class TrainingPhase(models.Model):
     """
     Training phases to choose from in UserProfile
-    eg. Hypertrophy, Strength, PPL
+    eg. Bodybuilding, Powerbuilding, PL Hypertrophy,
+    PL Strength, Peaking, Bridge
+    """
+    name     = models.CharField(max_length=40)
+    min_reps = models.PositiveIntegerField(null=True)
+    max_reps = models.PositiveIntegerField(null=True)
+    min_rir  = models.PositiveIntegerField(null=True)
+    max_rir  = models.PositiveIntegerField(null=True)
+
+
+class Frequency(models.Model):
+    """Frequency to use eg. Upper/Lower, FullBody, PPL"""
+    name = models.CharField(max_length=40)
+
+
+class Periodization(models.Model):
+    """
+    Periodization to use 
+    eg. Linear - weekly overload of volume/intensity
+    Alternating - weekly alternation of S/B/D or U/L
+    Undulating - undulating of low/medium/high sessions
     """
     name = models.CharField(max_length=40)
     
@@ -60,7 +80,7 @@ class UserProfile(models.Model):
     birth_date    = models.DateField(null=True)
     gender        = models.ForeignKey(Gender, null=True, on_delete=models.SET_NULL)
     training_focus= models.ForeignKey(TrainingPhase, null=True,  on_delete=models.SET_NULL)
-    training_days = models.PositiveIntegerField(default=4, validators=[MinValueValidator(2), MaxValueValidator(7)])
+    training_days = models.PositiveIntegerField(default=4, validators=[MinValueValidator(1), MaxValueValidator(7)])
 
 
 class UserRM(models.Model):
@@ -79,17 +99,3 @@ class UserRM(models.Model):
     objects = models.Manager()
     one_rm_manager = UserRMManager()
 
-
-class UserMetrics(models.Model):
-    """
-    Calculated values based on the User's UserProfile baseline.
-    Will be updated based on Workout performance in the next phase
-    """
-    pass
-    # user      = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    # exercise  = models.ForeignKey(Exercise, on_delete=models.SET_NULL, null=True)
-    # phase     = models.ForeignKey(TrainingPhase, on_delete=models.SET_NULL, null=True)
-    # mev       = models.PositiveIntegerField()
-    # mrv       = models.PositiveIntegerField()
-    # frequency = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(4)])
-    #periodization
