@@ -18,19 +18,18 @@ class ReadinessAnswerManager(models.Manager):
 
     def stddev(self, user):
         """We want the User's stddev for total readiness in the last 40 instances"""
-        m = super().get_queryset()\
+        s = super().get_queryset()\
             .filter(readiness__user=user)\
             .order_by('-readiness')[:40]\
             .values('readiness')\
             .annotate(sum = Sum('rating'))\
             .aggregate(StdDev('sum'))
 
-        m = m.get('sum__stddev', None)
+        s = s.get('sum__stddev', None)
 
         try: 
-            m = round(m, 2)
+            s = round(s, 2)
         except:
-            m
+            s
         
-        return m
-
+        return s

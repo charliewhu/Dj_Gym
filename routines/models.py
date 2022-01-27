@@ -101,20 +101,20 @@ class WorkoutExerciseSet(models.Model):
     def __str__(self):
         return f'{self.workout_exercise} - {self.reps} x {self.weight}kg @{self.rir}RIR'
 
-    def e_one_rep_max(self):
-        #calculate the estimated 1RM for that exercise for that set
-        reps_divider = decimal.Decimal(self.reps/30)
-        rm = self.weight * (1 + reps_divider)
-        rrm = round(rm)
-        return rrm
-        
     def save(self, *args, **kwargs):
         user = self.workout_exercise.workout.user
         exercise = self.workout_exercise.exercise
         rm = self.e_one_rep_max()
         user_rm = UserRM(user=user, exercise=exercise, one_rep_max=rm)
         user_rm.save()
-        return super().save(*args, **kwargs)
+        return super().save(*args, **kwargs)   
+
+    def e_one_rep_max(self):
+        #calculate the estimated 1RM for that exercise for that set
+        reps_divider = decimal.Decimal(self.reps/30)
+        rm = self.weight * (1 + reps_divider)
+        rounded_rm = round(rm)
+        return rounded_rm
 
     def exertion_load(self):
         """Total exertion load for a set"""

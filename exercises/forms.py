@@ -7,9 +7,9 @@ class ExerciseForm(forms.ModelForm):
         model  = Exercise
         fields = [
             'name',
-            'purpose',
-            'tier',
-            'muscle_group',
+            'plpurpose',
+            'pltier',
+            #'muscle_group',
             'mechanic',
             'force',
             ]
