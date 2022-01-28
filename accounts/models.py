@@ -42,6 +42,8 @@ class User(PermissionsMixin, AbstractBaseUser):
 class Gender(models.Model):
     """genders to choose from in UserProfile"""
     name = models.CharField(max_length=40)
+    def __str__(self):
+        return self.name
 
 
 class TrainingPhase(models.Model):
@@ -56,10 +58,16 @@ class TrainingPhase(models.Model):
     min_rir  = models.PositiveIntegerField(null=True)
     max_rir  = models.PositiveIntegerField(null=True)
 
+    def __str__(self):
+        return self.name
+
 
 class Frequency(models.Model):
     """Frequency to use eg. Upper/Lower, FullBody, PPL"""
     name = models.CharField(max_length=40)
+
+    def __str__(self):
+        return self.name
 
 
 class Periodization(models.Model):
@@ -70,6 +78,9 @@ class Periodization(models.Model):
     Undulating - undulating of low/medium/high sessions
     """
     name = models.CharField(max_length=40)
+
+    def __str__(self):
+        return self.name
     
 
 class UserProfile(models.Model):
@@ -81,6 +92,9 @@ class UserProfile(models.Model):
     gender        = models.ForeignKey(Gender, null=True, on_delete=models.SET_NULL)
     training_focus= models.ForeignKey(TrainingPhase, null=True,  on_delete=models.SET_NULL)
     training_days = models.PositiveIntegerField(default=4, validators=[MinValueValidator(1), MaxValueValidator(7)])
+
+    def __str__(self):
+        return f'{self.user.email}'
 
 
 class UserRM(models.Model):

@@ -68,3 +68,51 @@ Phase 3b (App generates based on User questionnaire)
 
 Phase 4 (User can track weight and physical stats):
 
+
+Notes on set adjustments and workout generation 28/1/22:
+    (User)
+    Phase:
+    Bodybuilding - if no rep maxes exist - work 8-12 reps to 3-1RIR
+    Powerbuilding - if no rep maxes exist - work to 3-1RIR
+    PL Hypertrophy - if no rep maxes exist - work 6-10 reps to 3-1RIR
+    PL Strength 1 - if no rep maxes exist - work 3-6 reps to 5-2RIR
+    PL Strength 2 - if no rep maxes exist - work 2-5 reps to 4-2RIR
+    Peaking - if no rep maxes exist - work 1-3 reps to 2RIR
+
+    Periodization:
+
+
+    Modality:
+    Top Sets (1x5 @2RIR, load drop 3x5)
+    Straight Sets (5x5 with a max RPE boundary)
+    Rep drop Sets (8,7,5 all @2RIR)
+    Technique Sets (2-5 reps @ 4-5RIR)
+    Ladder Sets (Sets like 9,2,8,3,7,4)
+
+    (Exercises)
+    Force:
+    Horizontal Push
+    Vertical Push
+    Horizontal Pull
+    Vertical Pull
+    Leg Press
+    Hip Hinge
+    Lateral Raise
+    Isolation (Bicep Curl, Tricep Ext, Calf Raise)
+
+    Muscle Group:
+
+    PL Purpose:
+    Squat
+    Bench
+    Deadlift
+
+    PL Tier:
+    T1 exercises are the competition exercises.\
+    T2 exercises are close variations of the main lifts. \
+    T3 exercises develop the musculature eg. quads for squats. \
+    Other exercises develop supplementary muscles
+    T1
+    T2
+    T3
+    N/A

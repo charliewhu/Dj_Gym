@@ -6,10 +6,14 @@ class Force(models.Model):
     """eg Hip Hinge, Vertical Push"""
     name = models.CharField(max_length=60, unique=True)
 
+    def __str__(self):
+        return self.name
+
 
 class MuscleGroup(models.Model):
     name  = models.CharField(max_length=20, unique=True)
     force = models.ManyToManyField(Force)
+    
     def __str__(self):
         return self.name
 
