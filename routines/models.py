@@ -47,7 +47,7 @@ class ReadinessAnswer(models.Model):
     rating             = models.IntegerField(choices=Rating.choices)
 
     def __str__(self):
-        return f'{self.readiness} - {self.readiness_question}'
+        return f'{self.readiness.user} - {self.readiness} - {self.readiness_question}'
 
     objects = models.Manager()
     manager = ReadinessAnswerManager()

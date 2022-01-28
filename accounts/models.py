@@ -94,7 +94,7 @@ class UserProfile(models.Model):
     training_days = models.PositiveIntegerField(default=4, validators=[MinValueValidator(1), MaxValueValidator(7)])
 
     def __str__(self):
-        return f'{self.user.email}'
+        return f'{self.user}'
 
 
 class UserRM(models.Model):
