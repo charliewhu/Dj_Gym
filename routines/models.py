@@ -62,8 +62,7 @@ class Workout(models.Model):
     is_active    = models.BooleanField(default=1)
     
     def __str__(self):
-        str = self.date_created.strftime("%Y-%m-%d - %H:%M:%S")
-        return f'{str}'
+        return f'{self.user} - {self.date}'
 
     def exertion_load(self):
         el = 0
@@ -83,7 +82,7 @@ class WorkoutExercise(models.Model):
     is_set_adjust= models.BooleanField(default=0)
 
     def __str__(self):
-        return f'{self.exercise} + {self.workout.date}'
+        return f'{self.workout} - {self.exercise}'
 
     def exertion_load(self):
         el = 0
