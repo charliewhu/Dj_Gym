@@ -1,852 +1,1377 @@
 [
   {
-    "RPE": 10,
+    "RIR": 0,
     "Reps": 1,
     "Percent": 1
   },
   {
-    "RPE": 10,
+    "RIR": 0,
     "Reps": 2,
-    "Percent": 0.95
+    "Percent": 0.955
   },
   {
-    "RPE": 10,
+    "RIR": 0,
     "Reps": 3,
-    "Percent": 0.91
+    "Percent": 0.922
   },
   {
-    "RPE": 10,
+    "RIR": 0,
     "Reps": 4,
-    "Percent": 0.87
+    "Percent": 0.892
   },
   {
-    "RPE": 10,
+    "RIR": 0,
     "Reps": 5,
-    "Percent": 0.83
+    "Percent": 0.863
   },
   {
-    "RPE": 10,
+    "RIR": 0,
     "Reps": 6,
-    "Percent": 0.8
+    "Percent": 0.837
   },
   {
-    "RPE": 10,
+    "RIR": 0,
     "Reps": 7,
-    "Percent": 0.77
+    "Percent": 0.811
   },
   {
-    "RPE": 10,
+    "RIR": 0,
     "Reps": 8,
-    "Percent": 0.74
+    "Percent": 0.786
   },
   {
-    "RPE": 10,
+    "RIR": 0,
     "Reps": 9,
-    "Percent": 0.71
+    "Percent": 0.762
   },
   {
-    "RPE": 10,
+    "RIR": 0,
     "Reps": 10,
-    "Percent": 0.69
+    "Percent": 0.739
   },
   {
-    "RPE": 10,
+    "RIR": 0,
     "Reps": 11,
-    "Percent": 0.67
+    "Percent": 0.707
   },
   {
-    "RPE": 10,
+    "RIR": 0,
     "Reps": 12,
-    "Percent": 0.65
+    "Percent": 0.68
   },
   {
-    "RPE": 10,
+    "RIR": 0,
     "Reps": 13,
-    "Percent": 0.63
+    "Percent": 0.653
   },
   {
-    "RPE": 10,
+    "RIR": 0,
     "Reps": 14,
-    "Percent": 0.61
+    "Percent": 0.626
   },
   {
-    "RPE": 10,
+    "RIR": 0,
     "Reps": 15,
-    "Percent": 0.59
+    "Percent": 0.599
   },
   {
-    "RPE": 10,
+    "RIR": 0,
     "Reps": 16,
-    "Percent": 0.57
+    "Percent": 0.584
   },
   {
-    "RPE": 10,
+    "RIR": 0,
     "Reps": 17,
-    "Percent": 0.55
-  },
-  {
-    "RPE": 9,
-    "Reps": 1,
-    "Percent": 0.95
-  },
-  {
-    "RPE": 9,
-    "Reps": 2,
-    "Percent": 0.91
-  },
-  {
-    "RPE": 9,
-    "Reps": 3,
-    "Percent": 0.87
-  },
-  {
-    "RPE": 9,
-    "Reps": 4,
-    "Percent": 0.83
-  },
-  {
-    "RPE": 9,
-    "Reps": 5,
-    "Percent": 0.8
-  },
-  {
-    "RPE": 9,
-    "Reps": 6,
-    "Percent": 0.77
-  },
-  {
-    "RPE": 9,
-    "Reps": 7,
-    "Percent": 0.74
-  },
-  {
-    "RPE": 9,
-    "Reps": 8,
-    "Percent": 0.71
-  },
-  {
-    "RPE": 9,
-    "Reps": 9,
-    "Percent": 0.69
-  },
-  {
-    "RPE": 9,
-    "Reps": 10,
-    "Percent": 0.67
-  },
-  {
-    "RPE": 9,
-    "Reps": 11,
-    "Percent": 0.65
-  },
-  {
-    "RPE": 9,
-    "Reps": 12,
-    "Percent": 0.63
-  },
-  {
-    "RPE": 9,
-    "Reps": 13,
-    "Percent": 0.61
-  },
-  {
-    "RPE": 9,
-    "Reps": 14,
-    "Percent": 0.59
-  },
-  {
-    "RPE": 9,
-    "Reps": 15,
     "Percent": 0.57
   },
   {
-    "RPE": 9,
-    "Reps": 16,
-    "Percent": 0.55
+    "RIR": 0,
+    "Reps": 18,
+    "Percent": 0.557
   },
   {
-    "RPE": 9,
+    "RIR": 0,
+    "Reps": 19,
+    "Percent": 0.544
+  },
+  {
+    "RIR": 0,
+    "Reps": 20,
+    "Percent": 0.532
+  },
+  {
+    "RIR": 0,
+    "Reps": 21,
+    "Percent": 0.52
+  },
+  {
+    "RIR": 0,
+    "Reps": 22,
+    "Percent": 0.509
+  },
+  {
+    "RIR": 0,
+    "Reps": 23,
+    "Percent": 0.498
+  },
+  {
+    "RIR": 0,
+    "Reps": 24,
+    "Percent": 0.488
+  },
+  {
+    "RIR": 0,
+    "Reps": 25,
+    "Percent": 0.477
+  },
+  {
+    "RIR": 0,
+    "Reps": 26,
+    "Percent": 0.468
+  },
+  {
+    "RIR": 0,
+    "Reps": 27,
+    "Percent": 0.458
+  },
+  {
+    "RIR": 0,
+    "Reps": 28,
+    "Percent": 0.449
+  },
+  {
+    "RIR": 0,
+    "Reps": 29,
+    "Percent": 0.44
+  },
+  {
+    "RIR": 0,
+    "Reps": 30,
+    "Percent": 0.432
+  },
+  {
+    "RIR": 1,
+    "Reps": 1,
+    "Percent": 0.955
+  },
+  {
+    "RIR": 1,
+    "Reps": 2,
+    "Percent": 0.922
+  },
+  {
+    "RIR": 1,
+    "Reps": 3,
+    "Percent": 0.892
+  },
+  {
+    "RIR": 1,
+    "Reps": 4,
+    "Percent": 0.863
+  },
+  {
+    "RIR": 1,
+    "Reps": 5,
+    "Percent": 0.837
+  },
+  {
+    "RIR": 1,
+    "Reps": 6,
+    "Percent": 0.811
+  },
+  {
+    "RIR": 1,
+    "Reps": 7,
+    "Percent": 0.786
+  },
+  {
+    "RIR": 1,
+    "Reps": 8,
+    "Percent": 0.762
+  },
+  {
+    "RIR": 1,
+    "Reps": 9,
+    "Percent": 0.739
+  },
+  {
+    "RIR": 1,
+    "Reps": 10,
+    "Percent": 0.707
+  },
+  {
+    "RIR": 1,
+    "Reps": 11,
+    "Percent": 0.68
+  },
+  {
+    "RIR": 1,
+    "Reps": 12,
+    "Percent": 0.653
+  },
+  {
+    "RIR": 1,
+    "Reps": 13,
+    "Percent": 0.626
+  },
+  {
+    "RIR": 1,
+    "Reps": 14,
+    "Percent": 0.599
+  },
+  {
+    "RIR": 1,
+    "Reps": 15,
+    "Percent": 0.584
+  },
+  {
+    "RIR": 1,
+    "Reps": 16,
+    "Percent": 0.57
+  },
+  {
+    "RIR": 1,
     "Reps": 17,
-    "Percent": 0.54
+    "Percent": 0.557
   },
   {
-    "RPE": 8,
+    "RIR": 1,
+    "Reps": 18,
+    "Percent": 0.544
+  },
+  {
+    "RIR": 1,
+    "Reps": 19,
+    "Percent": 0.532
+  },
+  {
+    "RIR": 1,
+    "Reps": 20,
+    "Percent": 0.52
+  },
+  {
+    "RIR": 1,
+    "Reps": 21,
+    "Percent": 0.509
+  },
+  {
+    "RIR": 1,
+    "Reps": 22,
+    "Percent": 0.498
+  },
+  {
+    "RIR": 1,
+    "Reps": 23,
+    "Percent": 0.488
+  },
+  {
+    "RIR": 1,
+    "Reps": 24,
+    "Percent": 0.477
+  },
+  {
+    "RIR": 1,
+    "Reps": 25,
+    "Percent": 0.468
+  },
+  {
+    "RIR": 1,
+    "Reps": 26,
+    "Percent": 0.458
+  },
+  {
+    "RIR": 1,
+    "Reps": 27,
+    "Percent": 0.449
+  },
+  {
+    "RIR": 1,
+    "Reps": 28,
+    "Percent": 0.44
+  },
+  {
+    "RIR": 1,
+    "Reps": 29,
+    "Percent": 0.432
+  },
+  {
+    "RIR": 2,
     "Reps": 1,
-    "Percent": 0.91
+    "Percent": 0.922
   },
   {
-    "RPE": 8,
+    "RIR": 2,
     "Reps": 2,
-    "Percent": 0.87
+    "Percent": 0.892
   },
   {
-    "RPE": 8,
+    "RIR": 2,
     "Reps": 3,
-    "Percent": 0.83
+    "Percent": 0.863
   },
   {
-    "RPE": 8,
+    "RIR": 2,
     "Reps": 4,
-    "Percent": 0.8
+    "Percent": 0.837
   },
   {
-    "RPE": 8,
+    "RIR": 2,
     "Reps": 5,
-    "Percent": 0.77
+    "Percent": 0.811
   },
   {
-    "RPE": 8,
+    "RIR": 2,
     "Reps": 6,
-    "Percent": 0.74
+    "Percent": 0.786
   },
   {
-    "RPE": 8,
+    "RIR": 2,
     "Reps": 7,
-    "Percent": 0.71
+    "Percent": 0.762
   },
   {
-    "RPE": 8,
+    "RIR": 2,
     "Reps": 8,
-    "Percent": 0.69
+    "Percent": 0.739
   },
   {
-    "RPE": 8,
+    "RIR": 2,
     "Reps": 9,
-    "Percent": 0.67
+    "Percent": 0.707
   },
   {
-    "RPE": 8,
+    "RIR": 2,
     "Reps": 10,
-    "Percent": 0.65
+    "Percent": 0.68
   },
   {
-    "RPE": 8,
+    "RIR": 2,
     "Reps": 11,
-    "Percent": 0.63
+    "Percent": 0.653
   },
   {
-    "RPE": 8,
+    "RIR": 2,
     "Reps": 12,
-    "Percent": 0.61
+    "Percent": 0.626
   },
   {
-    "RPE": 8,
+    "RIR": 2,
     "Reps": 13,
-    "Percent": 0.59
+    "Percent": 0.599
   },
   {
-    "RPE": 8,
+    "RIR": 2,
     "Reps": 14,
+    "Percent": 0.584
+  },
+  {
+    "RIR": 2,
+    "Reps": 15,
     "Percent": 0.57
   },
   {
-    "RPE": 8,
-    "Reps": 15,
-    "Percent": 0.55
-  },
-  {
-    "RPE": 8,
+    "RIR": 2,
     "Reps": 16,
-    "Percent": 0.54
+    "Percent": 0.557
   },
   {
-    "RPE": 8,
+    "RIR": 2,
     "Reps": 17,
-    "Percent": 0.53
+    "Percent": 0.544
   },
   {
-    "RPE": 7,
+    "RIR": 2,
+    "Reps": 18,
+    "Percent": 0.532
+  },
+  {
+    "RIR": 2,
+    "Reps": 19,
+    "Percent": 0.52
+  },
+  {
+    "RIR": 2,
+    "Reps": 20,
+    "Percent": 0.509
+  },
+  {
+    "RIR": 2,
+    "Reps": 21,
+    "Percent": 0.498
+  },
+  {
+    "RIR": 2,
+    "Reps": 22,
+    "Percent": 0.488
+  },
+  {
+    "RIR": 2,
+    "Reps": 23,
+    "Percent": 0.477
+  },
+  {
+    "RIR": 2,
+    "Reps": 24,
+    "Percent": 0.468
+  },
+  {
+    "RIR": 2,
+    "Reps": 25,
+    "Percent": 0.458
+  },
+  {
+    "RIR": 2,
+    "Reps": 26,
+    "Percent": 0.449
+  },
+  {
+    "RIR": 2,
+    "Reps": 27,
+    "Percent": 0.44
+  },
+  {
+    "RIR": 2,
+    "Reps": 28,
+    "Percent": 0.432
+  },
+  {
+    "RIR": 3,
     "Reps": 1,
-    "Percent": 0.87
+    "Percent": 0.892
   },
   {
-    "RPE": 7,
+    "RIR": 3,
     "Reps": 2,
-    "Percent": 0.83
+    "Percent": 0.863
   },
   {
-    "RPE": 7,
+    "RIR": 3,
     "Reps": 3,
-    "Percent": 0.8
+    "Percent": 0.837
   },
   {
-    "RPE": 7,
+    "RIR": 3,
     "Reps": 4,
-    "Percent": 0.77
+    "Percent": 0.811
   },
   {
-    "RPE": 7,
+    "RIR": 3,
     "Reps": 5,
-    "Percent": 0.74
+    "Percent": 0.786
   },
   {
-    "RPE": 7,
+    "RIR": 3,
     "Reps": 6,
-    "Percent": 0.71
+    "Percent": 0.762
   },
   {
-    "RPE": 7,
+    "RIR": 3,
     "Reps": 7,
-    "Percent": 0.69
+    "Percent": 0.739
   },
   {
-    "RPE": 7,
+    "RIR": 3,
     "Reps": 8,
-    "Percent": 0.67
+    "Percent": 0.707
   },
   {
-    "RPE": 7,
+    "RIR": 3,
     "Reps": 9,
-    "Percent": 0.65
+    "Percent": 0.68
   },
   {
-    "RPE": 7,
+    "RIR": 3,
     "Reps": 10,
-    "Percent": 0.63
+    "Percent": 0.653
   },
   {
-    "RPE": 7,
+    "RIR": 3,
     "Reps": 11,
-    "Percent": 0.61
+    "Percent": 0.626
   },
   {
-    "RPE": 7,
+    "RIR": 3,
     "Reps": 12,
-    "Percent": 0.59
+    "Percent": 0.599
   },
   {
-    "RPE": 7,
+    "RIR": 3,
+    "Reps": 13,
+    "Percent": 0.584
+  },
+  {
+    "RIR": 3,
+    "Reps": 14,
+    "Percent": 0.57
+  },
+  {
+    "RIR": 3,
+    "Reps": 15,
+    "Percent": 0.557
+  },
+  {
+    "RIR": 3,
+    "Reps": 16,
+    "Percent": 0.544
+  },
+  {
+    "RIR": 3,
+    "Reps": 17,
+    "Percent": 0.532
+  },
+  {
+    "RIR": 3,
+    "Reps": 18,
+    "Percent": 0.52
+  },
+  {
+    "RIR": 3,
+    "Reps": 19,
+    "Percent": 0.509
+  },
+  {
+    "RIR": 3,
+    "Reps": 20,
+    "Percent": 0.498
+  },
+  {
+    "RIR": 3,
+    "Reps": 21,
+    "Percent": 0.488
+  },
+  {
+    "RIR": 3,
+    "Reps": 22,
+    "Percent": 0.477
+  },
+  {
+    "RIR": 3,
+    "Reps": 23,
+    "Percent": 0.468
+  },
+  {
+    "RIR": 3,
+    "Reps": 24,
+    "Percent": 0.458
+  },
+  {
+    "RIR": 3,
+    "Reps": 25,
+    "Percent": 0.449
+  },
+  {
+    "RIR": 3,
+    "Reps": 26,
+    "Percent": 0.44
+  },
+  {
+    "RIR": 3,
+    "Reps": 27,
+    "Percent": 0.432
+  },
+  {
+    "RIR": 4,
+    "Reps": 1,
+    "Percent": 0.863
+  },
+  {
+    "RIR": 4,
+    "Reps": 2,
+    "Percent": 0.837
+  },
+  {
+    "RIR": 4,
+    "Reps": 3,
+    "Percent": 0.811
+  },
+  {
+    "RIR": 4,
+    "Reps": 4,
+    "Percent": 0.786
+  },
+  {
+    "RIR": 4,
+    "Reps": 5,
+    "Percent": 0.762
+  },
+  {
+    "RIR": 4,
+    "Reps": 6,
+    "Percent": 0.739
+  },
+  {
+    "RIR": 4,
+    "Reps": 7,
+    "Percent": 0.707
+  },
+  {
+    "RIR": 4,
+    "Reps": 8,
+    "Percent": 0.68
+  },
+  {
+    "RIR": 4,
+    "Reps": 9,
+    "Percent": 0.653
+  },
+  {
+    "RIR": 4,
+    "Reps": 10,
+    "Percent": 0.626
+  },
+  {
+    "RIR": 4,
+    "Reps": 11,
+    "Percent": 0.599
+  },
+  {
+    "RIR": 4,
+    "Reps": 12,
+    "Percent": 0.584
+  },
+  {
+    "RIR": 4,
     "Reps": 13,
     "Percent": 0.57
   },
   {
-    "RPE": 7,
+    "RIR": 4,
     "Reps": 14,
-    "Percent": 0.55
+    "Percent": 0.557
   },
   {
-    "RPE": 7,
+    "RIR": 4,
     "Reps": 15,
-    "Percent": 0.54
+    "Percent": 0.544
   },
   {
-    "RPE": 7,
+    "RIR": 4,
     "Reps": 16,
-    "Percent": 0.53
+    "Percent": 0.532
   },
   {
-    "RPE": 7,
+    "RIR": 4,
     "Reps": 17,
     "Percent": 0.52
   },
   {
-    "RPE": 6,
+    "RIR": 4,
+    "Reps": 18,
+    "Percent": 0.509
+  },
+  {
+    "RIR": 4,
+    "Reps": 19,
+    "Percent": 0.498
+  },
+  {
+    "RIR": 4,
+    "Reps": 20,
+    "Percent": 0.488
+  },
+  {
+    "RIR": 4,
+    "Reps": 21,
+    "Percent": 0.477
+  },
+  {
+    "RIR": 4,
+    "Reps": 22,
+    "Percent": 0.468
+  },
+  {
+    "RIR": 4,
+    "Reps": 23,
+    "Percent": 0.458
+  },
+  {
+    "RIR": 4,
+    "Reps": 24,
+    "Percent": 0.449
+  },
+  {
+    "RIR": 4,
+    "Reps": 25,
+    "Percent": 0.44
+  },
+  {
+    "RIR": 4,
+    "Reps": 26,
+    "Percent": 0.432
+  },
+  {
+    "RIR": 5,
     "Reps": 1,
-    "Percent": 0.83
+    "Percent": 0.837
   },
   {
-    "RPE": 6,
+    "RIR": 5,
     "Reps": 2,
-    "Percent": 0.8
+    "Percent": 0.811
   },
   {
-    "RPE": 6,
+    "RIR": 5,
     "Reps": 3,
-    "Percent": 0.77
+    "Percent": 0.786
   },
   {
-    "RPE": 6,
+    "RIR": 5,
     "Reps": 4,
-    "Percent": 0.74
+    "Percent": 0.762
   },
   {
-    "RPE": 6,
+    "RIR": 5,
     "Reps": 5,
-    "Percent": 0.71
+    "Percent": 0.739
   },
   {
-    "RPE": 6,
+    "RIR": 5,
     "Reps": 6,
-    "Percent": 0.69
+    "Percent": 0.707
   },
   {
-    "RPE": 6,
+    "RIR": 5,
     "Reps": 7,
-    "Percent": 0.67
+    "Percent": 0.68
   },
   {
-    "RPE": 6,
+    "RIR": 5,
     "Reps": 8,
-    "Percent": 0.65
+    "Percent": 0.653
   },
   {
-    "RPE": 6,
+    "RIR": 5,
     "Reps": 9,
-    "Percent": 0.63
+    "Percent": 0.626
   },
   {
-    "RPE": 6,
+    "RIR": 5,
     "Reps": 10,
-    "Percent": 0.61
+    "Percent": 0.599
   },
   {
-    "RPE": 6,
+    "RIR": 5,
     "Reps": 11,
-    "Percent": 0.59
+    "Percent": 0.584
   },
   {
-    "RPE": 6,
+    "RIR": 5,
     "Reps": 12,
     "Percent": 0.57
   },
   {
-    "RPE": 6,
+    "RIR": 5,
     "Reps": 13,
-    "Percent": 0.55
+    "Percent": 0.557
   },
   {
-    "RPE": 6,
+    "RIR": 5,
     "Reps": 14,
-    "Percent": 0.54
+    "Percent": 0.544
   },
   {
-    "RPE": 6,
+    "RIR": 5,
     "Reps": 15,
-    "Percent": 0.53
+    "Percent": 0.532
   },
   {
-    "RPE": 6,
+    "RIR": 5,
     "Reps": 16,
     "Percent": 0.52
   },
   {
-    "RPE": 6,
+    "RIR": 5,
     "Reps": 17,
-    "Percent": 0.51
+    "Percent": 0.509
   },
   {
-    "RPE": 5,
+    "RIR": 5,
+    "Reps": 18,
+    "Percent": 0.498
+  },
+  {
+    "RIR": 5,
+    "Reps": 19,
+    "Percent": 0.488
+  },
+  {
+    "RIR": 5,
+    "Reps": 20,
+    "Percent": 0.477
+  },
+  {
+    "RIR": 5,
+    "Reps": 21,
+    "Percent": 0.468
+  },
+  {
+    "RIR": 5,
+    "Reps": 22,
+    "Percent": 0.458
+  },
+  {
+    "RIR": 5,
+    "Reps": 23,
+    "Percent": 0.449
+  },
+  {
+    "RIR": 5,
+    "Reps": 24,
+    "Percent": 0.44
+  },
+  {
+    "RIR": 5,
+    "Reps": 25,
+    "Percent": 0.432
+  },
+  {
+    "RIR": 6,
     "Reps": 1,
-    "Percent": 0.8
+    "Percent": 0.811
   },
   {
-    "RPE": 5,
+    "RIR": 6,
     "Reps": 2,
-    "Percent": 0.77
+    "Percent": 0.786
   },
   {
-    "RPE": 5,
+    "RIR": 6,
     "Reps": 3,
-    "Percent": 0.74
+    "Percent": 0.762
   },
   {
-    "RPE": 5,
+    "RIR": 6,
     "Reps": 4,
-    "Percent": 0.71
+    "Percent": 0.739
   },
   {
-    "RPE": 5,
+    "RIR": 6,
     "Reps": 5,
-    "Percent": 0.69
+    "Percent": 0.707
   },
   {
-    "RPE": 5,
+    "RIR": 6,
     "Reps": 6,
-    "Percent": 0.67
+    "Percent": 0.68
   },
   {
-    "RPE": 5,
+    "RIR": 6,
     "Reps": 7,
-    "Percent": 0.65
+    "Percent": 0.653
   },
   {
-    "RPE": 5,
+    "RIR": 6,
     "Reps": 8,
-    "Percent": 0.63
+    "Percent": 0.626
   },
   {
-    "RPE": 5,
+    "RIR": 6,
     "Reps": 9,
-    "Percent": 0.61
+    "Percent": 0.599
   },
   {
-    "RPE": 5,
+    "RIR": 6,
     "Reps": 10,
-    "Percent": 0.59
+    "Percent": 0.584
   },
   {
-    "RPE": 5,
+    "RIR": 6,
     "Reps": 11,
     "Percent": 0.57
   },
   {
-    "RPE": 5,
+    "RIR": 6,
     "Reps": 12,
-    "Percent": 0.55
+    "Percent": 0.557
   },
   {
-    "RPE": 5,
+    "RIR": 6,
     "Reps": 13,
-    "Percent": 0.54
+    "Percent": 0.544
   },
   {
-    "RPE": 5,
+    "RIR": 6,
     "Reps": 14,
-    "Percent": 0.53
+    "Percent": 0.532
   },
   {
-    "RPE": 5,
+    "RIR": 6,
     "Reps": 15,
     "Percent": 0.52
   },
   {
-    "RPE": 5,
+    "RIR": 6,
     "Reps": 16,
-    "Percent": 0.51
+    "Percent": 0.509
   },
   {
-    "RPE": 5,
+    "RIR": 6,
     "Reps": 17,
-    "Percent": 0.5
+    "Percent": 0.498
   },
   {
-    "RPE": 4,
+    "RIR": 6,
+    "Reps": 18,
+    "Percent": 0.488
+  },
+  {
+    "RIR": 6,
+    "Reps": 19,
+    "Percent": 0.477
+  },
+  {
+    "RIR": 6,
+    "Reps": 20,
+    "Percent": 0.468
+  },
+  {
+    "RIR": 6,
+    "Reps": 21,
+    "Percent": 0.458
+  },
+  {
+    "RIR": 6,
+    "Reps": 22,
+    "Percent": 0.449
+  },
+  {
+    "RIR": 6,
+    "Reps": 23,
+    "Percent": 0.44
+  },
+  {
+    "RIR": 6,
+    "Reps": 24,
+    "Percent": 0.432
+  },
+  {
+    "RIR": 7,
     "Reps": 1,
-    "Percent": 0.77
+    "Percent": 0.786
   },
   {
-    "RPE": 4,
+    "RIR": 7,
     "Reps": 2,
-    "Percent": 0.74
+    "Percent": 0.762
   },
   {
-    "RPE": 4,
+    "RIR": 7,
     "Reps": 3,
-    "Percent": 0.71
+    "Percent": 0.739
   },
   {
-    "RPE": 4,
+    "RIR": 7,
     "Reps": 4,
-    "Percent": 0.69
+    "Percent": 0.707
   },
   {
-    "RPE": 4,
+    "RIR": 7,
     "Reps": 5,
-    "Percent": 0.67
+    "Percent": 0.68
   },
   {
-    "RPE": 4,
+    "RIR": 7,
     "Reps": 6,
-    "Percent": 0.65
+    "Percent": 0.653
   },
   {
-    "RPE": 4,
+    "RIR": 7,
     "Reps": 7,
-    "Percent": 0.63
+    "Percent": 0.626
   },
   {
-    "RPE": 4,
+    "RIR": 7,
     "Reps": 8,
-    "Percent": 0.61
+    "Percent": 0.599
   },
   {
-    "RPE": 4,
+    "RIR": 7,
     "Reps": 9,
-    "Percent": 0.59
+    "Percent": 0.584
   },
   {
-    "RPE": 4,
+    "RIR": 7,
     "Reps": 10,
     "Percent": 0.57
   },
   {
-    "RPE": 4,
+    "RIR": 7,
     "Reps": 11,
-    "Percent": 0.55
+    "Percent": 0.557
   },
   {
-    "RPE": 4,
+    "RIR": 7,
     "Reps": 12,
-    "Percent": 0.54
+    "Percent": 0.544
   },
   {
-    "RPE": 4,
+    "RIR": 7,
     "Reps": 13,
-    "Percent": 0.53
+    "Percent": 0.532
   },
   {
-    "RPE": 4,
+    "RIR": 7,
     "Reps": 14,
     "Percent": 0.52
   },
   {
-    "RPE": 4,
+    "RIR": 7,
     "Reps": 15,
-    "Percent": 0.51
+    "Percent": 0.509
   },
   {
-    "RPE": 4,
+    "RIR": 7,
     "Reps": 16,
-    "Percent": 0.5
+    "Percent": 0.498
   },
   {
-    "RPE": 4,
+    "RIR": 7,
     "Reps": 17,
-    "Percent": 0.49
+    "Percent": 0.488
   },
   {
-    "RPE": 3,
+    "RIR": 7,
+    "Reps": 18,
+    "Percent": 0.477
+  },
+  {
+    "RIR": 7,
+    "Reps": 19,
+    "Percent": 0.468
+  },
+  {
+    "RIR": 7,
+    "Reps": 20,
+    "Percent": 0.458
+  },
+  {
+    "RIR": 7,
+    "Reps": 21,
+    "Percent": 0.449
+  },
+  {
+    "RIR": 7,
+    "Reps": 22,
+    "Percent": 0.44
+  },
+  {
+    "RIR": 7,
+    "Reps": 23,
+    "Percent": 0.432
+  },
+  {
+    "RIR": 8,
     "Reps": 1,
-    "Percent": 0.74
+    "Percent": 0.762
   },
   {
-    "RPE": 3,
+    "RIR": 8,
     "Reps": 2,
-    "Percent": 0.71
+    "Percent": 0.739
   },
   {
-    "RPE": 3,
+    "RIR": 8,
     "Reps": 3,
-    "Percent": 0.69
+    "Percent": 0.707
   },
   {
-    "RPE": 3,
+    "RIR": 8,
     "Reps": 4,
-    "Percent": 0.67
+    "Percent": 0.68
   },
   {
-    "RPE": 3,
+    "RIR": 8,
     "Reps": 5,
-    "Percent": 0.65
+    "Percent": 0.653
   },
   {
-    "RPE": 3,
+    "RIR": 8,
     "Reps": 6,
-    "Percent": 0.63
+    "Percent": 0.626
   },
   {
-    "RPE": 3,
+    "RIR": 8,
     "Reps": 7,
-    "Percent": 0.61
+    "Percent": 0.599
   },
   {
-    "RPE": 3,
+    "RIR": 8,
     "Reps": 8,
-    "Percent": 0.59
+    "Percent": 0.584
   },
   {
-    "RPE": 3,
+    "RIR": 8,
     "Reps": 9,
     "Percent": 0.57
   },
   {
-    "RPE": 3,
+    "RIR": 8,
     "Reps": 10,
-    "Percent": 0.55
+    "Percent": 0.557
   },
   {
-    "RPE": 3,
+    "RIR": 8,
     "Reps": 11,
-    "Percent": 0.54
+    "Percent": 0.544
   },
   {
-    "RPE": 3,
+    "RIR": 8,
     "Reps": 12,
-    "Percent": 0.53
+    "Percent": 0.532
   },
   {
-    "RPE": 3,
+    "RIR": 8,
     "Reps": 13,
     "Percent": 0.52
   },
   {
-    "RPE": 3,
+    "RIR": 8,
     "Reps": 14,
-    "Percent": 0.51
+    "Percent": 0.509
   },
   {
-    "RPE": 3,
+    "RIR": 8,
     "Reps": 15,
-    "Percent": 0.5
+    "Percent": 0.498
   },
   {
-    "RPE": 3,
+    "RIR": 8,
     "Reps": 16,
-    "Percent": 0.49
+    "Percent": 0.488
   },
   {
-    "RPE": 3,
+    "RIR": 8,
     "Reps": 17,
-    "Percent": 0.48
+    "Percent": 0.477
   },
   {
-    "RPE": 2,
+    "RIR": 8,
+    "Reps": 18,
+    "Percent": 0.468
+  },
+  {
+    "RIR": 8,
+    "Reps": 19,
+    "Percent": 0.458
+  },
+  {
+    "RIR": 8,
+    "Reps": 20,
+    "Percent": 0.449
+  },
+  {
+    "RIR": 8,
+    "Reps": 21,
+    "Percent": 0.44
+  },
+  {
+    "RIR": 8,
+    "Reps": 22,
+    "Percent": 0.432
+  },
+  {
+    "RIR": 9,
     "Reps": 1,
-    "Percent": 0.71
+    "Percent": 0.739
   },
   {
-    "RPE": 2,
+    "RIR": 9,
     "Reps": 2,
-    "Percent": 0.69
+    "Percent": 0.707
   },
   {
-    "RPE": 2,
+    "RIR": 9,
     "Reps": 3,
-    "Percent": 0.67
+    "Percent": 0.68
   },
   {
-    "RPE": 2,
+    "RIR": 9,
     "Reps": 4,
-    "Percent": 0.65
+    "Percent": 0.653
   },
   {
-    "RPE": 2,
+    "RIR": 9,
     "Reps": 5,
-    "Percent": 0.63
+    "Percent": 0.626
   },
   {
-    "RPE": 2,
+    "RIR": 9,
     "Reps": 6,
-    "Percent": 0.61
+    "Percent": 0.599
   },
   {
-    "RPE": 2,
+    "RIR": 9,
     "Reps": 7,
-    "Percent": 0.59
+    "Percent": 0.584
   },
   {
-    "RPE": 2,
+    "RIR": 9,
     "Reps": 8,
     "Percent": 0.57
   },
   {
-    "RPE": 2,
+    "RIR": 9,
     "Reps": 9,
-    "Percent": 0.55
+    "Percent": 0.557
   },
   {
-    "RPE": 2,
+    "RIR": 9,
     "Reps": 10,
-    "Percent": 0.54
+    "Percent": 0.544
   },
   {
-    "RPE": 2,
+    "RIR": 9,
     "Reps": 11,
-    "Percent": 0.53
+    "Percent": 0.532
   },
   {
-    "RPE": 2,
+    "RIR": 9,
     "Reps": 12,
     "Percent": 0.52
   },
   {
-    "RPE": 2,
+    "RIR": 9,
     "Reps": 13,
-    "Percent": 0.51
+    "Percent": 0.509
   },
   {
-    "RPE": 2,
+    "RIR": 9,
     "Reps": 14,
-    "Percent": 0.5
+    "Percent": 0.498
   },
   {
-    "RPE": 2,
+    "RIR": 9,
     "Reps": 15,
-    "Percent": 0.49
+    "Percent": 0.488
   },
   {
-    "RPE": 2,
+    "RIR": 9,
     "Reps": 16,
-    "Percent": 0.48
+    "Percent": 0.477
   },
   {
-    "RPE": 2,
+    "RIR": 9,
     "Reps": 17,
-    "Percent": 0.47
+    "Percent": 0.468
   },
   {
-    "RPE": 1,
+    "RIR": 9,
+    "Reps": 18,
+    "Percent": 0.458
+  },
+  {
+    "RIR": 9,
+    "Reps": 19,
+    "Percent": 0.449
+  },
+  {
+    "RIR": 9,
+    "Reps": 20,
+    "Percent": 0.44
+  },
+  {
+    "RIR": 9,
+    "Reps": 21,
+    "Percent": 0.432
+  },
+  {
+    "RIR": 10,
     "Reps": 1,
-    "Percent": 0.69
+    "Percent": 0.707
   },
   {
-    "RPE": 1,
+    "RIR": 10,
     "Reps": 2,
-    "Percent": 0.67
+    "Percent": 0.68
   },
   {
-    "RPE": 1,
+    "RIR": 10,
     "Reps": 3,
-    "Percent": 0.65
+    "Percent": 0.653
   },
   {
-    "RPE": 1,
+    "RIR": 10,
     "Reps": 4,
-    "Percent": 0.63
+    "Percent": 0.626
   },
   {
-    "RPE": 1,
+    "RIR": 10,
     "Reps": 5,
-    "Percent": 0.61
+    "Percent": 0.599
   },
   {
-    "RPE": 1,
+    "RIR": 10,
     "Reps": 6,
-    "Percent": 0.59
+    "Percent": 0.584
   },
   {
-    "RPE": 1,
+    "RIR": 10,
     "Reps": 7,
     "Percent": 0.57
   },
   {
-    "RPE": 1,
+    "RIR": 10,
     "Reps": 8,
-    "Percent": 0.55
+    "Percent": 0.557
   },
   {
-    "RPE": 1,
+    "RIR": 10,
     "Reps": 9,
-    "Percent": 0.54
+    "Percent": 0.544
   },
   {
-    "RPE": 1,
+    "RIR": 10,
     "Reps": 10,
-    "Percent": 0.53
+    "Percent": 0.532
   },
   {
-    "RPE": 1,
+    "RIR": 10,
     "Reps": 11,
     "Percent": 0.52
   },
   {
-    "RPE": 1,
+    "RIR": 10,
     "Reps": 12,
-    "Percent": 0.51
+    "Percent": 0.509
   },
   {
-    "RPE": 1,
+    "RIR": 10,
     "Reps": 13,
-    "Percent": 0.5
+    "Percent": 0.498
   },
   {
-    "RPE": 1,
+    "RIR": 10,
     "Reps": 14,
-    "Percent": 0.49
+    "Percent": 0.488
   },
   {
-    "RPE": 1,
+    "RIR": 10,
     "Reps": 15,
-    "Percent": 0.48
+    "Percent": 0.477
   },
   {
-    "RPE": 1,
+    "RIR": 10,
     "Reps": 16,
-    "Percent": 0.47
+    "Percent": 0.468
   },
   {
-    "RPE": 1,
+    "RIR": 10,
     "Reps": 17,
-    "Percent": 0.46
+    "Percent": 0.458
+  },
+  {
+    "RIR": 10,
+    "Reps": 18,
+    "Percent": 0.449
+  },
+  {
+    "RIR": 10,
+    "Reps": 19,
+    "Percent": 0.44
+  },
+  {
+    "RIR": 10,
+    "Reps": 20,
+    "Percent": 0.432
   }
  ]

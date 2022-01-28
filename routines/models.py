@@ -93,20 +93,33 @@ class WorkoutExercise(models.Model):
 
 class WorkoutExerciseSet(models.Model):
     workout_exercise = models.ForeignKey(WorkoutExercise, related_name="sets", on_delete=models.CASCADE)
-    reps             = models.PositiveIntegerField(blank=True, null=True)
     weight           = models.DecimalField(max_digits=5, decimal_places=1, blank=True, null=True)
+    reps             = models.PositiveIntegerField(blank=True, null=True)
     rir              = models.PositiveIntegerField(blank=True, null=True) 
 
     def __str__(self):
         return f'{self.workout_exercise} - {self.reps} x {self.weight}kg @{self.rir}RIR'
 
     def save(self, *args, **kwargs):
+        #create user-rep-max instance 
         user = self.workout_exercise.workout.user
         exercise = self.workout_exercise.exercise
         rm = self.e_one_rep_max()
         user_rm = UserRM(user=user, exercise=exercise, one_rep_max=rm)
         user_rm.save()
-        return super().save(*args, **kwargs)   
+        super().save(*args, **kwargs)
+
+        #only add another set if this set is complete
+        if self.weight and self.reps and self.rir:
+            print("Do logic!")
+            WorkoutExerciseSet.objects.create(
+                workout_exercise = self.workout_exercise,
+                weight = self.weight,
+                reps = self.reps
+            )
+
+        
+
 
     def e_one_rep_max(self):
         #calculate the estimated 1RM for that exercise for that set
