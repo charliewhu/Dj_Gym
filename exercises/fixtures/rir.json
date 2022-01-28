@@ -1,0 +1,1927 @@
+[
+    {
+        "model":  "exercises.rir",
+        "id":  "1",
+        "fields" : { "rir":  "0",
+        "reps":  "1",
+        "percent":  "1"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "2",
+        "fields" : { "rir":  "0",
+        "reps":  "2",
+        "percent":  "0.955"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "3",
+        "fields" : { "rir":  "0",
+        "reps":  "3",
+        "percent":  "0.922"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "4",
+        "fields" : { "rir":  "0",
+        "reps":  "4",
+        "percent":  "0.892"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "5",
+        "fields" : { "rir":  "0",
+        "reps":  "5",
+        "percent":  "0.863"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "6",
+        "fields" : { "rir":  "0",
+        "reps":  "6",
+        "percent":  "0.837"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "7",
+        "fields" : { "rir":  "0",
+        "reps":  "7",
+        "percent":  "0.811"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "8",
+        "fields" : { "rir":  "0",
+        "reps":  "8",
+        "percent":  "0.786"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "9",
+        "fields" : { "rir":  "0",
+        "reps":  "9",
+        "percent":  "0.762"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "10",
+        "fields" : { "rir":  "0",
+        "reps":  "10",
+        "percent":  "0.739"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "11",
+        "fields" : { "rir":  "0",
+        "reps":  "11",
+        "percent":  "0.707"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "12",
+        "fields" : { "rir":  "0",
+        "reps":  "12",
+        "percent":  "0.68"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "13",
+        "fields" : { "rir":  "0",
+        "reps":  "13",
+        "percent":  "0.653"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "14",
+        "fields" : { "rir":  "0",
+        "reps":  "14",
+        "percent":  "0.626"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "15",
+        "fields" : { "rir":  "0",
+        "reps":  "15",
+        "percent":  "0.599"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "16",
+        "fields" : { "rir":  "0",
+        "reps":  "16",
+        "percent":  "0.584"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "17",
+        "fields" : { "rir":  "0",
+        "reps":  "17",
+        "percent":  "0.57"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "18",
+        "fields" : { "rir":  "0",
+        "reps":  "18",
+        "percent":  "0.557"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "19",
+        "fields" : { "rir":  "0",
+        "reps":  "19",
+        "percent":  "0.544"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "20",
+        "fields" : { "rir":  "0",
+        "reps":  "20",
+        "percent":  "0.532"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "21",
+        "fields" : { "rir":  "0",
+        "reps":  "21",
+        "percent":  "0.52"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "22",
+        "fields" : { "rir":  "0",
+        "reps":  "22",
+        "percent":  "0.509"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "23",
+        "fields" : { "rir":  "0",
+        "reps":  "23",
+        "percent":  "0.498"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "24",
+        "fields" : { "rir":  "0",
+        "reps":  "24",
+        "percent":  "0.488"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "25",
+        "fields" : { "rir":  "0",
+        "reps":  "25",
+        "percent":  "0.477"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "26",
+        "fields" : { "rir":  "0",
+        "reps":  "26",
+        "percent":  "0.468"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "27",
+        "fields" : { "rir":  "0",
+        "reps":  "27",
+        "percent":  "0.458"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "28",
+        "fields" : { "rir":  "0",
+        "reps":  "28",
+        "percent":  "0.449"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "29",
+        "fields" : { "rir":  "0",
+        "reps":  "29",
+        "percent":  "0.44"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "30",
+        "fields" : { "rir":  "0",
+        "reps":  "30",
+        "percent":  "0.432"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "31",
+        "fields" : { "rir":  "1",
+        "reps":  "1",
+        "percent":  "0.955"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "32",
+        "fields" : { "rir":  "1",
+        "reps":  "2",
+        "percent":  "0.922"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "33",
+        "fields" : { "rir":  "1",
+        "reps":  "3",
+        "percent":  "0.892"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "34",
+        "fields" : { "rir":  "1",
+        "reps":  "4",
+        "percent":  "0.863"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "35",
+        "fields" : { "rir":  "1",
+        "reps":  "5",
+        "percent":  "0.837"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "36",
+        "fields" : { "rir":  "1",
+        "reps":  "6",
+        "percent":  "0.811"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "37",
+        "fields" : { "rir":  "1",
+        "reps":  "7",
+        "percent":  "0.786"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "38",
+        "fields" : { "rir":  "1",
+        "reps":  "8",
+        "percent":  "0.762"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "39",
+        "fields" : { "rir":  "1",
+        "reps":  "9",
+        "percent":  "0.739"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "40",
+        "fields" : { "rir":  "1",
+        "reps":  "10",
+        "percent":  "0.707"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "41",
+        "fields" : { "rir":  "1",
+        "reps":  "11",
+        "percent":  "0.68"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "42",
+        "fields" : { "rir":  "1",
+        "reps":  "12",
+        "percent":  "0.653"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "43",
+        "fields" : { "rir":  "1",
+        "reps":  "13",
+        "percent":  "0.626"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "44",
+        "fields" : { "rir":  "1",
+        "reps":  "14",
+        "percent":  "0.599"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "45",
+        "fields" : { "rir":  "1",
+        "reps":  "15",
+        "percent":  "0.584"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "46",
+        "fields" : { "rir":  "1",
+        "reps":  "16",
+        "percent":  "0.57"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "47",
+        "fields" : { "rir":  "1",
+        "reps":  "17",
+        "percent":  "0.557"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "48",
+        "fields" : { "rir":  "1",
+        "reps":  "18",
+        "percent":  "0.544"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "49",
+        "fields" : { "rir":  "1",
+        "reps":  "19",
+        "percent":  "0.532"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "50",
+        "fields" : { "rir":  "1",
+        "reps":  "20",
+        "percent":  "0.52"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "51",
+        "fields" : { "rir":  "1",
+        "reps":  "21",
+        "percent":  "0.509"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "52",
+        "fields" : { "rir":  "1",
+        "reps":  "22",
+        "percent":  "0.498"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "53",
+        "fields" : { "rir":  "1",
+        "reps":  "23",
+        "percent":  "0.488"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "54",
+        "fields" : { "rir":  "1",
+        "reps":  "24",
+        "percent":  "0.477"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "55",
+        "fields" : { "rir":  "1",
+        "reps":  "25",
+        "percent":  "0.468"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "56",
+        "fields" : { "rir":  "1",
+        "reps":  "26",
+        "percent":  "0.458"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "57",
+        "fields" : { "rir":  "1",
+        "reps":  "27",
+        "percent":  "0.449"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "58",
+        "fields" : { "rir":  "1",
+        "reps":  "28",
+        "percent":  "0.44"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "59",
+        "fields" : { "rir":  "1",
+        "reps":  "29",
+        "percent":  "0.432"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "60",
+        "fields" : { "rir":  "2",
+        "reps":  "1",
+        "percent":  "0.922"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "61",
+        "fields" : { "rir":  "2",
+        "reps":  "2",
+        "percent":  "0.892"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "62",
+        "fields" : { "rir":  "2",
+        "reps":  "3",
+        "percent":  "0.863"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "63",
+        "fields" : { "rir":  "2",
+        "reps":  "4",
+        "percent":  "0.837"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "64",
+        "fields" : { "rir":  "2",
+        "reps":  "5",
+        "percent":  "0.811"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "65",
+        "fields" : { "rir":  "2",
+        "reps":  "6",
+        "percent":  "0.786"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "66",
+        "fields" : { "rir":  "2",
+        "reps":  "7",
+        "percent":  "0.762"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "67",
+        "fields" : { "rir":  "2",
+        "reps":  "8",
+        "percent":  "0.739"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "68",
+        "fields" : { "rir":  "2",
+        "reps":  "9",
+        "percent":  "0.707"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "69",
+        "fields" : { "rir":  "2",
+        "reps":  "10",
+        "percent":  "0.68"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "70",
+        "fields" : { "rir":  "2",
+        "reps":  "11",
+        "percent":  "0.653"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "71",
+        "fields" : { "rir":  "2",
+        "reps":  "12",
+        "percent":  "0.626"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "72",
+        "fields" : { "rir":  "2",
+        "reps":  "13",
+        "percent":  "0.599"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "73",
+        "fields" : { "rir":  "2",
+        "reps":  "14",
+        "percent":  "0.584"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "74",
+        "fields" : { "rir":  "2",
+        "reps":  "15",
+        "percent":  "0.57"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "75",
+        "fields" : { "rir":  "2",
+        "reps":  "16",
+        "percent":  "0.557"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "76",
+        "fields" : { "rir":  "2",
+        "reps":  "17",
+        "percent":  "0.544"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "77",
+        "fields" : { "rir":  "2",
+        "reps":  "18",
+        "percent":  "0.532"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "78",
+        "fields" : { "rir":  "2",
+        "reps":  "19",
+        "percent":  "0.52"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "79",
+        "fields" : { "rir":  "2",
+        "reps":  "20",
+        "percent":  "0.509"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "80",
+        "fields" : { "rir":  "2",
+        "reps":  "21",
+        "percent":  "0.498"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "81",
+        "fields" : { "rir":  "2",
+        "reps":  "22",
+        "percent":  "0.488"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "82",
+        "fields" : { "rir":  "2",
+        "reps":  "23",
+        "percent":  "0.477"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "83",
+        "fields" : { "rir":  "2",
+        "reps":  "24",
+        "percent":  "0.468"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "84",
+        "fields" : { "rir":  "2",
+        "reps":  "25",
+        "percent":  "0.458"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "85",
+        "fields" : { "rir":  "2",
+        "reps":  "26",
+        "percent":  "0.449"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "86",
+        "fields" : { "rir":  "2",
+        "reps":  "27",
+        "percent":  "0.44"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "87",
+        "fields" : { "rir":  "2",
+        "reps":  "28",
+        "percent":  "0.432"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "88",
+        "fields" : { "rir":  "3",
+        "reps":  "1",
+        "percent":  "0.892"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "89",
+        "fields" : { "rir":  "3",
+        "reps":  "2",
+        "percent":  "0.863"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "90",
+        "fields" : { "rir":  "3",
+        "reps":  "3",
+        "percent":  "0.837"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "91",
+        "fields" : { "rir":  "3",
+        "reps":  "4",
+        "percent":  "0.811"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "92",
+        "fields" : { "rir":  "3",
+        "reps":  "5",
+        "percent":  "0.786"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "93",
+        "fields" : { "rir":  "3",
+        "reps":  "6",
+        "percent":  "0.762"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "94",
+        "fields" : { "rir":  "3",
+        "reps":  "7",
+        "percent":  "0.739"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "95",
+        "fields" : { "rir":  "3",
+        "reps":  "8",
+        "percent":  "0.707"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "96",
+        "fields" : { "rir":  "3",
+        "reps":  "9",
+        "percent":  "0.68"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "97",
+        "fields" : { "rir":  "3",
+        "reps":  "10",
+        "percent":  "0.653"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "98",
+        "fields" : { "rir":  "3",
+        "reps":  "11",
+        "percent":  "0.626"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "99",
+        "fields" : { "rir":  "3",
+        "reps":  "12",
+        "percent":  "0.599"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "100",
+        "fields" : { "rir":  "3",
+        "reps":  "13",
+        "percent":  "0.584"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "101",
+        "fields" : { "rir":  "3",
+        "reps":  "14",
+        "percent":  "0.57"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "102",
+        "fields" : { "rir":  "3",
+        "reps":  "15",
+        "percent":  "0.557"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "103",
+        "fields" : { "rir":  "3",
+        "reps":  "16",
+        "percent":  "0.544"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "104",
+        "fields" : { "rir":  "3",
+        "reps":  "17",
+        "percent":  "0.532"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "105",
+        "fields" : { "rir":  "3",
+        "reps":  "18",
+        "percent":  "0.52"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "106",
+        "fields" : { "rir":  "3",
+        "reps":  "19",
+        "percent":  "0.509"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "107",
+        "fields" : { "rir":  "3",
+        "reps":  "20",
+        "percent":  "0.498"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "108",
+        "fields" : { "rir":  "3",
+        "reps":  "21",
+        "percent":  "0.488"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "109",
+        "fields" : { "rir":  "3",
+        "reps":  "22",
+        "percent":  "0.477"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "110",
+        "fields" : { "rir":  "3",
+        "reps":  "23",
+        "percent":  "0.468"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "111",
+        "fields" : { "rir":  "3",
+        "reps":  "24",
+        "percent":  "0.458"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "112",
+        "fields" : { "rir":  "3",
+        "reps":  "25",
+        "percent":  "0.449"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "113",
+        "fields" : { "rir":  "3",
+        "reps":  "26",
+        "percent":  "0.44"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "114",
+        "fields" : { "rir":  "3",
+        "reps":  "27",
+        "percent":  "0.432"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "115",
+        "fields" : { "rir":  "4",
+        "reps":  "1",
+        "percent":  "0.863"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "116",
+        "fields" : { "rir":  "4",
+        "reps":  "2",
+        "percent":  "0.837"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "117",
+        "fields" : { "rir":  "4",
+        "reps":  "3",
+        "percent":  "0.811"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "118",
+        "fields" : { "rir":  "4",
+        "reps":  "4",
+        "percent":  "0.786"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "119",
+        "fields" : { "rir":  "4",
+        "reps":  "5",
+        "percent":  "0.762"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "120",
+        "fields" : { "rir":  "4",
+        "reps":  "6",
+        "percent":  "0.739"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "121",
+        "fields" : { "rir":  "4",
+        "reps":  "7",
+        "percent":  "0.707"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "122",
+        "fields" : { "rir":  "4",
+        "reps":  "8",
+        "percent":  "0.68"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "123",
+        "fields" : { "rir":  "4",
+        "reps":  "9",
+        "percent":  "0.653"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "124",
+        "fields" : { "rir":  "4",
+        "reps":  "10",
+        "percent":  "0.626"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "125",
+        "fields" : { "rir":  "4",
+        "reps":  "11",
+        "percent":  "0.599"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "126",
+        "fields" : { "rir":  "4",
+        "reps":  "12",
+        "percent":  "0.584"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "127",
+        "fields" : { "rir":  "4",
+        "reps":  "13",
+        "percent":  "0.57"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "128",
+        "fields" : { "rir":  "4",
+        "reps":  "14",
+        "percent":  "0.557"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "129",
+        "fields" : { "rir":  "4",
+        "reps":  "15",
+        "percent":  "0.544"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "130",
+        "fields" : { "rir":  "4",
+        "reps":  "16",
+        "percent":  "0.532"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "131",
+        "fields" : { "rir":  "4",
+        "reps":  "17",
+        "percent":  "0.52"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "132",
+        "fields" : { "rir":  "4",
+        "reps":  "18",
+        "percent":  "0.509"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "133",
+        "fields" : { "rir":  "4",
+        "reps":  "19",
+        "percent":  "0.498"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "134",
+        "fields" : { "rir":  "4",
+        "reps":  "20",
+        "percent":  "0.488"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "135",
+        "fields" : { "rir":  "4",
+        "reps":  "21",
+        "percent":  "0.477"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "136",
+        "fields" : { "rir":  "4",
+        "reps":  "22",
+        "percent":  "0.468"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "137",
+        "fields" : { "rir":  "4",
+        "reps":  "23",
+        "percent":  "0.458"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "138",
+        "fields" : { "rir":  "4",
+        "reps":  "24",
+        "percent":  "0.449"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "139",
+        "fields" : { "rir":  "4",
+        "reps":  "25",
+        "percent":  "0.44"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "140",
+        "fields" : { "rir":  "4",
+        "reps":  "26",
+        "percent":  "0.432"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "141",
+        "fields" : { "rir":  "5",
+        "reps":  "1",
+        "percent":  "0.837"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "142",
+        "fields" : { "rir":  "5",
+        "reps":  "2",
+        "percent":  "0.811"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "143",
+        "fields" : { "rir":  "5",
+        "reps":  "3",
+        "percent":  "0.786"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "144",
+        "fields" : { "rir":  "5",
+        "reps":  "4",
+        "percent":  "0.762"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "145",
+        "fields" : { "rir":  "5",
+        "reps":  "5",
+        "percent":  "0.739"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "146",
+        "fields" : { "rir":  "5",
+        "reps":  "6",
+        "percent":  "0.707"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "147",
+        "fields" : { "rir":  "5",
+        "reps":  "7",
+        "percent":  "0.68"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "148",
+        "fields" : { "rir":  "5",
+        "reps":  "8",
+        "percent":  "0.653"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "149",
+        "fields" : { "rir":  "5",
+        "reps":  "9",
+        "percent":  "0.626"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "150",
+        "fields" : { "rir":  "5",
+        "reps":  "10",
+        "percent":  "0.599"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "151",
+        "fields" : { "rir":  "5",
+        "reps":  "11",
+        "percent":  "0.584"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "152",
+        "fields" : { "rir":  "5",
+        "reps":  "12",
+        "percent":  "0.57"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "153",
+        "fields" : { "rir":  "5",
+        "reps":  "13",
+        "percent":  "0.557"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "154",
+        "fields" : { "rir":  "5",
+        "reps":  "14",
+        "percent":  "0.544"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "155",
+        "fields" : { "rir":  "5",
+        "reps":  "15",
+        "percent":  "0.532"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "156",
+        "fields" : { "rir":  "5",
+        "reps":  "16",
+        "percent":  "0.52"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "157",
+        "fields" : { "rir":  "5",
+        "reps":  "17",
+        "percent":  "0.509"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "158",
+        "fields" : { "rir":  "5",
+        "reps":  "18",
+        "percent":  "0.498"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "159",
+        "fields" : { "rir":  "5",
+        "reps":  "19",
+        "percent":  "0.488"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "160",
+        "fields" : { "rir":  "5",
+        "reps":  "20",
+        "percent":  "0.477"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "161",
+        "fields" : { "rir":  "5",
+        "reps":  "21",
+        "percent":  "0.468"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "162",
+        "fields" : { "rir":  "5",
+        "reps":  "22",
+        "percent":  "0.458"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "163",
+        "fields" : { "rir":  "5",
+        "reps":  "23",
+        "percent":  "0.449"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "164",
+        "fields" : { "rir":  "5",
+        "reps":  "24",
+        "percent":  "0.44"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "165",
+        "fields" : { "rir":  "5",
+        "reps":  "25",
+        "percent":  "0.432"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "166",
+        "fields" : { "rir":  "6",
+        "reps":  "1",
+        "percent":  "0.811"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "167",
+        "fields" : { "rir":  "6",
+        "reps":  "2",
+        "percent":  "0.786"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "168",
+        "fields" : { "rir":  "6",
+        "reps":  "3",
+        "percent":  "0.762"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "169",
+        "fields" : { "rir":  "6",
+        "reps":  "4",
+        "percent":  "0.739"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "170",
+        "fields" : { "rir":  "6",
+        "reps":  "5",
+        "percent":  "0.707"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "171",
+        "fields" : { "rir":  "6",
+        "reps":  "6",
+        "percent":  "0.68"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "172",
+        "fields" : { "rir":  "6",
+        "reps":  "7",
+        "percent":  "0.653"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "173",
+        "fields" : { "rir":  "6",
+        "reps":  "8",
+        "percent":  "0.626"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "174",
+        "fields" : { "rir":  "6",
+        "reps":  "9",
+        "percent":  "0.599"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "175",
+        "fields" : { "rir":  "6",
+        "reps":  "10",
+        "percent":  "0.584"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "176",
+        "fields" : { "rir":  "6",
+        "reps":  "11",
+        "percent":  "0.57"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "177",
+        "fields" : { "rir":  "6",
+        "reps":  "12",
+        "percent":  "0.557"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "178",
+        "fields" : { "rir":  "6",
+        "reps":  "13",
+        "percent":  "0.544"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "179",
+        "fields" : { "rir":  "6",
+        "reps":  "14",
+        "percent":  "0.532"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "180",
+        "fields" : { "rir":  "6",
+        "reps":  "15",
+        "percent":  "0.52"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "181",
+        "fields" : { "rir":  "6",
+        "reps":  "16",
+        "percent":  "0.509"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "182",
+        "fields" : { "rir":  "6",
+        "reps":  "17",
+        "percent":  "0.498"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "183",
+        "fields" : { "rir":  "6",
+        "reps":  "18",
+        "percent":  "0.488"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "184",
+        "fields" : { "rir":  "6",
+        "reps":  "19",
+        "percent":  "0.477"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "185",
+        "fields" : { "rir":  "6",
+        "reps":  "20",
+        "percent":  "0.468"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "186",
+        "fields" : { "rir":  "6",
+        "reps":  "21",
+        "percent":  "0.458"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "187",
+        "fields" : { "rir":  "6",
+        "reps":  "22",
+        "percent":  "0.449"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "188",
+        "fields" : { "rir":  "6",
+        "reps":  "23",
+        "percent":  "0.44"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "189",
+        "fields" : { "rir":  "6",
+        "reps":  "24",
+        "percent":  "0.432"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "190",
+        "fields" : { "rir":  "7",
+        "reps":  "1",
+        "percent":  "0.786"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "191",
+        "fields" : { "rir":  "7",
+        "reps":  "2",
+        "percent":  "0.762"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "192",
+        "fields" : { "rir":  "7",
+        "reps":  "3",
+        "percent":  "0.739"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "193",
+        "fields" : { "rir":  "7",
+        "reps":  "4",
+        "percent":  "0.707"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "194",
+        "fields" : { "rir":  "7",
+        "reps":  "5",
+        "percent":  "0.68"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "195",
+        "fields" : { "rir":  "7",
+        "reps":  "6",
+        "percent":  "0.653"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "196",
+        "fields" : { "rir":  "7",
+        "reps":  "7",
+        "percent":  "0.626"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "197",
+        "fields" : { "rir":  "7",
+        "reps":  "8",
+        "percent":  "0.599"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "198",
+        "fields" : { "rir":  "7",
+        "reps":  "9",
+        "percent":  "0.584"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "199",
+        "fields" : { "rir":  "7",
+        "reps":  "10",
+        "percent":  "0.57"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "200",
+        "fields" : { "rir":  "7",
+        "reps":  "11",
+        "percent":  "0.557"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "201",
+        "fields" : { "rir":  "7",
+        "reps":  "12",
+        "percent":  "0.544"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "202",
+        "fields" : { "rir":  "7",
+        "reps":  "13",
+        "percent":  "0.532"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "203",
+        "fields" : { "rir":  "7",
+        "reps":  "14",
+        "percent":  "0.52"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "204",
+        "fields" : { "rir":  "7",
+        "reps":  "15",
+        "percent":  "0.509"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "205",
+        "fields" : { "rir":  "7",
+        "reps":  "16",
+        "percent":  "0.498"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "206",
+        "fields" : { "rir":  "7",
+        "reps":  "17",
+        "percent":  "0.488"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "207",
+        "fields" : { "rir":  "7",
+        "reps":  "18",
+        "percent":  "0.477"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "208",
+        "fields" : { "rir":  "7",
+        "reps":  "19",
+        "percent":  "0.468"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "209",
+        "fields" : { "rir":  "7",
+        "reps":  "20",
+        "percent":  "0.458"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "210",
+        "fields" : { "rir":  "7",
+        "reps":  "21",
+        "percent":  "0.449"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "211",
+        "fields" : { "rir":  "7",
+        "reps":  "22",
+        "percent":  "0.44"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "212",
+        "fields" : { "rir":  "7",
+        "reps":  "23",
+        "percent":  "0.432"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "213",
+        "fields" : { "rir":  "8",
+        "reps":  "1",
+        "percent":  "0.762"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "214",
+        "fields" : { "rir":  "8",
+        "reps":  "2",
+        "percent":  "0.739"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "215",
+        "fields" : { "rir":  "8",
+        "reps":  "3",
+        "percent":  "0.707"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "216",
+        "fields" : { "rir":  "8",
+        "reps":  "4",
+        "percent":  "0.68"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "217",
+        "fields" : { "rir":  "8",
+        "reps":  "5",
+        "percent":  "0.653"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "218",
+        "fields" : { "rir":  "8",
+        "reps":  "6",
+        "percent":  "0.626"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "219",
+        "fields" : { "rir":  "8",
+        "reps":  "7",
+        "percent":  "0.599"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "220",
+        "fields" : { "rir":  "8",
+        "reps":  "8",
+        "percent":  "0.584"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "221",
+        "fields" : { "rir":  "8",
+        "reps":  "9",
+        "percent":  "0.57"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "222",
+        "fields" : { "rir":  "8",
+        "reps":  "10",
+        "percent":  "0.557"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "223",
+        "fields" : { "rir":  "8",
+        "reps":  "11",
+        "percent":  "0.544"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "224",
+        "fields" : { "rir":  "8",
+        "reps":  "12",
+        "percent":  "0.532"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "225",
+        "fields" : { "rir":  "8",
+        "reps":  "13",
+        "percent":  "0.52"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "226",
+        "fields" : { "rir":  "8",
+        "reps":  "14",
+        "percent":  "0.509"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "227",
+        "fields" : { "rir":  "8",
+        "reps":  "15",
+        "percent":  "0.498"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "228",
+        "fields" : { "rir":  "8",
+        "reps":  "16",
+        "percent":  "0.488"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "229",
+        "fields" : { "rir":  "8",
+        "reps":  "17",
+        "percent":  "0.477"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "230",
+        "fields" : { "rir":  "8",
+        "reps":  "18",
+        "percent":  "0.468"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "231",
+        "fields" : { "rir":  "8",
+        "reps":  "19",
+        "percent":  "0.458"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "232",
+        "fields" : { "rir":  "8",
+        "reps":  "20",
+        "percent":  "0.449"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "233",
+        "fields" : { "rir":  "8",
+        "reps":  "21",
+        "percent":  "0.44"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "234",
+        "fields" : { "rir":  "8",
+        "reps":  "22",
+        "percent":  "0.432"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "235",
+        "fields" : { "rir":  "9",
+        "reps":  "1",
+        "percent":  "0.739"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "236",
+        "fields" : { "rir":  "9",
+        "reps":  "2",
+        "percent":  "0.707"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "237",
+        "fields" : { "rir":  "9",
+        "reps":  "3",
+        "percent":  "0.68"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "238",
+        "fields" : { "rir":  "9",
+        "reps":  "4",
+        "percent":  "0.653"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "239",
+        "fields" : { "rir":  "9",
+        "reps":  "5",
+        "percent":  "0.626"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "240",
+        "fields" : { "rir":  "9",
+        "reps":  "6",
+        "percent":  "0.599"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "241",
+        "fields" : { "rir":  "9",
+        "reps":  "7",
+        "percent":  "0.584"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "242",
+        "fields" : { "rir":  "9",
+        "reps":  "8",
+        "percent":  "0.57"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "243",
+        "fields" : { "rir":  "9",
+        "reps":  "9",
+        "percent":  "0.557"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "244",
+        "fields" : { "rir":  "9",
+        "reps":  "10",
+        "percent":  "0.544"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "245",
+        "fields" : { "rir":  "9",
+        "reps":  "11",
+        "percent":  "0.532"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "246",
+        "fields" : { "rir":  "9",
+        "reps":  "12",
+        "percent":  "0.52"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "247",
+        "fields" : { "rir":  "9",
+        "reps":  "13",
+        "percent":  "0.509"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "248",
+        "fields" : { "rir":  "9",
+        "reps":  "14",
+        "percent":  "0.498"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "249",
+        "fields" : { "rir":  "9",
+        "reps":  "15",
+        "percent":  "0.488"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "250",
+        "fields" : { "rir":  "9",
+        "reps":  "16",
+        "percent":  "0.477"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "251",
+        "fields" : { "rir":  "9",
+        "reps":  "17",
+        "percent":  "0.468"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "252",
+        "fields" : { "rir":  "9",
+        "reps":  "18",
+        "percent":  "0.458"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "253",
+        "fields" : { "rir":  "9",
+        "reps":  "19",
+        "percent":  "0.449"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "254",
+        "fields" : { "rir":  "9",
+        "reps":  "20",
+        "percent":  "0.44"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "255",
+        "fields" : { "rir":  "9",
+        "reps":  "21",
+        "percent":  "0.432"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "256",
+        "fields" : { "rir":  "10",
+        "reps":  "1",
+        "percent":  "0.707"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "257",
+        "fields" : { "rir":  "10",
+        "reps":  "2",
+        "percent":  "0.68"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "258",
+        "fields" : { "rir":  "10",
+        "reps":  "3",
+        "percent":  "0.653"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "259",
+        "fields" : { "rir":  "10",
+        "reps":  "4",
+        "percent":  "0.626"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "260",
+        "fields" : { "rir":  "10",
+        "reps":  "5",
+        "percent":  "0.599"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "261",
+        "fields" : { "rir":  "10",
+        "reps":  "6",
+        "percent":  "0.584"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "262",
+        "fields" : { "rir":  "10",
+        "reps":  "7",
+        "percent":  "0.57"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "263",
+        "fields" : { "rir":  "10",
+        "reps":  "8",
+        "percent":  "0.557"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "264",
+        "fields" : { "rir":  "10",
+        "reps":  "9",
+        "percent":  "0.544"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "265",
+        "fields" : { "rir":  "10",
+        "reps":  "10",
+        "percent":  "0.532"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "266",
+        "fields" : { "rir":  "10",
+        "reps":  "11",
+        "percent":  "0.52"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "267",
+        "fields" : { "rir":  "10",
+        "reps":  "12",
+        "percent":  "0.509"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "268",
+        "fields" : { "rir":  "10",
+        "reps":  "13",
+        "percent":  "0.498"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "269",
+        "fields" : { "rir":  "10",
+        "reps":  "14",
+        "percent":  "0.488"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "270",
+        "fields" : { "rir":  "10",
+        "reps":  "15",
+        "percent":  "0.477"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "271",
+        "fields" : { "rir":  "10",
+        "reps":  "16",
+        "percent":  "0.468"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "272",
+        "fields" : { "rir":  "10",
+        "reps":  "17",
+        "percent":  "0.458"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "273",
+        "fields" : { "rir":  "10",
+        "reps":  "18",
+        "percent":  "0.449"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "274",
+        "fields" : { "rir":  "10",
+        "reps":  "19",
+        "percent":  "0.44"
+    }},
+    {
+        "model":  "exercises.rir",
+        "id":  "275",
+        "fields" : { "rir":  "10",
+        "reps":  "20",
+        "percent":  "0.432"
+    }}
+]

@@ -2,6 +2,12 @@ from django.db import models
 
 
 
+class Rir(models.Model):
+    rir = models.PositiveIntegerField()
+    reps = models.PositiveIntegerField()
+    percent = models.FloatField()
+
+
 class Force(models.Model):
     """eg Hip Hinge, Vertical Push"""
     name = models.CharField(max_length=60, unique=True)
