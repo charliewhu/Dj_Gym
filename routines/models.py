@@ -107,21 +107,16 @@ class WorkoutExerciseSet(models.Model):
         #create user-rep-max instance
         user = self.workout_exercise.workout.user
         exercise = self.workout_exercise.exercise
-
-        if self.rir and self.rir < 5:
-            rm = self.e_one_rep_max()
-            user_rm = UserRM(user=user, exercise=exercise, one_rep_max=rm)
-            user_rm.save()
-
+        self.save_one_rep_max(user, exercise)
         super().save(*args, **kwargs)
-
-        #only add another set if this set is complete
+        self.next_set(user, exercise)
+        
+    def next_set(self, user, exercise):
         if self.weight and self.reps and self.rir:
             print("Do logic!")
-
             one_rm = UserRM.one_rm_manager.latest_one_rm(user=user, exercise=exercise) or None
-
-            print(one_rm)
+            user_profile = UserProfile.objects.get(user=user)
+            training_focus = user_profile.training_focus
 
             if one_rm['one_rep_max__max']:
                 print("in IF 1RM block")
@@ -129,35 +124,50 @@ class WorkoutExerciseSet(models.Model):
                 pass
 
             else:
-                user_profile = UserProfile.objects.get(user=user)
-                min_rir = user_profile.training_focus.min_rir
-                max_rir = user_profile.training_focus.max_rir
+                print("In unknown 1RM block")
+                if str(training_focus) == "Bodybuilding":
+                    print("In bodybuilding block")
+                    self.next_set_bodybuilding(user_profile)                
 
-                current_percent = Rir.objects.get(reps=self.reps, rir=self.rir).percent
-                target_min_percent = Rir.objects.get(reps=self.reps, rir=max_rir).percent
+    def next_set_bodybuilding(self, user_profile):
+        """
+        WHAT IF I JUST DID 100KG X 3 @5rir. HOW TO ADJUST FOR REPS NEEDING TO BE IN 8-12 REP RANGE?
+        A: Set the RPE and leave reps blank
+        """
+        min_rir = user_profile.training_focus.min_rir
+        max_rir = user_profile.training_focus.max_rir
 
+        current_percent = Rir.objects.get(reps=self.reps, rir=self.rir).percent
+        target_min_percent = Rir.objects.get(reps=self.reps, rir=max_rir).percent
 
-                percent_increase = min( 1.15, target_min_percent / current_percent) #dont increase more than 15%
+        percent_increase = min( 1.15, target_min_percent / current_percent) #dont increase more than 15%
 
-                next_weight = float(self.weight) * percent_increase
-                next_weight = rounder(next_weight, 2.5)       
+        next_weight = float(self.weight) * percent_increase
+        next_weight = rounder(next_weight, 2.5)       
 
-                WorkoutExerciseSet.objects.create(
-                    workout_exercise = self.workout_exercise,
-                    weight = next_weight,
-                    reps = self.reps
-                )
+        WorkoutExerciseSet.objects.create(
+            workout_exercise = self.workout_exercise,
+            weight = next_weight,
+            reps = self.reps
+        )
             
-
-        
-
-
     def e_one_rep_max(self):
         #calculate the estimated 1RM for that exercise for that set
         reps_divider = decimal.Decimal(self.reps/30)
         rm = self.weight * (1 + reps_divider)
         rounded_rm = round(rm)
         return rounded_rm
+
+    def save_one_rep_max(self, user, exercise):
+        if self.rir and self.reps and self.weight:
+            if self.rir < 5 and self.reps <= 10:
+                rm = self.e_one_rep_max()
+                user_rm = UserRM(
+                    user=user, 
+                    exercise=exercise, 
+                    one_rep_max=rm
+                )
+                user_rm.save()
 
     def exertion_load(self):
         """Total exertion load for a set"""

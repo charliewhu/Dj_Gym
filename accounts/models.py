@@ -57,6 +57,7 @@ class TrainingFocus(models.Model):
     max_reps = models.PositiveIntegerField(null=True)
     min_rir  = models.PositiveIntegerField(null=True)
     max_rir  = models.PositiveIntegerField(null=True)
+    #what % Bodybuilding to Powerlifting etc for each of these phases?
 
     def __str__(self):
         return self.name
