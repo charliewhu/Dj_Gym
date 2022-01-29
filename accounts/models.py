@@ -46,7 +46,7 @@ class Gender(models.Model):
         return self.name
 
 
-class TrainingPhase(models.Model):
+class TrainingFocus(models.Model):
     """
     Training phases to choose from in UserProfile
     eg. Bodybuilding, Powerbuilding, PL Hypertrophy,
@@ -90,7 +90,7 @@ class UserProfile(models.Model):
     weight        = models.PositiveSmallIntegerField(null=True)
     birth_date    = models.DateField(null=True)
     gender        = models.ForeignKey(Gender, null=True, on_delete=models.SET_NULL)
-    training_focus= models.ForeignKey(TrainingPhase, null=True,  on_delete=models.SET_NULL)
+    training_focus= models.ForeignKey(TrainingFocus, null=True,  on_delete=models.SET_NULL)
     training_days = models.PositiveIntegerField(default=4, validators=[MinValueValidator(1), MaxValueValidator(7)])
 
     def __str__(self):

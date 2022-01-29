@@ -1,9 +1,12 @@
 import math
 import decimal
+from .utils import rounder
 
 from django.db import models
-from accounts.models import User, UserRM
-from exercises.models import Exercise, MuscleGroup
+from django.core.validators import MaxValueValidator
+
+from accounts.models import User, UserProfile, UserRM
+from exercises.models import Exercise, MuscleGroup, Rir
 from routines.managers import ReadinessAnswerManager
 
 
@@ -95,28 +98,56 @@ class WorkoutExerciseSet(models.Model):
     workout_exercise = models.ForeignKey(WorkoutExercise, related_name="sets", on_delete=models.CASCADE)
     weight           = models.DecimalField(max_digits=5, decimal_places=1, blank=True, null=True)
     reps             = models.PositiveIntegerField(blank=True, null=True)
-    rir              = models.PositiveIntegerField(blank=True, null=True) 
+    rir              = models.PositiveIntegerField(blank=True, null=True, validators=[MaxValueValidator(5)]) 
 
     def __str__(self):
         return f'{self.workout_exercise} - {self.reps} x {self.weight}kg @{self.rir}RIR'
 
     def save(self, *args, **kwargs):
-        #create user-rep-max instance 
+        #create user-rep-max instance
         user = self.workout_exercise.workout.user
         exercise = self.workout_exercise.exercise
-        rm = self.e_one_rep_max()
-        user_rm = UserRM(user=user, exercise=exercise, one_rep_max=rm)
-        user_rm.save()
+
+        if self.rir and self.rir < 5:
+            rm = self.e_one_rep_max()
+            user_rm = UserRM(user=user, exercise=exercise, one_rep_max=rm)
+            user_rm.save()
+
         super().save(*args, **kwargs)
 
         #only add another set if this set is complete
         if self.weight and self.reps and self.rir:
             print("Do logic!")
-            WorkoutExerciseSet.objects.create(
-                workout_exercise = self.workout_exercise,
-                weight = self.weight,
-                reps = self.reps
-            )
+
+            one_rm = UserRM.one_rm_manager.latest_one_rm(user=user, exercise=exercise) or None
+
+            print(one_rm)
+
+            if one_rm['one_rep_max__max']:
+                print("in IF 1RM block")
+                """other logic if they have a known 1RM"""
+                pass
+
+            else:
+                user_profile = UserProfile.objects.get(user=user)
+                min_rir = user_profile.training_focus.min_rir
+                max_rir = user_profile.training_focus.max_rir
+
+                current_percent = Rir.objects.get(reps=self.reps, rir=self.rir).percent
+                target_min_percent = Rir.objects.get(reps=self.reps, rir=max_rir).percent
+
+
+                percent_increase = min( 1.15, target_min_percent / current_percent) #dont increase more than 15%
+
+                next_weight = float(self.weight) * percent_increase
+                next_weight = rounder(next_weight, 2.5)       
+
+                WorkoutExerciseSet.objects.create(
+                    workout_exercise = self.workout_exercise,
+                    weight = next_weight,
+                    reps = self.reps
+                )
+            
 
         
 
