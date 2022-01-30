@@ -118,41 +118,56 @@ class WorkoutExerciseSet(models.Model):
             user_profile = UserProfile.objects.get(user=user)
             training_focus = user_profile.training_focus
 
-            if one_rm['one_rep_max__max']:
-                print("in IF 1RM block")
-                """other logic if they have a known 1RM"""
-                pass
+            if str(training_focus) == "Bodybuilding":
+                print("In bodybuilding block")
+                self.next_set_rep_drop(user_profile, one_rm)
 
+    def next_set_rep_drop(self, user_profile, one_rm):
+        if one_rm['one_rep_max__max']:
+            print("in IF 1RM block")
+            """other logic if they have a known 1RM"""
+            """
+                We know their max, we know a rep range, an RIR range, a % range
+                Check if the set parameters were actually in this range
+            """
+            pass
+
+        else:
+            min_rir = user_profile.training_focus.min_rir
+            max_rir = user_profile.training_focus.max_rir
+            min_reps = user_profile.training_focus.min_reps
+
+            if self.reps < min_reps:
+                """
+                WHAT IF I JUST DID 100KG X 3 @5rir. HOW TO ADJUST FOR REPS NEEDING TO BE IN 8-12 REP RANGE?
+                A: Set the RPE and leave reps blank
+                """
+                next_weight = float(self.weight) * 1.1
+                next_weight = rounder(next_weight, 2.5)
+                next_rir = max_rir
+                WorkoutExerciseSet.objects.create(
+                    workout_exercise = self.workout_exercise,
+                    weight = next_weight,
+                    rir = next_rir
+                )
             else:
-                print("In unknown 1RM block")
-                if str(training_focus) == "Bodybuilding":
-                    print("In bodybuilding block")
-                    self.next_set_bodybuilding(user_profile)                
+                current_percent = Rir.objects.get(reps=self.reps, rir=self.rir).percent
+                target_min_percent = Rir.objects.get(reps=self.reps, rir=max_rir).percent
+                percent_increase = min( 1.15, target_min_percent / current_percent) #dont increase more than 15%
+                next_weight = float(self.weight) * percent_increase
+                next_weight = rounder(next_weight, 2.5)       
 
-    def next_set_bodybuilding(self, user_profile):
-        """
-        WHAT IF I JUST DID 100KG X 3 @5rir. HOW TO ADJUST FOR REPS NEEDING TO BE IN 8-12 REP RANGE?
-        A: Set the RPE and leave reps blank
-        """
-        min_rir = user_profile.training_focus.min_rir
-        max_rir = user_profile.training_focus.max_rir
-
-        current_percent = Rir.objects.get(reps=self.reps, rir=self.rir).percent
-        target_min_percent = Rir.objects.get(reps=self.reps, rir=max_rir).percent
-
-        percent_increase = min( 1.15, target_min_percent / current_percent) #dont increase more than 15%
-
-        next_weight = float(self.weight) * percent_increase
-        next_weight = rounder(next_weight, 2.5)       
-
-        WorkoutExerciseSet.objects.create(
-            workout_exercise = self.workout_exercise,
-            weight = next_weight,
-            reps = self.reps
-        )
+                WorkoutExerciseSet.objects.create(
+                    workout_exercise = self.workout_exercise,
+                    weight = next_weight,
+                    reps = self.reps
+                )
             
     def e_one_rep_max(self):
         #calculate the estimated 1RM for that exercise for that set
+        """
+        Change to use RIR table for E1RM instead of formular
+        """
         reps_divider = decimal.Decimal(self.reps/30)
         rm = self.weight * (1 + reps_divider)
         rounded_rm = round(rm)

@@ -103,6 +103,9 @@ class UserRM(models.Model):
     All of the User's One-Rep-Maxes for specific Exercises.
     Set by the User until they expire or are beaten.
     """
+
+    ## CHANGE TO WEIGHT * REPS @ RIR to track rep-maxes more accurately
+
     user        = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     exercise    = models.ForeignKey(Exercise, on_delete=models.CASCADE)
     one_rep_max = models.PositiveIntegerField()
