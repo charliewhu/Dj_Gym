@@ -1,5 +1,4 @@
 from django.db import models
-from accounts.models import TrainingFocus, User
 from .managers import UserRMManager
 
 
@@ -17,21 +16,21 @@ class Force(models.Model):
         return self.name
 
 class Tier(models.Model):
-    """'T1', 'T2', 'T3', 'Other'"""
+    """T1, T2, T3, Other"""
     name =  name = models.CharField(max_length=20, unique=True)
     def __str__(self):
         return self.name
 
 
 class Purpose(models.Model):
-    """'Squat', 'Bench', 'Deadlift'"""
+    """Squat, Bench, Deadlift"""
     name = models.CharField(max_length=20, unique=True)
     def __str__(self):
         return self.name
 
 
 class Mechanic(models.Model):
-    """'Compound', 'Isolation'"""
+    """Compound, Isolation"""
     name = models.CharField(max_length=20, unique=True)
     def __str__(self):
         return self.name
@@ -47,21 +46,20 @@ class MuscleGroup(models.Model):
 
 class ProgressionType(models.Model):
     name           = models.CharField(max_length=40, unique=True)
-    training_focus = models.ForeignKey(TrainingFocus, on_delete=models.CASCADE, null=True)
+    training_focus = models.ForeignKey("accounts.TrainingFocus", on_delete=models.CASCADE, null=True)
     mechanic       = models.ForeignKey(Mechanic, on_delete=models.CASCADE, null=True)
-    purpose        = models.ForeignKey(Purpose, on_delete=models.CASCADE, null=True)
     force          = models.ForeignKey(Force, on_delete=models.CASCADE, null=True)
     tier           = models.ForeignKey(Tier, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
-        return self.name
+        return f'{self.training_focus}, {self.mechanic}, {self.force}, {self.tier} - {self.name}'
 
     ## need constraints on combinations of focus/mech/pur/force/tier
 
 
 class Exercise(models.Model):
     name = models.CharField(max_length=60, unique=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    user = models.ForeignKey("accounts.User", on_delete=models.CASCADE, null=True, blank=True)
     mechanic = models.ForeignKey(Mechanic, on_delete=models.CASCADE, null=True)
     force = models.ForeignKey(Force, on_delete=models.CASCADE, null=True)
     progression_type = models.ForeignKey(ProgressionType, on_delete=models.CASCADE, null=True)
@@ -93,7 +91,7 @@ class UserRM(models.Model):
 
     ## CHANGE TO WEIGHT * REPS @ RIR to track rep-maxes more accurately
 
-    user        = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    user        = models.ForeignKey("accounts.User", on_delete=models.SET_NULL, null=True)
     exercise    = models.ForeignKey(Exercise, on_delete=models.CASCADE)
     one_rep_max = models.PositiveIntegerField()
     date        = models.DateField(auto_now=True)
