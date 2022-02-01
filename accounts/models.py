@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.core.validators import MaxValueValidator, MinValueValidator
+
+from exercises.models import Exercise, ProgressionType
 from .managers import MyUserManager
 
 
@@ -49,10 +51,6 @@ class Gender(models.Model):
 class TrainingFocus(models.Model):
     """Bodybuilding, Powerbuilding, PL Hypertrophy,PL Strength, Peaking, Bridge"""
     name     = models.CharField(max_length=40)
-    min_reps = models.PositiveIntegerField(null=True)
-    max_reps = models.PositiveIntegerField(null=True)
-    min_rir  = models.PositiveIntegerField(null=True)
-    max_rir  = models.PositiveIntegerField(null=True)
     #what % Bodybuilding to Powerlifting etc for each of these phases?
 
     def __str__(self):
@@ -69,8 +67,7 @@ class Frequency(models.Model):
 
 class Periodization(models.Model):
     """
-    Periodization to use 
-    eg. Linear - weekly overload of volume/intensity
+    Linear - weekly overload of volume/intensity
     Alternating - weekly alternation of S/B/D or U/L
     Undulating - undulating of low/medium/high sessions
     """
@@ -93,6 +90,37 @@ class UserProfile(models.Model):
     def __str__(self):
         return f'{self.user}'
 
+    def save(self, *args, **kwargs):
+        """
+        Check if training_focus has changed
+        Check first time saved / if User already has an exercise list
+        """
+
+        exercises = Exercise.objects.filter(user=self.user)  or Exercise.objects.filter(user=None)
+        try:
+            current_tf = UserProfile.objects.get(pk=self.pk).training_focus
+        except:
+            current_tf = None
+
+        print(exercises)
+        print(current_tf)
+
+        if self.training_focus != current_tf: #user is creating first user profile
+            print("Do something - I changed my training_focus")
 
 
+            for exercise in exercises:
+                progression_type = ProgressionType.objects.get(
+                    training_focus=self.training_focus,
+                    mechanic=exercise.mechanic,
+                    force=exercise.force,
+                    tier=exercise.tier,
+                )
 
+                if not exercise.user: #exercise.id remains if user has exercise list
+                    exercise.id = None
+                exercise.user = self.user
+                exercise.progression_type = progression_type
+                exercise.save()
+
+        super().save(*args,**kwargs)

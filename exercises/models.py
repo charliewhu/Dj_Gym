@@ -45,24 +45,28 @@ class MuscleGroup(models.Model):
 
 
 class ProgressionType(models.Model):
+    """Top, Straight, Rep-drop, Technique, Ladder"""
     name           = models.CharField(max_length=40, unique=True)
     training_focus = models.ForeignKey("accounts.TrainingFocus", on_delete=models.CASCADE, null=True)
     mechanic       = models.ForeignKey(Mechanic, on_delete=models.CASCADE, null=True)
-    force          = models.ForeignKey(Force, on_delete=models.CASCADE, null=True)
     tier           = models.ForeignKey(Tier, on_delete=models.CASCADE, null=True)
+    min_reps       = models.PositiveIntegerField(null=True)
+    max_reps       = models.PositiveIntegerField(null=True)
+    min_rir        = models.PositiveIntegerField(null=True)
+    max_rir        = models.PositiveIntegerField(null=True)
 
     def __str__(self):
-        return f'{self.training_focus}, {self.mechanic}, {self.force}, {self.tier} - {self.name}'
+        return f'{self.training_focus}, {self.mechanic}, {self.tier} - {self.name}'
 
     ## need constraints on combinations of focus/mech/pur/force/tier
 
 
 class Exercise(models.Model):
-    name = models.CharField(max_length=60, unique=True)
+    name = models.CharField(max_length=60)
     user = models.ForeignKey("accounts.User", on_delete=models.CASCADE, null=True, blank=True)
     mechanic = models.ForeignKey(Mechanic, on_delete=models.CASCADE, null=True)
     force = models.ForeignKey(Force, on_delete=models.CASCADE, null=True)
-    progression_type = models.ForeignKey(ProgressionType, on_delete=models.CASCADE, null=True)
+    progression_type = models.ForeignKey(ProgressionType, on_delete=models.CASCADE, null=True, blank=True)
     purpose = models.ForeignKey(Purpose, on_delete=models.CASCADE, null=True,
         help_text="Which powerlifting exercise does this improve?")
     tier = models.ForeignKey(Tier, on_delete=models.CASCADE, null=True,
@@ -79,7 +83,7 @@ class Exercise(models.Model):
             ]
 
     def __str__(self):
-        return self.name
+        return f'{self.name} - {self.user}'
     
 
 
