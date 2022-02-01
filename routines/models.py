@@ -115,14 +115,13 @@ class WorkoutExerciseSet(models.Model):
         if self.weight and self.reps and self.rir:
             print("Do logic!")
             one_rm = UserRM.one_rm_manager.latest_one_rm(user=user, exercise=exercise) or None
-            user_profile = UserProfile.objects.get(user=user)
-            training_focus = user_profile.training_focus
 
-            if str(training_focus) == "Bodybuilding":
-                print("In bodybuilding block")
-                self.next_set_rep_drop(user_profile, one_rm)
+            print(exercise.progression_type.name)
+            if exercise.progression_type.name == "Rep-Drop":
+                print("In rep-drop block")
+                self.next_set_rep_drop(exercise, one_rm)
 
-    def next_set_rep_drop(self, user_profile, one_rm):
+    def next_set_rep_drop(self, exercise, one_rm):
         if one_rm['one_rep_max__max']:
             print("in IF 1RM block")
             """other logic if they have a known 1RM"""
@@ -133,9 +132,9 @@ class WorkoutExerciseSet(models.Model):
             pass
 
         else:
-            min_rir = user_profile.training_focus.min_rir
-            max_rir = user_profile.training_focus.max_rir
-            min_reps = user_profile.training_focus.min_reps
+            min_rir = exercise.progression_type.min_rir
+            max_rir = exercise.progression_type.max_rir
+            min_reps = exercise.progression_type.min_reps
 
             if self.reps < min_reps:
                 """

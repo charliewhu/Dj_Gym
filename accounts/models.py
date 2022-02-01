@@ -91,29 +91,26 @@ class UserProfile(models.Model):
         return f'{self.user}'
 
     def save(self, *args, **kwargs):
+        self.reassign_exercises()
+        super().save(*args,**kwargs)
+
+    def reassign_exercises(self):
         """
         Check if training_focus has changed
         Check first time saved / if User already has an exercise list
         """
-
-        exercises = Exercise.objects.filter(user=self.user)  or Exercise.objects.filter(user=None)
         try:
             current_tf = UserProfile.objects.get(pk=self.pk).training_focus
         except:
             current_tf = None
 
-        print(exercises)
-        print(current_tf)
-
         if self.training_focus != current_tf: #user is creating first user profile
-            print("Do something - I changed my training_focus")
-
-
+            exercises = Exercise.objects.filter(user=self.user) or Exercise.objects.filter(user=None)
             for exercise in exercises:
+                #find progression_type based on UserProfile & Exercise attributes
                 progression_type = ProgressionType.objects.get(
                     training_focus=self.training_focus,
                     mechanic=exercise.mechanic,
-                    force=exercise.force,
                     tier=exercise.tier,
                 )
 
@@ -122,5 +119,3 @@ class UserProfile(models.Model):
                 exercise.user = self.user
                 exercise.progression_type = progression_type
                 exercise.save()
-
-        super().save(*args,**kwargs)

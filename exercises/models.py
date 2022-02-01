@@ -62,14 +62,14 @@ class ProgressionType(models.Model):
 
 
 class Exercise(models.Model):
-    name = models.CharField(max_length=60)
-    user = models.ForeignKey("accounts.User", on_delete=models.CASCADE, null=True, blank=True)
-    mechanic = models.ForeignKey(Mechanic, on_delete=models.CASCADE, null=True)
-    force = models.ForeignKey(Force, on_delete=models.CASCADE, null=True)
-    progression_type = models.ForeignKey(ProgressionType, on_delete=models.CASCADE, null=True, blank=True)
-    purpose = models.ForeignKey(Purpose, on_delete=models.CASCADE, null=True,
+    name            = models.CharField(max_length=60)
+    user            = models.ForeignKey("accounts.User", on_delete=models.CASCADE, null=True, blank=True)
+    mechanic        = models.ForeignKey(Mechanic, on_delete=models.CASCADE, null=True)
+    force           = models.ForeignKey(Force, on_delete=models.CASCADE, null=True)
+    progression_type= models.ForeignKey(ProgressionType, on_delete=models.CASCADE, null=True, blank=True)
+    purpose         = models.ForeignKey(Purpose, on_delete=models.CASCADE, null=True,
         help_text="Which powerlifting exercise does this improve?")
-    tier = models.ForeignKey(Tier, on_delete=models.CASCADE, null=True,
+    tier            = models.ForeignKey(Tier, on_delete=models.CASCADE, null=True,
         help_text="T1 exercises are the competition exercises.\
             T2 exercises are close variations of the main lifts. \
             T3 exercises develop the musculature eg. quads for squats. \
