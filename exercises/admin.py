@@ -1,8 +1,8 @@
 from ast import For
 from django.contrib import admin
-from .models import Exercise, Force, Mechanic, MuscleGroup, ProgressionType, Purpose, Tier
+from .models import Exercise, Force, Mechanic, MuscleGroup, ProgressionType, Purpose, Tier, UserRM
 
-
+admin.site.register(UserRM)
 admin.site.register(MuscleGroup)
 admin.site.register(Exercise)
 admin.site.register(Force)

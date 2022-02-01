@@ -1,21 +1,15 @@
-from django.db.models.aggregates import Count
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django.forms import fields
-from django.forms.models import modelformset_factory
-from django.shortcuts import render, redirect
+from django.http import HttpResponseRedirect, JsonResponse
+from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
-from django.core.exceptions import PermissionDenied
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.decorators import user_passes_test
-from django.db.models import Sum
 
-from accounts.models import User, UserRM
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
-from django.views.generic.edit import DeleteView, FormView
-from .forms import ReadinessFormSet, WorkoutExerciseSetForm, WorkoutForm, WorkoutExerciseForm, ExerciseForm, ReadinessAnswerForm
-from .models import MuscleGroup, Exercise, ReadinessAnswer, ReadinessQuestion, Workout, WorkoutExercise, WorkoutExerciseSet, Readiness
+from django.views.generic.edit import DeleteView
+from .forms import ReadinessFormSet, WorkoutExerciseSetForm, WorkoutForm, WorkoutExerciseForm
+from .models import Exercise, ReadinessAnswer, ReadinessQuestion, Workout, WorkoutExercise, WorkoutExerciseSet, Readiness
 from .mixins import UserWorkoutExerciseSetMixin, UserWorkoutMixin, UserWorkoutExerciseMixin
-from django.forms.formsets import INITIAL_FORM_COUNT, formset_factory
+
 
 
 def home(request):

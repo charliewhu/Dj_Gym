@@ -5,8 +5,8 @@ from .utils import rounder
 from django.db import models
 from django.core.validators import MaxValueValidator
 
-from accounts.models import User, UserProfile, UserRM
-from exercises.models import Exercise, MuscleGroup, Rir
+from accounts.models import User, UserProfile
+from exercises.models import Exercise, MuscleGroup, Rir, UserRM
 from routines.managers import ReadinessAnswerManager
 
 
