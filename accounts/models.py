@@ -47,11 +47,7 @@ class Gender(models.Model):
 
 
 class TrainingFocus(models.Model):
-    """
-    Training phases to choose from in UserProfile
-    eg. Bodybuilding, Powerbuilding, PL Hypertrophy,
-    PL Strength, Peaking, Bridge
-    """
+    """Bodybuilding, Powerbuilding, PL Hypertrophy,PL Strength, Peaking, Bridge"""
     name     = models.CharField(max_length=40)
     min_reps = models.PositiveIntegerField(null=True)
     max_reps = models.PositiveIntegerField(null=True)
@@ -64,7 +60,7 @@ class TrainingFocus(models.Model):
 
 
 class Frequency(models.Model):
-    """Frequency to use eg. Upper/Lower, FullBody, PPL"""
+    """Upper/Lower, FullBody, PPL etc"""
     name = models.CharField(max_length=40)
 
     def __str__(self):

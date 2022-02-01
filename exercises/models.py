@@ -1,5 +1,5 @@
 from django.db import models
-from accounts.models import User, UserProfile
+from accounts.models import TrainingFocus, User
 from .managers import UserRMManager
 
 
@@ -10,28 +10,28 @@ class Rir(models.Model):
 
 
 class Force(models.Model):
-    """eg Hip Hinge, Vertical Push"""
+    """Hip Hinge, Vertical Push etc"""
     name = models.CharField(max_length=60, unique=True)
 
     def __str__(self):
         return self.name
 
 class Tier(models.Model):
-    #tier_choices = (('T1', 'T1'), ('T2', 'T2'), ('T3', 'T3'), ('Other', 'Other'),)
+    """'T1', 'T2', 'T3', 'Other'"""
     name =  name = models.CharField(max_length=20, unique=True)
     def __str__(self):
         return self.name
 
 
 class Purpose(models.Model):
-    # purpose_choices = (('Squat', 'Squat'),('Bench', 'Bench'),('Deadlift', 'Deadlift'),)
+    """'Squat', 'Bench', 'Deadlift'"""
     name = models.CharField(max_length=20, unique=True)
     def __str__(self):
         return self.name
 
 
 class Mechanic(models.Model):
-    #mechanic_choices = (('Compound', 'Compound'), ('Isolation', 'Isolation'))
+    """'Compound', 'Isolation'"""
     name = models.CharField(max_length=20, unique=True)
     def __str__(self):
         return self.name
@@ -46,16 +46,17 @@ class MuscleGroup(models.Model):
 
 
 class ProgressionType(models.Model):
-    name     = models.CharField(max_length=40, unique=True)
-    mechanic = models.ForeignKey(Mechanic, on_delete=models.CASCADE, null=True)
-    purpose  = models.ForeignKey(Purpose, on_delete=models.CASCADE, null=True)
-    force    = models.ForeignKey(Force, on_delete=models.CASCADE, null=True)
-    tier     = models.ForeignKey(Tier, on_delete=models.CASCADE, null=True)
+    name           = models.CharField(max_length=40, unique=True)
+    training_focus = models.ForeignKey(TrainingFocus, on_delete=models.CASCADE, null=True)
+    mechanic       = models.ForeignKey(Mechanic, on_delete=models.CASCADE, null=True)
+    purpose        = models.ForeignKey(Purpose, on_delete=models.CASCADE, null=True)
+    force          = models.ForeignKey(Force, on_delete=models.CASCADE, null=True)
+    tier           = models.ForeignKey(Tier, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return self.name
 
-    ## need constraints on combinations of mech/pur/force/tier
+    ## need constraints on combinations of focus/mech/pur/force/tier
 
 
 class Exercise(models.Model):
@@ -87,7 +88,7 @@ class Exercise(models.Model):
 class UserRM(models.Model):
     """
     All of the User's One-Rep-Maxes for specific Exercises.
-    Set by the User until they expire or are beaten.
+    Set by save() method of routines.WorkoutExerciseSet.
     """
 
     ## CHANGE TO WEIGHT * REPS @ RIR to track rep-maxes more accurately
