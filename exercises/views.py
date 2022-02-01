@@ -9,7 +9,7 @@ from .forms import ExerciseForm
 
 # Create your views here.
 class ExerciseListView(LoginRequiredMixin, ListView):
-    queryset      = Exercise.objects.all().order_by('pltier')
+    queryset      = Exercise.objects.all().order_by('tier')
     template_name = 'exercises/_list.html'
     extra_context = {'title':'Exercises'}
     context_object_name = 'exercises'

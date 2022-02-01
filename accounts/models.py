@@ -1,8 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.core.validators import MaxValueValidator, MinValueValidator
-from accounts.managers import MyUserManager, UserRMManager
-from exercises.models import Exercise
+from .managers import MyUserManager
+
 
 
 class User(PermissionsMixin, AbstractBaseUser):
@@ -98,22 +98,5 @@ class UserProfile(models.Model):
         return f'{self.user}'
 
 
-class UserRM(models.Model):
-    """
-    All of the User's One-Rep-Maxes for specific Exercises.
-    Set by the User until they expire or are beaten.
-    """
 
-    ## CHANGE TO WEIGHT * REPS @ RIR to track rep-maxes more accurately
-
-    user        = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    exercise    = models.ForeignKey(Exercise, on_delete=models.CASCADE)
-    one_rep_max = models.PositiveIntegerField()
-    date        = models.DateField(auto_now=True)
-
-    def __str__(self):
-        return f'{self.user} - {self.exercise} - {self.date}'
-
-    objects = models.Manager()
-    one_rm_manager = UserRMManager()
 
