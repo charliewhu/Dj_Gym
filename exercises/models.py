@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from .managers import UserRMManager
 
@@ -45,7 +46,7 @@ class MuscleGroup(models.Model):
 
 
 class ProgressionType(models.Model):
-    """Top, Straight, Rep-drop, Technique, Ladder"""
+    """Top, Straight, Rep-drop, Technique, Ladder, Pyramid"""
     name           = models.CharField(max_length=40, unique=True)
     training_focus = models.ForeignKey("accounts.TrainingFocus", on_delete=models.CASCADE, null=True)
     mechanic       = models.ForeignKey(Mechanic, on_delete=models.CASCADE, null=True)
@@ -63,7 +64,7 @@ class ProgressionType(models.Model):
 
 class Exercise(models.Model):
     name            = models.CharField(max_length=60)
-    user            = models.ForeignKey("accounts.User", on_delete=models.CASCADE, null=True, blank=True)
+    user            = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
     mechanic        = models.ForeignKey(Mechanic, on_delete=models.CASCADE, null=True)
     force           = models.ForeignKey(Force, on_delete=models.CASCADE, null=True)
     progression_type= models.ForeignKey(ProgressionType, on_delete=models.CASCADE, null=True, blank=True)
@@ -95,7 +96,7 @@ class UserRM(models.Model):
 
     ## CHANGE TO WEIGHT * REPS @ RIR to track rep-maxes more accurately
 
-    user        = models.ForeignKey("accounts.User", on_delete=models.SET_NULL, null=True)
+    user        = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
     exercise    = models.ForeignKey(Exercise, on_delete=models.CASCADE)
     one_rep_max = models.PositiveIntegerField()
     date        = models.DateField(auto_now=True)

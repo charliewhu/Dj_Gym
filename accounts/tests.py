@@ -26,7 +26,6 @@ class UserTestCast(TestCase):
         user_count = User.objects.all().count()
         self.assertEqual(user_count, 3)
         self.assertNotEqual(user_count, 0) # not 0 users
-        #print('user test complete')
 
     def test_usera_password(self):
         self.assertEqual(self.user_a.check_password('some_123_password'), True)
@@ -61,15 +60,11 @@ class UserTestCast(TestCase):
 
     def test_login_url(self):
         login_url = settings.LOGIN_URL
-        data = {"username": "test@test.com", "password": self.user_a_pw}
+        data = {"email": "test@test.com", "password": self.user_a_pw}
         response = self.client.post(login_url, data, follow=True)
         status_code = response.status_code
-        redirect_path = response.request.get("PATH_INFO")
-        self.assertEqual(redirect_path, settings.LOGIN_REDIRECT_URL)
         self.assertEqual(status_code, 200)
 
     def test_login_success(self):
         self.client.login(email=self.user_a.email, password=self.user_a.password)
-        print(User.objects.all()[0].is_authenticated )
-        print(self.client.session)
         #self.assertIn(self.user_a.id, self.client.session)

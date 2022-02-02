@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.core.validators import MaxValueValidator, MinValueValidator
@@ -79,7 +80,7 @@ class Periodization(models.Model):
 
 class UserProfile(models.Model):
     """"Profile information for the User to input after signup"""
-    user          = models.OneToOneField(User, on_delete=models.SET_NULL, null=True)
+    user          = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
     height        = models.PositiveSmallIntegerField(null=True)
     weight        = models.PositiveSmallIntegerField(null=True)
     birth_date    = models.DateField(null=True)
@@ -108,6 +109,7 @@ class UserProfile(models.Model):
             exercises = Exercise.objects.filter(user=self.user) or Exercise.objects.filter(user=None)
             for exercise in exercises:
                 #find progression_type based on UserProfile & Exercise attributes
+                #logically equivalent to a JOIN on all of these fields
                 progression_type = ProgressionType.objects.get(
                     training_focus=self.training_focus,
                     mechanic=exercise.mechanic,

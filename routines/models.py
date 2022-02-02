@@ -2,10 +2,10 @@ import math
 import decimal
 from .utils import rounder
 
+from django.conf import settings
 from django.db import models
 from django.core.validators import MaxValueValidator
 
-from accounts.models import User, UserProfile
 from exercises.models import Exercise, MuscleGroup, Rir, UserRM
 from routines.managers import ReadinessAnswerManager
 
@@ -17,7 +17,7 @@ class ReadinessQuestion(models.Model):
 
 
 class Readiness(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
     date_created = models.DateField(auto_now_add=True, null=True)
 
     def __str__(self):
@@ -58,7 +58,7 @@ class ReadinessAnswer(models.Model):
 
 class Workout(models.Model):
     """User's Workout. Contains WorkoutExercises"""
-    user         = models.ForeignKey(User, related_name='workouts', on_delete=models.CASCADE, null=True)
+    user         = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='workouts', on_delete=models.CASCADE, null=True)
     readiness    = models.OneToOneField(Readiness, on_delete=models.CASCADE, null=True)
     date         = models.DateField(auto_now_add=True, null=True)
     date_created = models.DateTimeField(auto_now_add=True, null=True)
@@ -115,13 +115,11 @@ class WorkoutExerciseSet(models.Model):
         if self.weight and self.reps and self.rir:
             print("Do logic!")
             one_rm = UserRM.one_rm_manager.latest_one_rm(user=user, exercise=exercise) or None
-
-            print(exercise.progression_type.name)
             if exercise.progression_type.name == "Rep-Drop":
                 print("In rep-drop block")
-                self.next_set_rep_drop(exercise, one_rm)
+                self.rep_drop(exercise, one_rm)
 
-    def next_set_rep_drop(self, exercise, one_rm):
+    def rep_drop(self, exercise, one_rm):
         if one_rm['one_rep_max__max']:
             print("in IF 1RM block")
             """other logic if they have a known 1RM"""
