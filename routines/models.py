@@ -129,7 +129,7 @@ class WorkoutExerciseSet(models.Model):
         max_reps = exercise.progression_type.max_reps
         current_pct = get_1rm_percent(self.reps, self.rir)
         target_pct = get_1rm_percent(min_reps, max_rir)
-
+        pct_change_needed = target_pct / current_pct
 
         if self.reps < min_reps: # reps low
             print("low reps")
@@ -143,7 +143,6 @@ class WorkoutExerciseSet(models.Model):
 
             elif self.rir < min_rir: # rir hard
                 print("high effort")
-                pct_change_needed = target_pct / current_pct
                 next_weight = float(self.weight) * pct_change_needed
                 next_weight = rounder(next_weight, 2.5)
                 WorkoutExerciseSet.objects.create(
@@ -154,7 +153,6 @@ class WorkoutExerciseSet(models.Model):
                 
             elif self.rir <= max_rir and self.rir >= min_rir: # rir fine
                 print("right effort")
-                pct_change_needed = target_pct / current_pct
                 next_weight = float(self.weight) * pct_change_needed
                 next_weight = rounder(next_weight, 2.5)
                 WorkoutExerciseSet.objects.create(
@@ -209,42 +207,32 @@ class WorkoutExerciseSet(models.Model):
                     rir = max_rir
                 )
 
-
-
             elif self.rir < min_rir: # rir hard
                 print("high effort")
-                pass
+                next_weight = self.min_new_weight(pct_change_needed, 1.2)
+                
+                WorkoutExerciseSet.objects.create(
+                    workout_exercise = self.workout_exercise,
+                    weight = next_weight,
+                    rir = max_rir
+                )
+                
             elif self.rir <= max_rir and self.rir >= min_rir: # rir fine
                 print("effort fine")
                 pass
 
 
-        # if self.reps < min_reps and self.rir > max_rir:
-        #     """
-        #     WHAT IF I JUST DID 100KG X 3 @5rir. HOW TO ADJUST FOR REPS NEEDING TO BE IN 8-12 REP RANGE?
-        #     A: Set the RPE and leave reps blank
-        #     """
-        #     WorkoutExerciseSet.objects.create(
-        #         workout_exercise = self.workout_exercise,
-        #         reps = min_reps
-        #     )
+    def min_new_weight(self, pct, max_pct):
+        w1 = float(self.weight) * pct
+        w2 = float(self.weight) * max_pct
+        next_weight = min(w1, w2)
+        return rounder(next_weight, 2.5)
 
-        # elif self.reps < min_reps and self.rir > max_rir:
-        #     current_percent = get_1rm_percent(self.reps, self.rir)
-        #     target_min_percent = get_1rm_percent(self.reps, max_rir)
-        #     percent_increase = min( 1.15, target_min_percent / current_percent) #dont increase more than 15%
-        #     next_weight = float(self.weight) * percent_increase
-        #     next_weight = rounder(next_weight, 2.5)       
-
-            # WorkoutExerciseSet.objects.create(
-            #     workout_exercise = self.workout_exercise,
-            #     weight = next_weight,
-            #     reps = self.reps
-            # )
-
-        
-
-
+    def max_new_weight(self, pct, max_pct):
+        w1 = float(self.weight) * pct
+        w2 = float(self.weight) * max_pct
+        next_weight = max(w1, w2)
+        return rounder(next_weight, 2.5)
 
     def e_one_rep_max(self):
         #calculate the estimated 1RM for that exercise for that set
