@@ -1,6 +1,6 @@
 import math
 import decimal
-from .utils import rounder, get_1rm_percent
+from .utils import rounder, get_1rm_percent, get_1rm
 
 from django.conf import settings
 from django.db import models
@@ -111,7 +111,7 @@ class WorkoutExerciseSet(models.Model):
         self.next_set(user, exercise)
         
     def next_set(self, user, exercise):
-        if self.weight and self.reps and self.rir:
+        if self.weight and self.reps and self.rir is not None:
             print("Do logic!")
             self.rep_drop(user, exercise)
 
@@ -127,54 +127,120 @@ class WorkoutExerciseSet(models.Model):
         max_rir = exercise.progression_type.max_rir
         min_reps = exercise.progression_type.min_reps
         max_reps = exercise.progression_type.max_reps
+        current_pct = get_1rm_percent(self.reps, self.rir)
+        target_pct = get_1rm_percent(min_reps, max_rir)
 
 
         if self.reps < min_reps: # reps low
+            print("low reps")
+
             if self.rir > max_rir: # rir easy
-                pass
+                print("low effort")
+                WorkoutExerciseSet.objects.create(
+                    workout_exercise = self.workout_exercise,
+                    reps = min_reps
+                )
+
             elif self.rir < min_rir: # rir hard
-                pass
-            elif self.rir < max_rir and self.rir > min_rir: # rir fine
-                pass
-        elif self.reps > min_reps and self.reps < max_reps:  # reps fine
+                print("high effort")
+                pct_change_needed = target_pct / current_pct
+                next_weight = float(self.weight) * pct_change_needed
+                next_weight = rounder(next_weight, 2.5)
+                WorkoutExerciseSet.objects.create(
+                    workout_exercise = self.workout_exercise,
+                    weight = next_weight,
+                    reps = min_reps
+                )
+                
+            elif self.rir <= max_rir and self.rir >= min_rir: # rir fine
+                print("right effort")
+                pct_change_needed = target_pct / current_pct
+                next_weight = float(self.weight) * pct_change_needed
+                next_weight = rounder(next_weight, 2.5)
+                WorkoutExerciseSet.objects.create(
+                    workout_exercise = self.workout_exercise,
+                    weight = next_weight,
+                    reps = min_reps
+                )
+
+        elif self.reps >= min_reps and self.reps <= max_reps:  # reps fine
+            print("reps fine")
+
             if self.rir > max_rir: # rir easy
-                pass
+                print("low effort")
+                next_weight = float(self.weight) * 1.1
+                next_weight = rounder(next_weight, 2.5)
+
+                WorkoutExerciseSet.objects.create(
+                    workout_exercise = self.workout_exercise,
+                    weight = next_weight,
+                    rir = max_rir
+                )
+                
             elif self.rir < min_rir: # rir hard
-                pass
-            elif self.rir < max_rir and self.rir > min_rir:
-                pass
+                print("high effort")
+                next_weight = float(self.weight) * 0.9
+                next_weight = rounder(next_weight, 2.5)
+
+                WorkoutExerciseSet.objects.create(
+                    workout_exercise = self.workout_exercise,
+                    weight = next_weight,
+                    reps = self.reps
+                )
+                
+            elif self.rir <= max_rir and self.rir >= min_rir:
+                print("effort fine")
+                WorkoutExerciseSet.objects.create(
+                    workout_exercise = self.workout_exercise,
+                    weight = self.weight,
+                    rir = self.rir
+                )
+
         elif self.reps > max_reps: # reps high
+            print("reps high")
             if self.rir > max_rir: # rir easy
-                pass
+                print("low effort")
+                next_weight = float(self.weight) * 1.2
+                next_weight = rounder(next_weight, 2.5)
+
+                WorkoutExerciseSet.objects.create(
+                    workout_exercise = self.workout_exercise,
+                    weight = next_weight,
+                    rir = max_rir
+                )
+
+
+
             elif self.rir < min_rir: # rir hard
+                print("high effort")
                 pass
-            elif self.rir < max_rir and self.rir > min_rir: # rir fine
+            elif self.rir <= max_rir and self.rir >= min_rir: # rir fine
+                print("effort fine")
                 pass
 
 
+        # if self.reps < min_reps and self.rir > max_rir:
+        #     """
+        #     WHAT IF I JUST DID 100KG X 3 @5rir. HOW TO ADJUST FOR REPS NEEDING TO BE IN 8-12 REP RANGE?
+        #     A: Set the RPE and leave reps blank
+        #     """
+        #     WorkoutExerciseSet.objects.create(
+        #         workout_exercise = self.workout_exercise,
+        #         reps = min_reps
+        #     )
 
-        if self.reps < min_reps and self.rir > max_rir:
-            """
-            WHAT IF I JUST DID 100KG X 3 @5rir. HOW TO ADJUST FOR REPS NEEDING TO BE IN 8-12 REP RANGE?
-            A: Set the RPE and leave reps blank
-            """
-            WorkoutExerciseSet.objects.create(
-                workout_exercise = self.workout_exercise,
-                reps = min_reps
-            )
+        # elif self.reps < min_reps and self.rir > max_rir:
+        #     current_percent = get_1rm_percent(self.reps, self.rir)
+        #     target_min_percent = get_1rm_percent(self.reps, max_rir)
+        #     percent_increase = min( 1.15, target_min_percent / current_percent) #dont increase more than 15%
+        #     next_weight = float(self.weight) * percent_increase
+        #     next_weight = rounder(next_weight, 2.5)       
 
-        elif self.reps < min_reps and self.rir > max_rir:
-            current_percent = get_1rm_percent(self.reps, self.rir)
-            target_min_percent = get_1rm_percent(self.reps, max_rir)
-            percent_increase = min( 1.15, target_min_percent / current_percent) #dont increase more than 15%
-            next_weight = float(self.weight) * percent_increase
-            next_weight = rounder(next_weight, 2.5)       
-
-            WorkoutExerciseSet.objects.create(
-                workout_exercise = self.workout_exercise,
-                weight = next_weight,
-                reps = self.reps
-            )
+            # WorkoutExerciseSet.objects.create(
+            #     workout_exercise = self.workout_exercise,
+            #     weight = next_weight,
+            #     reps = self.reps
+            # )
 
         
 

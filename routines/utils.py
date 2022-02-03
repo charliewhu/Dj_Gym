@@ -12,3 +12,15 @@ def get_1rm_percent(reps, rir):
         return obj.percent
     else: 
         return None
+
+def get_1rm(weight, reps, rir):
+    if rir < 5:
+        obj = Rir.objects.get(
+            reps=reps,
+            rir=rir
+            )
+
+        one_rm = weight / obj.percent
+        return one_rm
+    else: 
+        return None
