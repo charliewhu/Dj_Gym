@@ -123,48 +123,18 @@ class WorkoutExerciseSet(models.Model):
 
     def rep_drop_no_1rm(self, exercise, one_rm):
         print("in no 1RM block")
-        min_rir = exercise.progression_type.min_rir
-        max_rir = exercise.progression_type.max_rir
+        target_rir = exercise.progression_type.target_rir
         min_reps = exercise.progression_type.min_reps
         max_reps = exercise.progression_type.max_reps
         current_pct = get_1rm_percent(self.reps, self.rir)
-        target_pct = get_1rm_percent(min_reps, max_rir)
+        target_pct = get_1rm_percent(min_reps, target_rir)
         pct_change_needed = target_pct / current_pct
 
-        if self.reps < min_reps: # reps low
-            print("low reps")
-
-            if self.rir > max_rir: # rir easy
-                print("low effort")
-                WorkoutExerciseSet.objects.create(
-                    workout_exercise = self.workout_exercise,
-                    reps = min_reps
-                )
-
-            elif self.rir < min_rir: # rir hard
-                print("high effort")
-                next_weight = float(self.weight) * pct_change_needed
-                next_weight = rounder(next_weight, 2.5)
-                WorkoutExerciseSet.objects.create(
-                    workout_exercise = self.workout_exercise,
-                    weight = next_weight,
-                    reps = min_reps
-                )
-                
-            elif self.rir <= max_rir and self.rir >= min_rir: # rir fine
-                print("right effort")
-                next_weight = float(self.weight) * pct_change_needed
-                next_weight = rounder(next_weight, 2.5)
-                WorkoutExerciseSet.objects.create(
-                    workout_exercise = self.workout_exercise,
-                    weight = next_weight,
-                    reps = min_reps
-                )
-
-        elif self.reps >= min_reps and self.reps <= max_reps:  # reps fine
+        
+        if self.reps >= min_reps and self.reps <= max_reps:  # reps fine
             print("reps fine")
 
-            if self.rir > max_rir: # rir easy
+            if self.rir > target_rir: # rir easy
                 print("low effort")
                 next_weight = float(self.weight) * 1.1
                 next_weight = rounder(next_weight, 2.5)
@@ -172,10 +142,10 @@ class WorkoutExerciseSet(models.Model):
                 WorkoutExerciseSet.objects.create(
                     workout_exercise = self.workout_exercise,
                     weight = next_weight,
-                    rir = max_rir
+                    rir = target_rir
                 )
                 
-            elif self.rir < min_rir: # rir hard
+            elif self.rir < target_rir: # rir hard
                 print("high effort")
                 next_weight = float(self.weight) * 0.9
                 next_weight = rounder(next_weight, 2.5)
@@ -186,7 +156,7 @@ class WorkoutExerciseSet(models.Model):
                     reps = self.reps
                 )
                 
-            elif self.rir <= max_rir and self.rir >= min_rir:
+            elif self.rir == target_rir:
                 print("effort fine")
                 WorkoutExerciseSet.objects.create(
                     workout_exercise = self.workout_exercise,
@@ -196,7 +166,7 @@ class WorkoutExerciseSet(models.Model):
 
         elif self.reps > max_reps: # reps high
             print("reps high")
-            if self.rir > max_rir: # rir easy
+            if self.rir > target_rir: # rir easy
                 print("low effort")
                 next_weight = float(self.weight) * 1.2
                 next_weight = rounder(next_weight, 2.5)
@@ -204,20 +174,20 @@ class WorkoutExerciseSet(models.Model):
                 WorkoutExerciseSet.objects.create(
                     workout_exercise = self.workout_exercise,
                     weight = next_weight,
-                    rir = max_rir
+                    rir = target_rir
                 )
 
-            elif self.rir < min_rir: # rir hard
+            elif self.rir < target_rir: # rir hard
                 print("high effort")
                 next_weight = self.min_new_weight(pct_change_needed, 1.2)
                 
                 WorkoutExerciseSet.objects.create(
                     workout_exercise = self.workout_exercise,
                     weight = next_weight,
-                    rir = max_rir
+                    rir = target_rir
                 )
                 
-            elif self.rir <= max_rir and self.rir >= min_rir: # rir fine
+            elif self.rir == target_rir: # rir fine
                 print("effort fine")
                 pass
 

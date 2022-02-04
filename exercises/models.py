@@ -53,13 +53,12 @@ class ProgressionType(models.Model):
     tier           = models.ForeignKey(Tier, on_delete=models.CASCADE, null=True)
     min_reps       = models.PositiveIntegerField(null=True)
     max_reps       = models.PositiveIntegerField(null=True)
-    min_rir        = models.PositiveIntegerField(null=True)
-    max_rir        = models.PositiveIntegerField(null=True)
+    target_rir     = models.PositiveIntegerField(null=True)
 
     def __str__(self):
         return f'{self.training_focus}, {self.mechanic}, {self.tier} - {self.name}'
 
-    ## need constraints on combinations of focus/mech/pur/force/tier
+    ## need constraints on combinations of focus/mech/tier
 
 
 class Exercise(models.Model):
