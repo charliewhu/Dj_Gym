@@ -54,6 +54,7 @@ class ProgressionType(models.Model):
     min_reps       = models.PositiveIntegerField(null=True)
     max_reps       = models.PositiveIntegerField(null=True)
     target_rir     = models.PositiveIntegerField(null=True)
+    min_rir        = models.PositiveIntegerField(null=True, default=1)
 
     def __str__(self):
         return f'{self.training_focus}, {self.mechanic}, {self.tier} - {self.name}'
@@ -61,11 +62,21 @@ class ProgressionType(models.Model):
     ## need constraints on combinations of focus/mech/tier
 
 
+class Progression(models.Model):
+    progression_type = models.ForeignKey(ProgressionType, on_delete=models.CASCADE)
+    rep_delta        = models.IntegerField()
+    rir_delta        = models.IntegerField()
+    weight_change    = models.FloatField(null=True, blank=True)
+    rep_change       = models.IntegerField(null=True, blank=True)
+    rir_change       = models.IntegerField(null=True, blank=True)
+
+
 class Exercise(models.Model):
     name            = models.CharField(max_length=60)
     user            = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
     mechanic        = models.ForeignKey(Mechanic, on_delete=models.CASCADE, null=True)
     force           = models.ForeignKey(Force, on_delete=models.CASCADE, null=True)
+    isolation       = models.BooleanField(null=True, default=False)
     progression_type= models.ForeignKey(ProgressionType, on_delete=models.CASCADE, null=True, blank=True)
     purpose         = models.ForeignKey(Purpose, on_delete=models.CASCADE, null=True,
         help_text="Which powerlifting exercise does this improve?")

@@ -119,9 +119,31 @@ class WorkoutExerciseSet(models.Model):
         one_rm = UserRM.one_rm_manager.latest_one_rm(user=user, exercise=exercise) or None
         if exercise.progression_type.name == "Rep-Drop":
             print("in rep-drop block")
-            self.rep_drop_no_1rm(exercise, one_rm)
+            self.rep_drop_no_1rm(exercise)
 
-    def rep_drop_no_1rm(self, exercise, one_rm):
+    def rep_delta(self):
+        prog_type = self.workout_exercise.exercise.progression_type
+        if self.reps < prog_type.min_reps:
+            rep_delta = self.reps - prog_type.min_reps
+        elif self.reps > prog_type.max_reps:
+            rep_delta = self.reps - prog_type.max_reps
+        else:
+            rep_delta = 0
+        print("Rep Delta: ", rep_delta)
+        return rep_delta
+
+    def rir_delta(self):
+        prog_type = self.workout_exercise.exercise.progression_type
+        if self.rir < prog_type.min_rir:
+            rir_delta = self.rir - prog_type.min_rir
+        elif self.rir > prog_type.target_rir:
+            rir_delta = self.rir - prog_type.target_rir
+        else:
+            rir_delta = 0
+        print("RIR Delta: ",rir_delta)
+        return rir_delta
+
+    def rep_drop_no_1rm(self, exercise):
         print("in no 1RM block")
         target_rir = exercise.progression_type.target_rir
         min_reps = exercise.progression_type.min_reps
@@ -129,7 +151,6 @@ class WorkoutExerciseSet(models.Model):
         current_pct = get_1rm_percent(self.reps, self.rir)
         target_pct = get_1rm_percent(min_reps, target_rir)
         pct_change_needed = target_pct / current_pct
-
         
         if self.reps >= min_reps and self.reps <= max_reps:  # reps fine
             print("reps fine")
