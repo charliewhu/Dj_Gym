@@ -110,7 +110,15 @@ class WorkoutExerciseSet(models.Model):
 
         super().save(*args, **kwargs)
 
-        if self.weight and self.reps and self.rir is not None:
+        """
+            only generate next_set if:
+                - User chooses set_adjust
+                - Set is complete (has weight + reps + rir)
+        """
+        if self.workout_exercise.is_set_adjust \
+        and self.weight \
+        and self.reps \
+        and self.rir is not None:
             self.next_set(exercise)
         
 
@@ -121,14 +129,15 @@ class WorkoutExerciseSet(models.Model):
             - Adjust weight/reps/rir based on Progression
             - Create another WorkoutExerciseSet object
         """
+
+        rep_d = self.rep_delta()
+        rir_d = self.rir_delta()
         try:
-            rep_d = self.rep_delta()
-            rir_d = self.rir_delta()
             prog = Progression.objects.get(
                 progression_type = exercise.progression_type,
                 rep_delta = rep_d,
                 rir_delta = rir_d
-            )
+                )
         except:
             prog = None
 
