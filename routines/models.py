@@ -6,7 +6,7 @@ from django.conf import settings
 from django.db import models
 from django.core.validators import MaxValueValidator
 
-from exercises.models import Exercise, MuscleGroup, Rir, UserRM
+from exercises.models import Exercise, MuscleGroup, Progression, Rir, UserRM
 from routines.managers import ReadinessAnswerManager
 
 
@@ -107,21 +107,56 @@ class WorkoutExerciseSet(models.Model):
         user = self.workout_exercise.workout.user
         exercise = self.workout_exercise.exercise
         self.save_one_rep_max(user, exercise)
+
         super().save(*args, **kwargs)
-        self.next_set(user, exercise)
-        
-    def next_set(self, user, exercise):
+
         if self.weight and self.reps and self.rir is not None:
-            print("Do logic!")
-            self.rep_drop(user, exercise)
+            self.next_set(exercise)
+        
 
-    def rep_drop(self, user, exercise):
-        one_rm = UserRM.one_rm_manager.latest_one_rm(user=user, exercise=exercise) or None
-        if exercise.progression_type.name == "Rep-Drop":
-            print("in rep-drop block")
-            self.rep_drop_no_1rm(exercise)
+    def next_set(self, exercise):
+        """
+        Generate another set based on the current instance:
+            - Lookup to Progression
+            - Adjust weight/reps/rir based on Progression
+            - Create another WorkoutExerciseSet object
+        """
+        try:
+            rep_d = self.rep_delta()
+            rir_d = self.rir_delta()
+            prog = Progression.objects.get(
+                progression_type = exercise.progression_type,
+                rep_delta = rep_d,
+                rir_delta = rir_d
+            )
+        except:
+            prog = None
 
+        if prog:
+            if prog.weight_change is not None:
+                next_weight = rounder(float(self.weight) * (1 + prog.weight_change), 2.5)
+            else:
+                next_weight = None
+
+            if prog.rep_change is not None:
+                next_reps = self.reps + prog.rep_change
+            else:
+                next_reps = None
+            
+            if prog.rir_change is not None:
+                next_rir = self.rir + prog.rir_change
+            else: 
+                next_rir = None
+
+            WorkoutExerciseSet.objects.create(
+                workout_exercise = self.workout_exercise,
+                weight = next_weight,
+                reps = next_reps,
+                rir = next_rir
+            )
+    
     def rep_delta(self):
+        """difference between reps just done and required rep range"""
         prog_type = self.workout_exercise.exercise.progression_type
         if self.reps < prog_type.min_reps:
             rep_delta = self.reps - prog_type.min_reps
@@ -129,10 +164,11 @@ class WorkoutExerciseSet(models.Model):
             rep_delta = self.reps - prog_type.max_reps
         else:
             rep_delta = 0
-        print("Rep Delta: ", rep_delta)
+
         return rep_delta
 
     def rir_delta(self):
+        """difference between rir just done and required rir range"""
         prog_type = self.workout_exercise.exercise.progression_type
         if self.rir < prog_type.min_rir:
             rir_delta = self.rir - prog_type.min_rir
@@ -140,90 +176,8 @@ class WorkoutExerciseSet(models.Model):
             rir_delta = self.rir - prog_type.target_rir
         else:
             rir_delta = 0
-        print("RIR Delta: ",rir_delta)
+
         return rir_delta
-
-    def rep_drop_no_1rm(self, exercise):
-        print("in no 1RM block")
-        target_rir = exercise.progression_type.target_rir
-        min_reps = exercise.progression_type.min_reps
-        max_reps = exercise.progression_type.max_reps
-        current_pct = get_1rm_percent(self.reps, self.rir)
-        target_pct = get_1rm_percent(min_reps, target_rir)
-        pct_change_needed = target_pct / current_pct
-        
-        if self.reps >= min_reps and self.reps <= max_reps:  # reps fine
-            print("reps fine")
-
-            if self.rir > target_rir: # rir easy
-                print("low effort")
-                next_weight = float(self.weight) * 1.1
-                next_weight = rounder(next_weight, 2.5)
-
-                WorkoutExerciseSet.objects.create(
-                    workout_exercise = self.workout_exercise,
-                    weight = next_weight,
-                    rir = target_rir
-                )
-                
-            elif self.rir < target_rir: # rir hard
-                print("high effort")
-                next_weight = float(self.weight) * 0.9
-                next_weight = rounder(next_weight, 2.5)
-
-                WorkoutExerciseSet.objects.create(
-                    workout_exercise = self.workout_exercise,
-                    weight = next_weight,
-                    reps = self.reps
-                )
-                
-            elif self.rir == target_rir:
-                print("effort fine")
-                WorkoutExerciseSet.objects.create(
-                    workout_exercise = self.workout_exercise,
-                    weight = self.weight,
-                    rir = self.rir
-                )
-
-        elif self.reps > max_reps: # reps high
-            print("reps high")
-            if self.rir > target_rir: # rir easy
-                print("low effort")
-                next_weight = float(self.weight) * 1.2
-                next_weight = rounder(next_weight, 2.5)
-
-                WorkoutExerciseSet.objects.create(
-                    workout_exercise = self.workout_exercise,
-                    weight = next_weight,
-                    rir = target_rir
-                )
-
-            elif self.rir < target_rir: # rir hard
-                print("high effort")
-                next_weight = self.min_new_weight(pct_change_needed, 1.2)
-                
-                WorkoutExerciseSet.objects.create(
-                    workout_exercise = self.workout_exercise,
-                    weight = next_weight,
-                    rir = target_rir
-                )
-                
-            elif self.rir == target_rir: # rir fine
-                print("effort fine")
-                pass
-
-
-    def min_new_weight(self, pct, max_pct):
-        w1 = float(self.weight) * pct
-        w2 = float(self.weight) * max_pct
-        next_weight = min(w1, w2)
-        return rounder(next_weight, 2.5)
-
-    def max_new_weight(self, pct, max_pct):
-        w1 = float(self.weight) * pct
-        w2 = float(self.weight) * max_pct
-        next_weight = max(w1, w2)
-        return rounder(next_weight, 2.5)
 
     def e_one_rep_max(self):
         #calculate the estimated 1RM for that exercise for that set

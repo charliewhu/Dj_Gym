@@ -70,6 +70,8 @@ class Progression(models.Model):
     rep_change       = models.IntegerField(null=True, blank=True)
     rir_change       = models.IntegerField(null=True, blank=True)
 
+    ## need unique constraints on prog_type/rep_delta/rir_delta
+
 
 class Exercise(models.Model):
     name            = models.CharField(max_length=60)

@@ -33,3 +33,4 @@ class ReadinessAnswerManager(models.Manager):
             s
         
         return s
+
