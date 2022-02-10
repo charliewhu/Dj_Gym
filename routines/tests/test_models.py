@@ -1,7 +1,8 @@
 from os import read
+import decimal
 from django.db.utils import IntegrityError
 from django.test import TestCase
-from exercises.models import Exercise
+from exercises.models import Exercise, Progression, ProgressionType
 
 from routines.models import Readiness, ReadinessAnswer, ReadinessQuestion, Workout, WorkoutExercise, WorkoutExerciseSet
 from accounts.models import User
@@ -21,20 +22,36 @@ class ReadinessTest(TestCase):
 
         self.readiness = Readiness.objects.create(user = self.user_a)
 
+        self.prog_type = ProgressionType.objects.create(
+            name = "test",
+            min_reps = 1,
+            max_reps = 5,
+            target_rir = 3,
+            min_rir = 2
+        )
+
         self.exercise = Exercise.objects.create(
             name = "Squat",
-            user = self.user_a
+            user = self.user_a,
+            progression_type = self.prog_type
         )
 
         self.workout = Workout.objects.get(readiness = self.readiness)
 
         self.workout_exercise = WorkoutExercise.objects.create(
-            
+            workout = self.workout,
+            exercise = self.exercise,
+            is_set_adjust = True
         )
 
-        # self.workout_exercise_set = WorkoutExerciseSet.objects.create(
-
-        # )
+        self.progression = Progression.objects.create(
+            progression_type = self.prog_type,
+            rep_delta = 0,
+            rir_delta = -2,
+            weight_change = 0.05,
+            rep_change = 2,
+            rir_change = 2
+        )
 
 
     def test_readiness_save(self):
@@ -58,5 +75,32 @@ class ReadinessTest(TestCase):
         self.assertEqual(self.readiness.percentage(), 20)
 
     
-    def test_workout_exercise_set_exertion_load(self):
-        pass
+    def test_workout_exercise_set_el_delta(self):
+        set = WorkoutExerciseSet.objects.create(
+            workout_exercise = self.workout_exercise,
+            weight = decimal.Decimal(100),
+            reps = 1,
+            rir = 0
+        )
+
+        self.assertEqual(set.exertion_load(), 100.0)
+        self.assertEqual(set.rep_delta(), 0)
+        self.assertEqual(set.rir_delta(), -2)
+        self.assertEqual(set.e_one_rep_max(), 103)
+
+
+    def test_workout_exercise_save(self):
+        set = WorkoutExerciseSet.objects.create(
+            workout_exercise = self.workout_exercise,
+            weight = 100,
+            reps = 1,
+            rir = 0
+        )
+
+        self.assertEqual(WorkoutExerciseSet.objects.count(), 2)
+
+        set2 = WorkoutExerciseSet.objects.get(id=2)
+
+        self.assertEqual(set2.weight, 105)
+        self.assertEqual(set2.reps, 3)
+        self.assertEqual(set2.rir, 2)

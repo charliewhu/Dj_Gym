@@ -193,8 +193,8 @@ class WorkoutExerciseSet(models.Model):
         """
         Change to use RIR table for E1RM instead of formular
         """
-        reps_divider = decimal.Decimal(self.reps/30)
-        rm = self.weight * (1 + reps_divider)
+        reps_divider = self.reps/30
+        rm = float(self.weight) * (1 + reps_divider)
         rounded_rm = round(rm)
         return rounded_rm
 
@@ -213,6 +213,6 @@ class WorkoutExerciseSet(models.Model):
         """Total exertion load for a set"""
         el = 0
         for i in range(self.reps):
-            el += math.exp(-0.215 * (self.rir + self.reps - i))
+            el += math.exp(-0.215 * (self.rir + self.reps - (i+1)))
         el = decimal.Decimal(el) * self.weight
         return round(el, 1)
