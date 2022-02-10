@@ -25,9 +25,10 @@ class Readiness(models.Model):
 
     def save(self, *args, **kwargs):
         super().save(*args,**kwargs)
-        if not self.pk:
-            # only runs on Readiness creation
+        try:
             Workout.objects.create(user=self.user, readiness=self)
+        except:
+            pass
 
     def percentage(self):
         set = self.readinessanswer_set.all()
@@ -79,7 +80,6 @@ class Workout(models.Model):
 
 class WorkoutExercise(models.Model):
     workout      = models.ForeignKey(Workout, related_name="exercises", on_delete=models.CASCADE)
-    muscle_group = models.ForeignKey(MuscleGroup, on_delete=models.CASCADE, null=True)
     exercise     = models.ForeignKey(Exercise, on_delete=models.CASCADE)
     is_set_adjust= models.BooleanField(default=0)
 
@@ -116,7 +116,7 @@ class WorkoutExerciseSet(models.Model):
                 - Set is complete (has weight + reps + rir)
         """
         if self.workout_exercise.is_set_adjust \
-        and self.weight \
+        and self.weight is not None \
         and self.reps \
         and self.rir is not None:
             self.next_set(exercise)

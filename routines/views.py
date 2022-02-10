@@ -51,7 +51,7 @@ class ReadinessCreateView(CreateView):
                 rating=rating
             )
             readiness_answer.save()
-        workout = readiness.workout
+        workout = Workout.objects.get(readiness=readiness)
         return HttpResponseRedirect(
             reverse_lazy(
                 'routines:workout_exercise_list', 
@@ -142,14 +142,14 @@ class WorkoutExerciseDetailView(LoginRequiredMixin, UserWorkoutExerciseMixin, De
     template_name = 'routines/workout_exercise/_detail.html'
 
 
-def load_exercises(request):
-    """
-    For AJAX request to allow dependent dropdown
-    MuscleGroup --> Exercise
-    """
-    muscle_group_id = request.GET.get('muscle_group')
-    exercises = Exercise.objects.filter(muscle_group_id=muscle_group_id).order_by('name')
-    return render(request, 'routines/workout_exercise/partials/exercises_dropdown.html', {'exercises': exercises})
+# def load_exercises(request):
+#     """
+#     For AJAX request to allow dependent dropdown
+#     MuscleGroup --> Exercise
+#     """
+#     muscle_group_id = request.GET.get('muscle_group')
+#     exercises = Exercise.objects.filter(muscle_group_id=muscle_group_id).order_by('name')
+#     return render(request, 'routines/workout_exercise/partials/exercises_dropdown.html', {'exercises': exercises})
     
 
 class WorkoutExerciseCreateView(LoginRequiredMixin, UserWorkoutMixin, CreateView):

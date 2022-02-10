@@ -20,7 +20,8 @@ urlpatterns = [
     path('<int:pk>/add/', views.WorkoutExerciseCreateView.as_view(), name='workout_exercise_create'),
     path('exercise/<int:pk>/update/', views.WorkoutExerciseUpdateView.as_view(), name='workout_exercise_update'),
     path('exercise/<int:pk>/delete/', views.WorkoutExerciseDeleteView.as_view(), name='workout_exercise_delete'),
-    path('ajax/load-exercises/', views.load_exercises, name='ajax_load_exercises'),
+    
+    #path('ajax/load-exercises/', views.load_exercises, name='ajax_load_exercises'),
 
     path('exercise/<int:pk>/', views.WorkoutExerciseSetListView.as_view(), name='wo_ex_set_list'),
     path('exercise/set/<int:pk>/detail/', views.WorkoutExerciseSetDetailView.as_view(), name='wo_ex_set_detail'),
