@@ -115,21 +115,42 @@ class WorkoutExerciseSet(models.Model):
                 - User chooses set_adjust
                 - Set is complete (has weight + reps + rir)
         """
-        if self.workout_exercise.is_set_adjust \
-        and self.weight is not None \
-        and self.reps \
-        and self.rir is not None:
-            self.next_set(exercise)
-        
 
-    def next_set(self, exercise):
+        if self.check_set_completed(self):
+            self.generate_next_set(exercise)
+
+        
+    def following_set(self):
+        next_set = WorkoutExerciseSet.objects\
+            .filter(workout_exercise=self.workout_exercise)\
+            .filter(id__gt=self.id)\
+            .order_by('id')\
+            .first()
+        return next_set
+    
+    @staticmethod
+    def check_set_completed(set):
+        """ Check if the set is completed (has all fields not None)
+        Returns (Boolean)"""
+        return set.weight is not None \
+        and set.reps \
+        and set.rir is not None
+
+    def generate_next_set(self, exercise):
         """
         Generate another set based on the current instance:
             - Lookup to Progression
             - Adjust weight/reps/rir based on Progression
             - Create another WorkoutExerciseSet object
         """
-
+        
+        # when updating: check if user has completed following set
+        # if not, delete() 
+        # then proceed to regenerate
+        next_set = self.following_set()
+        if next_set and not self.check_set_completed(next_set):
+            next_set.delete()
+        
         rep_d = self.rep_delta()
         rir_d = self.rir_delta()
         try:
