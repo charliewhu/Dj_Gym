@@ -79,13 +79,33 @@ class Workout(models.Model):
 
 
 class WorkoutExercise(models.Model):
-    workout      = models.ForeignKey(Workout, related_name="exercises", on_delete=models.CASCADE)
-    exercise     = models.ForeignKey(Exercise, on_delete=models.CASCADE)
-    is_set_adjust= models.BooleanField(default=0)
+    workout       = models.ForeignKey(Workout, related_name="exercises", on_delete=models.CASCADE)
+    exercise      = models.ForeignKey(Exercise, on_delete=models.CASCADE)
+    is_set_adjust = models.BooleanField(default=0)
+    generate_sets = models.BooleanField(default=0)
 
     def __str__(self):
         return f'{self.workout} - {self.exercise}'
 
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        one_rm = UserRM.one_rm_manager.latest_one_rm(self.workout.user, self.exercise)
+        rir = self.exercise.progression_type.target_rir
+        reps = self.exercise.progression_type.max_reps
+        percentage = Rir.objects.get(
+            rir = rir,
+            reps = reps,
+            ).percent
+
+        weight = rounder(one_rm * percentage, 2.5)
+
+        for r in range(4):
+            WorkoutExerciseSet.objects.create(
+                workout_exercise = self,
+                weight = weight,
+                reps = reps,
+            )
+        
     def exertion_load(self):
         el = 0
         for set in self.sets.all():

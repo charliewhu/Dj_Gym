@@ -209,7 +209,6 @@ class WorkoutExerciseSetListView(LoginRequiredMixin, UserWorkoutExerciseMixin, L
         context['object'] = we
         context['object_list'] = we.sets.all()
         # one_rm = UserRM.one_rm_manager.latest_one_rm(user=self.request.user, exercise=we.exercise)
-        # context['one_rm'] = one_rm.get('one_rep_max__max')
         return context
 
 

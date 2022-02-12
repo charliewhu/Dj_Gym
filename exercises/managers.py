@@ -6,8 +6,10 @@ class UserRMManager(models.Manager):
     """We want the User's highest rep max, for specific Exercise, in the last 90 days"""
     def latest_one_rm(self, user, exercise):
         timeout = datetime.date.today() - datetime.timedelta(days=90)
-        return \
-            super()\
+        rm = super()\
             .get_queryset()\
             .filter(user=user, exercise=exercise, date__gte=timeout)\
             .aggregate(Max('one_rep_max'))
+
+        return rm['one_rep_max__max']
+            
