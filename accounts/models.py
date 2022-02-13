@@ -72,14 +72,14 @@ class FrequencyAllocation(models.Model):
     When User completes profile, their choices determine their split
     """
     training_focus = models.ForeignKey(TrainingFocus, on_delete=models.CASCADE)
-    training_split = models.ForeignKey(TrainingSplit, on_delete=models.CASCADE)
     training_days = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(7)])
     hierarchy = models.PositiveIntegerField()
+    training_split = models.ForeignKey(TrainingSplit, on_delete=models.CASCADE)
 
     def __str__(self):
         return f'{self.training_focus}, {self.training_split}, Days: {self.training_days}, Tier: {self.hierarchy}'
 
-    ##TODO add 
+    ##TODO add unique constraints for hierarchy per training days per TrainingFocus
 
 
 class Periodization(models.Model):
@@ -111,10 +111,18 @@ class UserProfile(models.Model):
     def save(self, *args, **kwargs):
         self.reassign_exercises()
         super().save(*args,**kwargs)
+        self.assign_split()
 
+    def assign_split(self):
         if not self.training_split and self.training_focus and self.training_days:
-            FrequencyAllocation.objects.get()
+            fa = FrequencyAllocation.objects.get(
+                training_focus = self.training_focus,
+                training_days  = self.training_days,
+                hierarchy      = 1,
+            )
 
+            self.training_split = fa.training_split
+            self.save()
 
     def reassign_exercises(self):
         """

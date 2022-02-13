@@ -60,7 +60,7 @@ class ProgressionType(models.Model):
     def __str__(self):
         return f'{self.training_focus}, {self.mechanic}, {self.tier} - {self.name}'
 
-    ## need constraints on combinations of focus/mech/tier
+    ## TODO need constraints on combinations of focus/mech/tier
 
 
 class Progression(models.Model):
@@ -71,7 +71,7 @@ class Progression(models.Model):
     rep_change       = models.IntegerField(null=True, blank=True)
     rir_change       = models.IntegerField(null=True, blank=True)
 
-    ## need unique constraints on prog_type/rep_delta/rir_delta
+    ## TODO need unique constraints on prog_type/rep_delta/rir_delta
 
 
 class Exercise(models.Model):
@@ -108,7 +108,7 @@ class UserRM(models.Model):
     Set by save() method of routines.WorkoutExerciseSet.
     """
 
-    ## CHANGE TO WEIGHT * REPS @ RIR to track rep-maxes more accurately
+    ## TODO CHANGE TO WEIGHT * REPS @ RIR to track rep-maxes more accurately
 
     user        = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
     exercise    = models.ForeignKey(Exercise, on_delete=models.CASCADE)
