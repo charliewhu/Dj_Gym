@@ -89,6 +89,10 @@ class WorkoutExercise(models.Model):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
+        if self.generate_sets:
+            self.generate_set()
+
+    def generate_set(self):
         one_rm = UserRM.one_rm_manager.latest_one_rm(self.workout.user, self.exercise)
         rir = self.exercise.progression_type.target_rir
         reps = self.exercise.progression_type.max_reps
@@ -153,8 +157,8 @@ class WorkoutExerciseSet(models.Model):
         """ Check if the set is completed (has all fields not None)
         Returns (Boolean)"""
         return set.weight is not None \
-        and set.reps \
-        and set.rir is not None
+            and set.reps \
+            and set.rir is not None
 
     def generate_next_set(self, exercise):
         """
@@ -169,6 +173,7 @@ class WorkoutExerciseSet(models.Model):
         # then proceed to regenerate
         next_set = self.following_set()
         if next_set and not self.check_set_completed(next_set):
+            id = next_set.id
             next_set.delete()
         
         rep_d = self.rep_delta()
@@ -199,6 +204,7 @@ class WorkoutExerciseSet(models.Model):
                 next_rir = None
 
             WorkoutExerciseSet.objects.create(
+                id = id,
                 workout_exercise = self.workout_exercise,
                 weight = next_weight,
                 reps = next_reps,
