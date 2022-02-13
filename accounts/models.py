@@ -3,7 +3,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.core.validators import MaxValueValidator, MinValueValidator
 
-from exercises.models import Exercise, ProgressionType
+from exercises.models import Exercise, Force, ProgressionType
 from .managers import MyUserManager
 
 
@@ -58,12 +58,28 @@ class TrainingFocus(models.Model):
         return self.name
 
 
-class Frequency(models.Model):
+class TrainingSplit(models.Model):
     """Upper/Lower, FullBody, PPL etc"""
     name = models.CharField(max_length=40)
 
     def __str__(self):
         return self.name
+
+
+class FrequencyAllocation(models.Model):
+    """
+    Lookup table
+    When User completes profile, their choices determine their split
+    """
+    training_focus = models.ForeignKey(TrainingFocus, on_delete=models.CASCADE)
+    training_split = models.ForeignKey(TrainingSplit, on_delete=models.CASCADE)
+    training_days = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(7)])
+    hierarchy = models.PositiveIntegerField()
+
+    def __str__(self):
+        return f'{self.training_focus}, {self.training_split}, Days: {self.training_days}, Tier: {self.hierarchy}'
+
+    ##TODO add 
 
 
 class Periodization(models.Model):
@@ -87,6 +103,7 @@ class UserProfile(models.Model):
     gender        = models.ForeignKey(Gender, null=True, on_delete=models.SET_NULL)
     training_focus= models.ForeignKey(TrainingFocus, null=True,  on_delete=models.SET_NULL)
     training_days = models.PositiveIntegerField(default=4, validators=[MinValueValidator(1), MaxValueValidator(7)])
+    training_split= models.ForeignKey(TrainingSplit, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return f'{self.user}'
@@ -94,6 +111,10 @@ class UserProfile(models.Model):
     def save(self, *args, **kwargs):
         self.reassign_exercises()
         super().save(*args,**kwargs)
+
+        if not self.training_split and self.training_focus and self.training_days:
+            FrequencyAllocation.objects.get()
+
 
     def reassign_exercises(self):
         """
