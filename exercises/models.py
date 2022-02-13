@@ -12,6 +12,7 @@ class Rir(models.Model):
 class Force(models.Model):
     """Hip Hinge, Vertical Push etc"""
     name = models.CharField(max_length=60, unique=True)
+    base_weekly_sets = models.PositiveIntegerField(null=True)
 
     def __str__(self):
         return self.name
@@ -87,6 +88,7 @@ class Exercise(models.Model):
             T2 exercises are close variations of the main lifts. \
             T3 exercises develop the musculature eg. quads for squats. \
             Other exercises develop supplementary muscles")
+    is_active       = models.BooleanField(default=1)
     # User should see exercises where user is NULL (mixed exercises)
     # and where user==currentUser
 
