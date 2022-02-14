@@ -34,7 +34,7 @@ class Tier(models.Model):
 
 
 class Purpose(models.Model):
-    """Squat, Bench, Deadlift"""
+    """Squat, Bench, Deadlift, Other"""
     name = models.CharField(max_length=20, unique=True)
     def __str__(self):
         return self.name
@@ -57,17 +57,25 @@ class MuscleGroup(models.Model):
 
 class ProgressionType(models.Model):
     """Top, Straight, Rep-drop, Technique, Ladder, Pyramid"""
-    name           = models.CharField(max_length=40, unique=True)
-    training_focus = models.ForeignKey("accounts.TrainingFocus", on_delete=models.CASCADE, null=True)
-    mechanic       = models.ForeignKey(Mechanic, on_delete=models.CASCADE, null=True)
-    tier           = models.ForeignKey(Tier, on_delete=models.CASCADE, null=True)
-    min_reps       = models.PositiveIntegerField(null=True)
-    max_reps       = models.PositiveIntegerField(null=True)
-    target_rir     = models.PositiveIntegerField(null=True)
-    min_rir        = models.PositiveIntegerField(null=True, default=1)
+    name       = models.CharField(max_length=40, unique=True)
 
     def __str__(self):
-        return f'{self.training_focus}, {self.mechanic}, {self.tier} - {self.name}'
+        return self.name
+
+
+class ProgressionTypeAllocation(models.Model):
+    """Allocates training focus to exercises depending on User TrainingFocus"""
+    training_focus   = models.ForeignKey("accounts.TrainingFocus", on_delete=models.CASCADE, null=True)
+    mechanic         = models.ForeignKey(Mechanic, on_delete=models.CASCADE, null=True)
+    tier             = models.ForeignKey(Tier, on_delete=models.CASCADE, null=True)
+    progression_type = models.ForeignKey(ProgressionType, on_delete=models.CASCADE, null=True)
+    min_reps         = models.PositiveIntegerField(null=True)
+    max_reps         = models.PositiveIntegerField(null=True)
+    target_rir       = models.PositiveIntegerField(null=True)
+    min_rir          = models.PositiveIntegerField(null=True, default=1)
+
+    def __str__(self):
+        return f'{self.training_focus}, {self.mechanic}, {self.tier}, {self.progression_type}'
 
     ## TODO need constraints on combinations of focus/mech/tier
 
@@ -84,19 +92,16 @@ class Progression(models.Model):
 
 
 class Exercise(models.Model):
-    name            = models.CharField(max_length=60)
-    user            = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
-    mechanic        = models.ForeignKey(Mechanic, on_delete=models.CASCADE, null=True)
-    force           = models.ForeignKey(Force, on_delete=models.CASCADE, null=True)
-    progression_type= models.ForeignKey(ProgressionType, on_delete=models.CASCADE, null=True, blank=True)
-    purpose         = models.ForeignKey(Purpose, on_delete=models.CASCADE, null=True,
-        help_text="Which powerlifting exercise does this improve?")
-    tier            = models.ForeignKey(Tier, on_delete=models.CASCADE, null=True,
-        help_text="T1 exercises are the competition exercises.\
-            T2 exercises are close variations of the main lifts. \
-            T3 exercises develop the musculature eg. quads for squats. \
-            Other exercises develop supplementary muscles")
-    is_active       = models.BooleanField(default=1)
+    name             = models.CharField(max_length=60)
+    user             = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
+    mechanic         = models.ForeignKey(Mechanic, on_delete=models.CASCADE, null=True)
+    force            = models.ForeignKey(Force, on_delete=models.CASCADE, null=True)
+    purpose          = models.ForeignKey(Purpose, on_delete=models.CASCADE, null=True)
+    tier             = models.ForeignKey(Tier, on_delete=models.CASCADE, null=True)
+    progression_type = models.ForeignKey(ProgressionType, on_delete=models.CASCADE, null=True, blank=True)
+    min_reps         = models.PositiveIntegerField(null=True, blank=True)
+    max_reps         = models.PositiveIntegerField(null=True, blank=True)
+    is_active        = models.BooleanField(default=1)
     # User should see exercises where user is NULL (mixed exercises)
     # and where user==currentUser
 

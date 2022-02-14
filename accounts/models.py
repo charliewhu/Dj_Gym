@@ -3,7 +3,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.core.validators import MaxValueValidator, MinValueValidator
 
-from exercises.models import Exercise, Force, ProgressionType
+from exercises.models import Exercise, Force, ProgressionType, ProgressionTypeAllocation
 from .managers import MyUserManager
 
 
@@ -129,6 +129,11 @@ class UserProfile(models.Model):
         Check if training_focus has changed
         Check first time saved / if User already has an exercise list
         """
+
+        ## TODO Add reps/rir/progression type to Exercise model.
+        ## User should be able to customise their rep ranges 
+        ## after the defaults have been assigned 
+    
         try:
             current_tf = UserProfile.objects.get(pk=self.pk).training_focus
         except:
@@ -139,7 +144,7 @@ class UserProfile(models.Model):
             for exercise in exercises:
                 #find progression_type based on UserProfile & Exercise attributes
                 #logically equivalent to a JOIN on all of these fields
-                progression_type = ProgressionType.objects.get(
+                progression_type_allocation = ProgressionTypeAllocation.objects.get(
                     training_focus=self.training_focus,
                     mechanic=exercise.mechanic,
                     tier=exercise.tier,
@@ -148,5 +153,7 @@ class UserProfile(models.Model):
                 if not exercise.user: #exercise.id remains if user has exercise list
                     exercise.id = None
                 exercise.user = self.user
-                exercise.progression_type = progression_type
+                exercise.progression_type = progression_type_allocation.progression_type
+                exercise.min_reps = progression_type_allocation.min_reps
+                exercise.max_reps = progression_type_allocation.max_reps
                 exercise.save()
