@@ -93,7 +93,7 @@ class WorkoutExercise(models.Model):
             self.generate_set()
 
     def generate_set(self):
-        one_rm = UserRM.one_rm_manager.latest_one_rm(self.workout.user, self.exercise)
+        one_rm = UserRM.manager.latest_one_rm(self.workout.user, self.exercise)
         rir = self.exercise.progression_type.target_rir
         reps = self.exercise.progression_type.max_reps
         percentage = Rir.objects.get(

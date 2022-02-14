@@ -9,13 +9,22 @@ class Rir(models.Model):
     percent = models.FloatField()
 
 
+class ForceCategory(models.Model):
+    name = models.CharField(max_length=60, unique=True)
+
+    def __str__(self):
+        return self.name
+
+
 class Force(models.Model):
     """Hip Hinge, Vertical Push etc"""
     name = models.CharField(max_length=60, unique=True)
     base_weekly_sets = models.PositiveIntegerField(null=True)
+    category = models.ForeignKey(ForceCategory, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return self.name
+
 
 class Tier(models.Model):
     """T1, T2, T3, Other"""
@@ -79,7 +88,6 @@ class Exercise(models.Model):
     user            = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
     mechanic        = models.ForeignKey(Mechanic, on_delete=models.CASCADE, null=True)
     force           = models.ForeignKey(Force, on_delete=models.CASCADE, null=True)
-    isolation       = models.BooleanField(null=True, default=False)
     progression_type= models.ForeignKey(ProgressionType, on_delete=models.CASCADE, null=True, blank=True)
     purpose         = models.ForeignKey(Purpose, on_delete=models.CASCADE, null=True,
         help_text="Which powerlifting exercise does this improve?")
@@ -119,4 +127,4 @@ class UserRM(models.Model):
         return f'{self.user} - {self.exercise} - {self.date}'
 
     objects = models.Manager()
-    one_rm_manager = UserRMManager()
+    manager = UserRMManager()
