@@ -112,6 +112,16 @@ class Exercise(models.Model):
 
     def __str__(self):
         return f'{self.name} - {self.user}'
+
+    def get_progression_type_allocation(self):
+        print(self.user.training_focus)
+        print(self.mechanic)
+        print(self.tier)
+        return ProgressionTypeAllocation.objects.get(
+            training_focus   = self.user.training_focus,
+            mechanic         = self.mechanic,
+            tier             = self.tier
+        )
     
 
 class UserRM(models.Model):

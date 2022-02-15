@@ -1,3 +1,4 @@
+from email.policy import default
 import math
 import decimal
 from .utils import rounder, get_1rm_percent, get_1rm
@@ -6,7 +7,7 @@ from django.conf import settings
 from django.db import models
 from django.core.validators import MaxValueValidator
 
-from exercises.models import Exercise, MuscleGroup, Progression, Rir, UserRM
+from exercises.models import Exercise, MuscleGroup, Progression, ProgressionTypeAllocation, Rir, UserRM
 from routines.managers import ReadinessAnswerManager
 
 
@@ -63,9 +64,29 @@ class Workout(models.Model):
     date         = models.DateField(auto_now_add=True, null=True)
     date_created = models.DateTimeField(auto_now_add=True, null=True)
     is_active    = models.BooleanField(default=1)
+    is_exercise_generate = models.BooleanField(default=0)
     
     def __str__(self):
         return f'{self.user} - {self.date}'
+
+    
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
+        ## TODO add WorkoutExercise generation logic
+
+        if self.is_exercise_generate:
+            exercise = Exercise.objects.filter(user=self.user)[0]
+            print(exercise)
+
+            WorkoutExercise.objects.create(
+                workout = self,
+                exercise = exercise,
+                is_set_adjust = True,
+                is_set_generate = True
+            )
+
+
 
     def exertion_load(self):
         el = 0
@@ -79,25 +100,29 @@ class Workout(models.Model):
 
 
 class WorkoutExercise(models.Model):
-    workout       = models.ForeignKey(Workout, related_name="exercises", on_delete=models.CASCADE)
-    exercise      = models.ForeignKey(Exercise, on_delete=models.CASCADE)
-    is_set_adjust = models.BooleanField(default=0)
-    generate_sets = models.BooleanField(default=0)
+    workout         = models.ForeignKey(Workout, related_name="exercises", on_delete=models.CASCADE)
+    exercise        = models.ForeignKey(Exercise, on_delete=models.CASCADE)
+    is_set_adjust   = models.BooleanField(default=0)
+    is_set_generate = models.BooleanField(default=0)
 
     def __str__(self):
         return f'{self.workout} - {self.exercise}'
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        if self.generate_sets:
-            self.generate_set()
+        if self.is_set_generate:
+            self.generate_sets()
 
-    def generate_set(self):
+    def generate_sets(self):
+
+        ## TODO what if user doesnt have a 1rm?        
         one_rm = UserRM.manager.latest_one_rm(self.workout.user, self.exercise)
-        rir = self.exercise.progression_type.target_rir
+
+        pta = self.exercise.get_progression_type_allocation()
+
         reps = self.exercise.max_reps
         percentage = Rir.objects.get(
-            rir = rir,
+            rir = pta.target_rir,
             reps = reps,
             ).percent
 
