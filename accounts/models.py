@@ -129,10 +129,6 @@ class UserProfile(models.Model):
         Check if training_focus has changed
         Check first time saved / if User already has an exercise list
         """
-
-        ## TODO Add reps/rir/progression type to Exercise model.
-        ## User should be able to customise their rep ranges 
-        ## after the defaults have been assigned 
     
         try:
             current_tf = UserProfile.objects.get(pk=self.pk).training_focus

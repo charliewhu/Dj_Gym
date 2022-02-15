@@ -18,9 +18,9 @@ class ForceCategory(models.Model):
 
 class Force(models.Model):
     """Hip Hinge, Vertical Push etc"""
-    name = models.CharField(max_length=60, unique=True)
+    name             = models.CharField(max_length=60, unique=True)
     base_weekly_sets = models.PositiveIntegerField(null=True)
-    category = models.ForeignKey(ForceCategory, on_delete=models.CASCADE, null=True)
+    category         = models.ForeignKey(ForceCategory, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return self.name
@@ -113,7 +113,6 @@ class Exercise(models.Model):
     def __str__(self):
         return f'{self.name} - {self.user}'
     
-
 
 class UserRM(models.Model):
     """
