@@ -56,8 +56,16 @@ class MuscleGroup(models.Model):
 
 
 class ProgressionType(models.Model):
-    """Top, Straight, Rep-drop, Technique, Ladder, Pyramid"""
-    name       = models.CharField(max_length=40, unique=True)
+    """
+    Topset Backdown eg 100x5, 80x5x5, 
+    Topset-RepLower eg 100x5, 100x3x2, 
+    Straight eg 100x5x5, 
+    Rep-drop eg 100x9,8,7,5, 
+    Technique eg 8x3 @ 5+RIR, 
+    Ladder eg 100x2,9,3,8,4,6,5, 
+    Pyramid eg 2,4,6,8,6,4,2
+    """
+    name = models.CharField(max_length=40, unique=True)
 
     def __str__(self):
         return self.name
@@ -113,14 +121,31 @@ class Exercise(models.Model):
     def __str__(self):
         return f'{self.name} - {self.user}'
 
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        self.set_progression_type()
+        
+
+    ## TODO - If Exercises is added by Admin, all Users should receive the exercise to their libraries
+    ## duplicate with every UserID and their progression type
+    ## consider if they already have an exercise with this name
+
+    def set_progression_type(self):
+        if not self.progression_type and not self.min_reps and not self.max_reps:
+            prog = self.get_progression_type_allocation()
+            self.progression_type = prog.progression_type
+            self.min_reps = prog.min_reps
+            self.max_reps = prog.max_reps
+            self.save()
+
     def get_progression_type_allocation(self):
         print(self.user.training_focus)
         print(self.mechanic)
         print(self.tier)
         return ProgressionTypeAllocation.objects.get(
-            training_focus   = self.user.training_focus,
-            mechanic         = self.mechanic,
-            tier             = self.tier
+            training_focus = self.user.training_focus,
+            mechanic  = self.mechanic,
+            tier = self.tier
         )
     
 

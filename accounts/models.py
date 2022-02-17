@@ -24,7 +24,7 @@ class TrainingFocus(models.Model):
 
 
 class TrainingSplit(models.Model):
-    """Upper/Lower, FullBody, PPL etc"""
+    """Upper/Lower, FullBody, PPL, PHUL, PHAT etc"""
     name = models.CharField(max_length=40)
 
     def __str__(self):

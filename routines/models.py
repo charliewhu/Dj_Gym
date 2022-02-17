@@ -1,3 +1,4 @@
+from datetime import datetime
 from email.policy import default
 import math
 import decimal
@@ -61,29 +62,46 @@ class Workout(models.Model):
     """User's Workout. Contains WorkoutExercises"""
     user         = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='workouts', on_delete=models.CASCADE, null=True)
     readiness    = models.OneToOneField(Readiness, on_delete=models.CASCADE, null=True)
-    date         = models.DateField(auto_now_add=True, null=True)
-    date_created = models.DateTimeField(auto_now_add=True, null=True)
+    date         = models.DateField(auto_now_add=True, blank=True)
     is_active    = models.BooleanField(default=1)
     is_exercise_generate = models.BooleanField(default=0)
     
     def __str__(self):
-        return f'{self.user} - {self.date}'
+        return f'{self.id} - {self.user} - {self.date}'
 
     
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
 
-        ## TODO add WorkoutExercise generation logic
 
-        if self.is_exercise_generate:
-            exercise = Exercise.objects.filter(user=self.user)[0]
-            print(exercise)
+        ## TODO Decide which exercises to use
 
-            WorkoutExercise.objects.create(
-                workout = self,
-                exercise = exercise,
-                is_set_adjust = True,
-                is_set_generate = True
+        exercise = Exercise.objects.filter(user=self.user)[0] ##Squat
+        prev_workout = self.get_previous_by_date()
+        print(prev_workout)
+
+        if self.user.training_split.name == 'Upper/Lower':
+            print("UL split")
+        
+        """
+        Check split
+        Figure out what this workout is
+        Establish exercise pool
+        Pick exercises (prioritise T1, Compounds)
+        """
+
+
+
+        if self.pk is None:
+            if self.is_exercise_generate:
+                
+                print(exercise)
+
+                WorkoutExercise.objects.create(
+                    workout = self,
+                    exercise = exercise,
+                    is_set_adjust = True,
+                    is_set_generate = True
             )
 
 
