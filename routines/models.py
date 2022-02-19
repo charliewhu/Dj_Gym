@@ -1,5 +1,4 @@
 from datetime import datetime
-from email.policy import default
 import math
 import decimal
 from .utils import rounder, get_1rm_percent, get_1rm
@@ -63,8 +62,10 @@ class Workout(models.Model):
     user         = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='workouts', on_delete=models.CASCADE, null=True)
     readiness    = models.OneToOneField(Readiness, on_delete=models.CASCADE, null=True)
     date         = models.DateField(auto_now_add=True, blank=True)
+    training_day = models.ForeignKey("accounts.TrainingSplitDay", on_delete=models.CASCADE, null=True, blank=True)
     is_active    = models.BooleanField(default=1)
     is_exercise_generate = models.BooleanField(default=0)
+
     
     def __str__(self):
         return f'{self.id} - {self.user} - {self.date}'

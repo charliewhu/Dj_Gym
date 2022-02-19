@@ -31,6 +31,11 @@ class TrainingSplit(models.Model):
         return self.name
 
 
+class TrainingSplitDay(models.Model):
+    name           = models.CharField(max_length=40)
+    training_split = models.ForeignKey(TrainingSplit, on_delete=models.CASCADE, null=True, blank=True)
+
+
 class User(PermissionsMixin, AbstractBaseUser):
     """the default user model, containing essential information"""
     email = models.EmailField(verbose_name="email", max_length=60, unique=True)

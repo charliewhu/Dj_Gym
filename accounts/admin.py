@@ -1,5 +1,5 @@
 from django.contrib import admin
-from accounts.models import FrequencyAllocation, Gender, TrainingFocus, TrainingSplit, User
+from accounts.models import FrequencyAllocation, Gender, TrainingFocus, TrainingSplit, TrainingSplitDay, User
 
 
 admin.site.register(User)
@@ -7,6 +7,7 @@ admin.site.register(User)
 admin.site.register(Gender)
 admin.site.register(TrainingFocus)
 admin.site.register(TrainingSplit)
+admin.site.register(TrainingSplitDay)
 admin.site.register(FrequencyAllocation)
 
 

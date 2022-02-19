@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+
 from .managers import UserRMManager
 
 
@@ -9,18 +10,11 @@ class Rir(models.Model):
     percent = models.FloatField()
 
 
-class ForceCategory(models.Model):
-    name = models.CharField(max_length=60, unique=True)
-
-    def __str__(self):
-        return self.name
-
-
 class Force(models.Model):
     """Hip Hinge, Vertical Push etc"""
     name             = models.CharField(max_length=60, unique=True)
     base_weekly_sets = models.PositiveIntegerField(null=True)
-    category         = models.ForeignKey(ForceCategory, on_delete=models.CASCADE, null=True)
+    training_day     = models.ManyToManyField("accounts.TrainingSplitDay", blank=True)
 
     def __str__(self):
         return self.name
