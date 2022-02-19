@@ -39,6 +39,14 @@ class TrainingSplitDay(models.Model):
         return f'{self.training_split.name}, {self.name}'
 
 
+class TrainingSplitOrder(models.Model):
+    prev_day = models.ForeignKey(TrainingSplitDay, on_delete=models.CASCADE)
+    this_day = models.ForeignKey(TrainingSplitDay, on_delete=models.CASCADE, related_name='this_day')
+
+    def __str__(self):
+        return f'{self.prev_day.name}, {self.this_day.name}'
+
+
 class User(PermissionsMixin, AbstractBaseUser):
     """the default user model, containing essential information"""
     email = models.EmailField(verbose_name="email", max_length=60, unique=True)

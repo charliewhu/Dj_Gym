@@ -1,6 +1,8 @@
 from datetime import datetime
 import math
 import decimal
+
+from accounts.models import TrainingSplitDay
 from .utils import rounder, get_1rm_percent, get_1rm
 
 from django.conf import settings
@@ -62,7 +64,7 @@ class Workout(models.Model):
     user         = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='workouts', on_delete=models.CASCADE, null=True)
     readiness    = models.OneToOneField(Readiness, on_delete=models.CASCADE, null=True)
     date         = models.DateField(auto_now_add=True, blank=True)
-    training_day = models.ForeignKey("accounts.TrainingSplitDay", on_delete=models.CASCADE, null=True, blank=True)
+    training_day = models.ForeignKey(TrainingSplitDay, on_delete=models.CASCADE, null=True, blank=True)
     is_active    = models.BooleanField(default=1)
     is_exercise_generate = models.BooleanField(default=0)
 
@@ -78,11 +80,17 @@ class Workout(models.Model):
         ## TODO Decide which exercises to use
 
         exercise = Exercise.objects.filter(user=self.user)[0] ##Squat
+
         prev_workout = self.get_previous_by_date()
         print(prev_workout)
 
-        if self.user.training_split.name == 'Upper/Lower':
-            print("UL split")
+        
+        """
+        TrainingSplitOrder model
+        Search prev_day and it says what next should be
+        """
+
+
         
         """
         Check split
@@ -292,8 +300,6 @@ class WorkoutExerciseSet(models.Model):
         rounded_rm = round(rm)
         return rounded_rm
 
-    ## TODO this should be in UserRM model
-    ## passing rir, reps, weight, user, exercise
     def save_one_rep_max(self, user, exercise):
         if self.rir and self.reps and self.weight:
             if self.rir < 5 and self.reps <= 10: ## only set 1rm on hard sets
