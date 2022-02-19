@@ -2,7 +2,7 @@ from datetime import datetime
 import math
 import decimal
 
-from accounts.models import TrainingSplitDay
+from accounts.models import TrainingSplitDay, TrainingSplitOrder
 from .utils import rounder, get_1rm_percent, get_1rm
 
 from django.conf import settings
@@ -74,22 +74,13 @@ class Workout(models.Model):
 
     
     def save(self, *args, **kwargs):
+        self.assign_training_day()
         super().save(*args, **kwargs)
 
 
         ## TODO Decide which exercises to use
 
         exercise = Exercise.objects.filter(user=self.user)[0] ##Squat
-
-        prev_workout = self.get_previous_by_date()
-        print(prev_workout)
-
-        
-        """
-        TrainingSplitOrder model
-        Search prev_day and it says what next should be
-        """
-
 
         
         """
@@ -113,7 +104,14 @@ class Workout(models.Model):
                     is_set_generate = True
                 )
 
-
+    def assign_training_day(self):
+        try:
+            prev_workout = self.get_previous_by_date().training_day
+            self.training_day = TrainingSplitOrder.objects.get(prev_day = prev_workout).this_day
+        except:
+            # If user has no previous workout
+            # Or changed TrainingSplit, assign random day
+            self.training_day = self.user.training_split.trainingsplitday_set.all()[0]
 
     def exertion_load(self):
         el = 0
