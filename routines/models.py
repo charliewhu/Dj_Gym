@@ -103,7 +103,7 @@ class Workout(models.Model):
                     exercise = exercise,
                     is_set_adjust = True,
                     is_set_generate = True
-            )
+                )
 
 
 
@@ -140,6 +140,8 @@ class WorkoutExercise(models.Model):
         pta = self.exercise.get_progression_type_allocation()
 
         reps = self.exercise.max_reps
+
+        ## TODO create manager on RIR Model for this
         percentage = Rir.objects.get(
             rir = pta.target_rir,
             reps = reps,
@@ -189,6 +191,7 @@ class WorkoutExerciseSet(models.Model):
 
         
     def following_set(self):
+        ## TODO create manager method on WorkoutExerciseSet for this
         next_set = WorkoutExerciseSet.objects\
             .filter(workout_exercise=self.workout_exercise)\
             .filter(id__gt=self.id)\
@@ -289,9 +292,11 @@ class WorkoutExerciseSet(models.Model):
         rounded_rm = round(rm)
         return rounded_rm
 
+    ## TODO this should be in UserRM model
+    ## passing rir, reps, weight, user, exercise
     def save_one_rep_max(self, user, exercise):
         if self.rir and self.reps and self.weight:
-            if self.rir < 5 and self.reps <= 10:
+            if self.rir < 5 and self.reps <= 10: ## only set 1rm on hard sets
                 rm = self.e_one_rep_max()
                 user_rm = UserRM(
                     user=user, 
