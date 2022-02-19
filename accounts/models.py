@@ -32,8 +32,11 @@ class TrainingSplit(models.Model):
 
 
 class TrainingSplitDay(models.Model):
+    training_split = models.ForeignKey(TrainingSplit, on_delete=models.CASCADE)
     name           = models.CharField(max_length=40)
-    training_split = models.ForeignKey(TrainingSplit, on_delete=models.CASCADE, null=True, blank=True)
+
+    def __str__(self):
+        return f'{self.training_split.name}, {self.name}'
 
 
 class User(PermissionsMixin, AbstractBaseUser):

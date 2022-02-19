@@ -10,16 +10,6 @@ class Rir(models.Model):
     percent = models.FloatField()
 
 
-class Force(models.Model):
-    """Hip Hinge, Vertical Push etc"""
-    name             = models.CharField(max_length=60, unique=True)
-    base_weekly_sets = models.PositiveIntegerField(null=True)
-    training_day     = models.ManyToManyField("accounts.TrainingSplitDay", blank=True)
-
-    def __str__(self):
-        return self.name
-
-
 class Tier(models.Model):
     """T1, T2, T3, Other"""
     name =  name = models.CharField(max_length=20, unique=True)
@@ -37,14 +27,6 @@ class Purpose(models.Model):
 class Mechanic(models.Model):
     """Compound, Isolation"""
     name = models.CharField(max_length=20, unique=True)
-    def __str__(self):
-        return self.name
-
-
-class MuscleGroup(models.Model):
-    name  = models.CharField(max_length=20, unique=True)
-    force = models.ManyToManyField(Force)
-    
     def __str__(self):
         return self.name
 
@@ -91,6 +73,24 @@ class Progression(models.Model):
     rir_change       = models.IntegerField(null=True, blank=True)
 
     ## TODO need unique constraints on prog_type/rep_delta/rir_delta
+
+
+class Force(models.Model):
+    """Hip Hinge, Vertical Push etc"""
+    name             = models.CharField(max_length=60, unique=True)
+    base_weekly_sets = models.PositiveIntegerField(null=True)
+    training_day     = models.ManyToManyField("accounts.TrainingSplitDay", blank=True)
+
+    def __str__(self):
+        return self.name
+
+
+class MuscleGroup(models.Model):
+    name  = models.CharField(max_length=20, unique=True)
+    force = models.ManyToManyField(Force)
+    
+    def __str__(self):
+        return self.name
 
 
 class Exercise(models.Model):
