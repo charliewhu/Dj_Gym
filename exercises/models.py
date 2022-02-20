@@ -104,6 +104,7 @@ class Exercise(models.Model):
     min_reps         = models.PositiveIntegerField(null=True, blank=True)
     max_reps         = models.PositiveIntegerField(null=True, blank=True)
     is_active        = models.BooleanField(default=1)
+    is_unilateral    = models.BooleanField(default=0)
     # User should see exercises where user is NULL (mixed exercises)
     # and where user==currentUser
 
