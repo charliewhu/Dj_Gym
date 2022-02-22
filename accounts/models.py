@@ -1,3 +1,4 @@
+from xml.dom import HierarchyRequestErr
 from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
@@ -31,20 +32,41 @@ class TrainingSplit(models.Model):
         return self.name
 
 
-class TrainingSplitDay(models.Model):
+class TrainingSplitItem(models.Model):
     training_split = models.ForeignKey(TrainingSplit, on_delete=models.CASCADE)
     name           = models.CharField(max_length=40)
 
     def __str__(self):
-        return f'{self.training_split.name}, {self.name}'
+        return self.name
 
 
-class TrainingSplitOrder(models.Model):
-    prev_day = models.ForeignKey(TrainingSplitDay, on_delete=models.CASCADE)
-    this_day = models.ForeignKey(TrainingSplitDay, on_delete=models.CASCADE, related_name='this_day')
+class TrainingSplitDay(models.Model):
+    training_split_item = models.ForeignKey(TrainingSplitItem, on_delete=models.CASCADE, null=True)
+    name                = models.CharField(max_length=40)
+    force               = models.ManyToManyField(Force, through='TrainingSplitDayForce')
+    order               = models.PositiveIntegerField(null=True)
+
+    ## TODO -- add unique contraint on training_split_item + order
 
     def __str__(self):
-        return f'{self.prev_day.name}, {self.this_day.name}'
+        return f'{self.order}, {self.training_split_item}, {self.name}'
+
+    
+class TrainingSplitDayForce(models.Model):
+    day       = models.ForeignKey(TrainingSplitDay, on_delete=models.CASCADE)
+    force     = models.ForeignKey(Force, on_delete=models.CASCADE)
+    hierarchy = models.PositiveIntegerField()
+
+    def __str__(self):
+        return f'{self.day}, {self.force}, {self.hierarchy}'
+
+
+# class TrainingSplitOrder(models.Model):
+#     prev_day = models.ForeignKey(TrainingSplitDay, on_delete=models.CASCADE)
+#     this_day = models.ForeignKey(TrainingSplitDay, on_delete=models.CASCADE, related_name='this_day')
+
+#     def __str__(self):
+#         return f'{self.prev_day.name}, {self.this_day.name}'
 
 
 class User(PermissionsMixin, AbstractBaseUser):
@@ -132,8 +154,6 @@ class User(PermissionsMixin, AbstractBaseUser):
         r = self.readiness_set.order_by('-id')[:40]
         user = User.objects.filter(id=self.pk).prefetch_related("readiness_set")
         return user
-
-
 
 
 class FrequencyAllocation(models.Model):

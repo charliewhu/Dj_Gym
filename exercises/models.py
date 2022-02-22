@@ -11,7 +11,12 @@ class Rir(models.Model):
 
 
 class Tier(models.Model):
-    """T1, T2, T3, Other"""
+    """
+    T1 eg Squat, Bench
+    T2 eg Paused Squat, CG Bench
+    T3 eg Split Squat, DB Bench
+    T4 eg Leg Extension, Pec Fly
+    """
     name =  name = models.CharField(max_length=20, unique=True)
     def __str__(self):
         return self.name
@@ -79,7 +84,6 @@ class Force(models.Model):
     """Hip Hinge, Vertical Push etc"""
     name             = models.CharField(max_length=60, unique=True)
     base_weekly_sets = models.PositiveIntegerField(null=True)
-    training_day     = models.ManyToManyField("accounts.TrainingSplitDay", blank=True)
 
     def __str__(self):
         return self.name
@@ -119,19 +123,18 @@ class Exercise(models.Model):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         self.set_progression_type()
-        
-
-    ## TODO - If Exercises is added by Admin, all Users should receive the exercise to their libraries
-    ## duplicate with every UserID and their progression type
-    ## consider if they already have an exercise with this name
+        ## TODO - If Exercises is added by Admin, all Users should receive the exercise to their libraries
+        ## duplicate with every UserID and their progression type
+        ## consider if they already have an exercise with this name
 
     def set_progression_type(self):
-        if not self.progression_type and not self.min_reps and not self.max_reps:
-            prog = self.get_progression_type_allocation()
-            self.progression_type = prog.progression_type
-            self.min_reps = prog.min_reps
-            self.max_reps = prog.max_reps
-            self.save()
+        if self.user:
+            if not self.progression_type and not self.min_reps and not self.max_reps:
+                prog = self.get_progression_type_allocation()
+                self.progression_type = prog.progression_type
+                self.min_reps = prog.min_reps
+                self.max_reps = prog.max_reps
+                self.save()
 
     def get_progression_type_allocation(self):
         print(self.user.training_focus)

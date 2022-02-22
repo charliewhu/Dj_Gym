@@ -2,7 +2,7 @@ from datetime import datetime
 import math
 import decimal
 
-from accounts.models import TrainingSplitDay, TrainingSplitOrder
+from accounts.models import TrainingSplitDay
 from .utils import rounder, get_1rm_percent, get_1rm
 
 from django.conf import settings
@@ -72,18 +72,29 @@ class Workout(models.Model):
     def __str__(self):
         return f'{self.id} - {self.user} - {self.date}'
 
-    
     def save(self, *args, **kwargs):
         self.assign_training_day()
         super().save(*args, **kwargs)
-
-
-        ## TODO Decide which exercises to use
-
-        exercise = Exercise.objects.filter(user=self.user)[0] ##Squat
+        
+        forces = self.training_day.force_set.all()
+        print(forces)
 
         
         """
+        Creates set for the first Exercise in each Force_set category
+
+        for force in forces:
+            WorkoutExercise.objects.create(
+                workout = self,
+                exercise = force.exercise_set.first(),
+                is_set_adjust = False,
+                is_set_generate = False
+            )
+        """
+            
+
+        """
+        TODO
         Check split
         Figure out what this workout is
         Establish exercise pool
@@ -91,12 +102,11 @@ class Workout(models.Model):
         """
 
 
+        exercise = Exercise.objects.filter(user=self.user)[0] ##Squat
 
         if self.pk is None:
             if self.is_exercise_generate:
-                
                 print(exercise)
-
                 WorkoutExercise.objects.create(
                     workout = self,
                     exercise = exercise,
@@ -107,7 +117,7 @@ class Workout(models.Model):
     def assign_training_day(self):
         try:
             prev_workout = self.get_previous_by_date().training_day
-            self.training_day = TrainingSplitOrder.objects.get(prev_day = prev_workout).this_day
+            #self.training_day = TrainingSplitOrder.objects.get(prev_day = prev_workout).this_day
         except:
             # If user has no previous workout
             # Or changed TrainingSplit, assign random day
