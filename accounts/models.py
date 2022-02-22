@@ -41,7 +41,7 @@ class TrainingSplitItem(models.Model):
 
 
 class TrainingSplitDay(models.Model):
-    training_split_item = models.ForeignKey(TrainingSplitItem, on_delete=models.CASCADE, null=True)
+    training_split_item = models.ForeignKey(TrainingSplitItem, on_delete=models.CASCADE)
     name                = models.CharField(max_length=40)
     force               = models.ManyToManyField(Force, through='TrainingSplitDayForce')
     order               = models.PositiveIntegerField(null=True)
@@ -57,16 +57,10 @@ class TrainingSplitDayForce(models.Model):
     force     = models.ForeignKey(Force, on_delete=models.CASCADE)
     hierarchy = models.PositiveIntegerField()
 
+    ## TODO -- add unique contraint on day + force + hierarchy
+
     def __str__(self):
         return f'{self.day}, {self.force}, {self.hierarchy}'
-
-
-# class TrainingSplitOrder(models.Model):
-#     prev_day = models.ForeignKey(TrainingSplitDay, on_delete=models.CASCADE)
-#     this_day = models.ForeignKey(TrainingSplitDay, on_delete=models.CASCADE, related_name='this_day')
-
-#     def __str__(self):
-#         return f'{self.prev_day.name}, {self.this_day.name}'
 
 
 class User(PermissionsMixin, AbstractBaseUser):
