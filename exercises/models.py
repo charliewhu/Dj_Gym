@@ -66,7 +66,10 @@ class ProgressionTypeAllocation(models.Model):
     def __str__(self):
         return f'{self.training_focus}, {self.mechanic}, {self.tier}, {self.progression_type}'
 
-    ## TODO need constraints on combinations of focus/mech/tier
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['training_focus', 'mechanic', 'tier'], name="UniqueProgressionTypeCheck")
+            ]
 
 
 class Progression(models.Model):
@@ -77,7 +80,10 @@ class Progression(models.Model):
     rep_change       = models.IntegerField(null=True, blank=True)
     rir_change       = models.IntegerField(null=True, blank=True)
 
-    ## TODO need unique constraints on prog_type/rep_delta/rir_delta
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['progression_type', 'rep_delta', 'rir_delta'], name="UniqueProgressionCheck")
+            ]
 
 
 class Force(models.Model):
