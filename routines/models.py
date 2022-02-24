@@ -2,7 +2,7 @@ from datetime import datetime
 import math
 import decimal
 
-from accounts.models import TrainingSplitDay
+from accounts.models import SplitDay
 from .utils import rounder, get_1rm_percent, get_1rm
 
 from django.conf import settings
@@ -64,7 +64,7 @@ class Workout(models.Model):
     user         = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='workouts', on_delete=models.CASCADE, null=True)
     readiness    = models.OneToOneField(Readiness, on_delete=models.CASCADE, null=True)
     date         = models.DateField(auto_now_add=True, blank=True)
-    training_day = models.ForeignKey(TrainingSplitDay, on_delete=models.CASCADE, null=True, blank=True)
+    training_day = models.ForeignKey(SplitDay, on_delete=models.CASCADE, null=True, blank=True)
     is_active    = models.BooleanField(default=1)
     is_exercise_generate = models.BooleanField(default=0)
 
@@ -79,7 +79,7 @@ class Workout(models.Model):
         forces = self.training_day.force_set.all()
         print(forces)
 
-        
+
 
         
         """
@@ -122,7 +122,7 @@ class Workout(models.Model):
         except:
             # If user has no previous workout
             # Or changed TrainingSplit, assign random day
-            self.training_day = self.user.training_split.trainingsplitday_set.all()[0]
+            self.training_day = self.user.training_split.splitday_set.all()[0]
 
     def exertion_load(self):
         el = 0

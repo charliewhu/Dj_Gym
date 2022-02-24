@@ -40,11 +40,11 @@ class SplitItem(models.Model):
         return self.name
 
 
-class TrainingSplitDay(models.Model):
+class SplitDay(models.Model):
     split_item = models.ForeignKey(SplitItem, on_delete=models.CASCADE)
-    name                = models.CharField(max_length=40)
-    force               = models.ManyToManyField(Force, through='TrainingSplitDayForce')
-    order               = models.PositiveIntegerField(null=True)
+    name       = models.CharField(max_length=40)
+    force      = models.ManyToManyField(Force, through='SplitDayForce')
+    order      = models.PositiveIntegerField(null=True)
 
     ## TODO -- add unique contraint on training_split_item + order
 
@@ -52,8 +52,8 @@ class TrainingSplitDay(models.Model):
         return f'{self.order}, {self.split_item}, {self.name}'
 
     
-class TrainingSplitDayForce(models.Model):
-    day       = models.ForeignKey(TrainingSplitDay, on_delete=models.CASCADE)
+class SplitDayForce(models.Model):
+    day       = models.ForeignKey(SplitDay, on_delete=models.CASCADE)
     force     = models.ForeignKey(Force, on_delete=models.CASCADE)
     hierarchy = models.PositiveIntegerField()
 
