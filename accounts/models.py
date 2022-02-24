@@ -24,7 +24,7 @@ class TrainingFocus(models.Model):
         return self.name
 
 
-class TrainingSplit(models.Model):
+class Split(models.Model):
     """Upper/Lower, FullBody, PPL, PHUL, PHAT etc"""
     name = models.CharField(max_length=40)
 
@@ -32,8 +32,8 @@ class TrainingSplit(models.Model):
         return self.name
 
 
-class TrainingSplitItem(models.Model):
-    training_split = models.ForeignKey(TrainingSplit, on_delete=models.CASCADE)
+class SplitItem(models.Model):
+    split = models.ForeignKey(Split, on_delete=models.CASCADE)
     name           = models.CharField(max_length=40)
 
     def __str__(self):
@@ -41,7 +41,7 @@ class TrainingSplitItem(models.Model):
 
 
 class TrainingSplitDay(models.Model):
-    training_split_item = models.ForeignKey(TrainingSplitItem, on_delete=models.CASCADE)
+    split_item = models.ForeignKey(SplitItem, on_delete=models.CASCADE)
     name                = models.CharField(max_length=40)
     force               = models.ManyToManyField(Force, through='TrainingSplitDayForce')
     order               = models.PositiveIntegerField(null=True)
@@ -49,7 +49,7 @@ class TrainingSplitDay(models.Model):
     ## TODO -- add unique contraint on training_split_item + order
 
     def __str__(self):
-        return f'{self.order}, {self.training_split_item}, {self.name}'
+        return f'{self.order}, {self.split_item}, {self.name}'
 
     
 class TrainingSplitDayForce(models.Model):
@@ -79,7 +79,7 @@ class User(PermissionsMixin, AbstractBaseUser):
     gender        = models.ForeignKey(Gender, null=True, on_delete=models.SET_NULL)
     training_focus= models.ForeignKey(TrainingFocus, null=True,  on_delete=models.SET_NULL)
     training_days = models.PositiveIntegerField(default=4, validators=[MinValueValidator(1), MaxValueValidator(7)])
-    training_split= models.ForeignKey(TrainingSplit, on_delete=models.CASCADE, null=True, blank=True)
+    split= models.ForeignKey(Split, on_delete=models.CASCADE, null=True, blank=True)
 
     USERNAME_FIELD = 'email'
 
@@ -97,14 +97,14 @@ class User(PermissionsMixin, AbstractBaseUser):
         self.assign_split()
 
     def assign_split(self):
-        if not self.training_split and self.training_focus and self.training_days:
+        if not self.split and self.training_focus and self.training_days:
             fa = FrequencyAllocation.objects.get(
                 training_focus = self.training_focus,
                 training_days  = self.training_days,
                 hierarchy      = 1,
             )
 
-            self.training_split = fa.training_split
+            self.split = fa.split
             self.save()
 
     def reassign_exercises(self):
@@ -158,10 +158,10 @@ class FrequencyAllocation(models.Model):
     training_focus = models.ForeignKey(TrainingFocus, on_delete=models.CASCADE)
     training_days = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(7)])
     hierarchy = models.PositiveIntegerField()
-    training_split = models.ForeignKey(TrainingSplit, on_delete=models.CASCADE)
+    split = models.ForeignKey(Split, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'{self.training_focus}, {self.training_split}, Days: {self.training_days}, Tier: {self.hierarchy}'
+        return f'{self.training_focus}, {self.split}, Days: {self.training_days}, Tier: {self.hierarchy}'
 
     ##TODO add unique constraints for hierarchy per training days per TrainingFocus
 

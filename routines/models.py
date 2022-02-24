@@ -80,6 +80,8 @@ class Workout(models.Model):
         print(forces)
 
         
+
+        
         """
         Creates set for the first Exercise in each Force_set category
 
@@ -91,7 +93,6 @@ class Workout(models.Model):
                 is_set_generate = False
             )
         """
-            
 
         """
         TODO
