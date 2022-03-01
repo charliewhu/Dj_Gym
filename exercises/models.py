@@ -20,6 +20,10 @@ class Tier(models.Model):
     hierarchy = models.PositiveIntegerField(null=True, unique=True)
     name = models.CharField(max_length=20, unique=True)
     #add description
+
+    class Meta:
+        ordering = ['hierarchy']
+
     def __str__(self):
         return self.name
 

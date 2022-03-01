@@ -76,60 +76,64 @@ class Workout(models.Model):
         self.assign_training_day()
         super().save(*args, **kwargs)
         
-        forces = self.split_day.splitdayforce_set.all()
-        print(forces)
-
-
-
-        
-        """
-        Creates set for the first Exercise in each Force_set category
-
-        for force in forces:
-            WorkoutExercise.objects.create(
-                workout = self,
-                exercise = force.exercise_set.first(),
-                is_set_adjust = False,
-                is_set_generate = False
-            )
-        """
-
         """
         TODO
-        Check split
-        Figure out what this workout is
         Establish exercise pool
         Pick exercises (prioritise T1, Compounds)
+        - Filter out exercises in the last workout
+        - Order by Tier
+        - .first()
         """
 
+        #previous SplitItem to filter out Exercises
+        #needs to be SplitItem to compare Chest day with Shoulder day 
+        prev_workout = Workout.objects\
+            .filter(split_day__split_item = self.split_day.split_item)\
+            .exclude(pk = self.id)\
+            .last()
 
-        exercise = Exercise.objects.filter(user=self.user)[0] ##Squat
+        prev_exercises = prev_workout.exercises.all()
 
-        if self.pk is None:
+        print(prev_exercises)
+        
+        #Creates set for the first Exercise in each Force_set category
+        forces = self.split_day.splitdayforce_set.all().order_by('hierarchy')
+        if not self.exercises.all():
+            print("passed first conditonal")
             if self.is_exercise_generate:
-                print(exercise)
-                WorkoutExercise.objects.create(
-                    workout = self,
-                    exercise = exercise,
-                    is_set_adjust = True,
-                    is_set_generate = True
-                )
+                for force in forces:
+                    print(force)
+                    #exercise = force.force.exercise_set.filter(user=self.user).order_by('tier').first()
+                    exercises = force.force.exercise_set.filter(user=self.user)
+                    exercises = exercises.difference(prev_exercises)
+
+
+                    ### TODO the querysets need to be on the same object to DIFF them!
+                    ### one is WorkoutExercise, one is Exercise
+                    print("QS post diffing: ", exercises)
+
+                    exercise = exercises.order_by('tier').first()
+
+                    WorkoutExercise.objects.create(
+                        workout = self,
+                        exercise = exercise,
+                        is_set_adjust = False,
+                        is_set_generate = False
+                    )
 
     def assign_training_day(self):
         try:
-            prev_workout = self.get_previous_by_date().training_day
-            """
-            TODO
-            -figure out which day we're on
-            -calculate how many days in training split
-            -assign to the next possible day
-            -use modulus for going from last day back to first
-            """
-            
+            total_split_days = SplitDay.objects.filter(split_item__split=self.user.split).count()
+            prev_split_day = self.get_previous_by_date().split_day.order
+            this_split_day_num = (prev_split_day % total_split_days) + 1
+            self.split_day = SplitDay.objects.get(
+                split_item__split=self.user.split,
+                order = this_split_day_num
+            )        
         except:
             # If user has no previous workout
             # Or changed TrainingSplit, assign random day
-            self.training_day = self.user.split.splititem_set.all()[0]
+            self.split_day = SplitDay.objects.filter(split_item__split=self.user.split).first()
 
     def exertion_load(self):
         el = 0
