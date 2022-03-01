@@ -17,7 +17,7 @@ class Gender(models.Model):
 
 class TrainingFocus(models.Model):
     """Bodybuilding, Powerbuilding, PL Hypertrophy,PL Strength, Peaking, Bridge"""
-    name     = models.CharField(max_length=40)
+    name = models.CharField(max_length=40)
     #what % Bodybuilding to Powerlifting etc for each of these phases?
 
     def __str__(self):
@@ -34,7 +34,7 @@ class Split(models.Model):
 
 class SplitItem(models.Model):
     split = models.ForeignKey(Split, on_delete=models.CASCADE)
-    name           = models.CharField(max_length=40)
+    name  = models.CharField(max_length=40)
 
     def __str__(self):
         return self.name
@@ -46,7 +46,7 @@ class SplitDay(models.Model):
     force      = models.ManyToManyField(Force, through='SplitDayForce')
     order      = models.PositiveIntegerField(null=True)
 
-    ## TODO -- add unique contraint on training_split_item + order
+    ## TODO -- add unique contraint on split_item + order
 
     def __str__(self):
         return f'{self.order}, {self.split_item}, {self.name}'
@@ -79,7 +79,7 @@ class User(PermissionsMixin, AbstractBaseUser):
     gender        = models.ForeignKey(Gender, null=True, on_delete=models.SET_NULL)
     training_focus= models.ForeignKey(TrainingFocus, null=True,  on_delete=models.SET_NULL)
     training_days = models.PositiveIntegerField(default=4, validators=[MinValueValidator(1), MaxValueValidator(7)])
-    split= models.ForeignKey(Split, on_delete=models.CASCADE, null=True, blank=True)
+    split         = models.ForeignKey(Split, on_delete=models.CASCADE, null=True, blank=True)
 
     USERNAME_FIELD = 'email'
 

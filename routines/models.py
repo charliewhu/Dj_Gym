@@ -64,7 +64,7 @@ class Workout(models.Model):
     user         = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='workouts', on_delete=models.CASCADE, null=True)
     readiness    = models.OneToOneField(Readiness, on_delete=models.CASCADE, null=True)
     date         = models.DateField(auto_now_add=True, blank=True)
-    training_day = models.ForeignKey(SplitDay, on_delete=models.CASCADE, null=True, blank=True)
+    split_day    = models.ForeignKey(SplitDay, on_delete=models.CASCADE, null=True, blank=True)
     is_active    = models.BooleanField(default=1)
     is_exercise_generate = models.BooleanField(default=0)
 
@@ -76,7 +76,7 @@ class Workout(models.Model):
         self.assign_training_day()
         super().save(*args, **kwargs)
         
-        forces = self.training_day.force_set.all()
+        forces = self.split_day.splitdayforce_set.all()
         print(forces)
 
 
@@ -118,11 +118,18 @@ class Workout(models.Model):
     def assign_training_day(self):
         try:
             prev_workout = self.get_previous_by_date().training_day
-            #self.training_day = TrainingSplitOrder.objects.get(prev_day = prev_workout).this_day
+            """
+            TODO
+            -figure out which day we're on
+            -calculate how many days in training split
+            -assign to the next possible day
+            -use modulus for going from last day back to first
+            """
+            
         except:
             # If user has no previous workout
             # Or changed TrainingSplit, assign random day
-            self.training_day = self.user.training_split.splitday_set.all()[0]
+            self.training_day = self.user.split.splititem_set.all()[0]
 
     def exertion_load(self):
         el = 0

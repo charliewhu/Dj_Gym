@@ -17,7 +17,9 @@ class Tier(models.Model):
     T3 eg Split Squat, DB Bench
     T4 eg Leg Extension, Pec Fly
     """
-    name =  name = models.CharField(max_length=20, unique=True)
+    hierarchy = models.PositiveIntegerField(null=True, unique=True)
+    name = models.CharField(max_length=20, unique=True)
+    #add description
     def __str__(self):
         return self.name
 
