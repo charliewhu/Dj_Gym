@@ -87,26 +87,18 @@ class Workout(models.Model):
 
         #previous SplitItem to filter out Exercises
         #needs to be SplitItem to compare Chest day with Shoulder day 
-        prev_workout = Workout.objects\
-            .filter(split_day__split_item = self.split_day.split_item)\
-            .exclude(pk = self.id)\
-            .last()
-
-        prev_exercises = prev_workout.exercises.all()
-
-        print(prev_exercises)
+        prev_exercises = self.prev_split_day_exercises()
+        prev_exercises.values_list("exercise", flat=True)
         
         #Creates set for the first Exercise in each Force_set category
         forces = self.split_day.splitdayforce_set.all().order_by('hierarchy')
         if not self.exercises.all():
-            print("passed first conditonal")
             if self.is_exercise_generate:
                 for force in forces:
                     print(force)
                     #exercise = force.force.exercise_set.filter(user=self.user).order_by('tier').first()
-                    exercises = force.force.exercise_set.filter(user=self.user)
-                    exercises = exercises.difference(prev_exercises)
-
+                    exercises = force.force.exercise_set.filter(user=self.user)                    
+                    exercises = exercises.exclude(id__in=prev_exercises)
 
                     ### TODO the querysets need to be on the same object to DIFF them!
                     ### one is WorkoutExercise, one is Exercise
@@ -114,22 +106,24 @@ class Workout(models.Model):
 
                     exercise = exercises.order_by('tier').first()
 
-                    WorkoutExercise.objects.create(
-                        workout = self,
-                        exercise = exercise,
-                        is_set_adjust = False,
-                        is_set_generate = False
-                    )
+                    if exercise:
+                        WorkoutExercise.objects.create(
+                            workout = self,
+                            exercise = exercise,
+                            is_set_adjust = False,
+                            is_set_generate = False
+                        )
 
     def assign_training_day(self):
         try:
             total_split_days = SplitDay.objects.filter(split_item__split=self.user.split).count()
-            prev_split_day = self.get_previous_by_date().split_day.order
-            this_split_day_num = (prev_split_day % total_split_days) + 1
+            prev_split_day_order = Workout.objects.filter(user=self.user).last().split_day.order
+            this_split_day_num = (prev_split_day_order % total_split_days) + 1
             self.split_day = SplitDay.objects.get(
                 split_item__split=self.user.split,
                 order = this_split_day_num
-            )        
+            )
+            print(self.split_day)
         except:
             # If user has no previous workout
             # Or changed TrainingSplit, assign random day
@@ -140,6 +134,15 @@ class Workout(models.Model):
         for exercise in self.exercises.all():
             el += exercise.exertion_load()
         return el
+
+    def prev_split_day(self):
+        return Workout.objects\
+            .filter(split_day__split_item = self.split_day.split_item, user=self.user)\
+            .exclude(pk = self.id)\
+            .last()
+
+    def prev_split_day_exercises(self):
+        return self.prev_split_day().exercises.all()
     
     def end_workout(self):
         self.is_active = False
