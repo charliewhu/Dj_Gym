@@ -68,42 +68,26 @@ class Workout(models.Model):
     is_active    = models.BooleanField(default=1)
     is_exercise_generate = models.BooleanField(default=0)
 
-    
     def __str__(self):
         return f'{self.id} - {self.user} - {self.date}'
 
     def save(self, *args, **kwargs):
         self.assign_training_day()
         super().save(*args, **kwargs)
-        
-        """
-        TODO
-        Establish exercise pool
-        Pick exercises (prioritise T1, Compounds)
-        - Filter out exercises in the last workout
-        - Order by Tier
-        - .first()
-        """
+        self.create_exercises()
 
-        #previous SplitItem to filter out Exercises
-        #needs to be SplitItem to compare Chest day with Shoulder day 
-        prev_exercises = self.prev_split_day_exercises()
-        prev_exercises.values_list("exercise", flat=True)
-        
-        #Creates set for the first Exercise in each Force_set category
+    def create_exercises(self):
+        """
+        Create WorkoutExercise for the first in each Force
+        Excluding those that appeared in the prev Workout with the same SplitItem
+        """
+        prev_exercises = self.prev_split_day_exercises().values_list("exercise", flat=True)
         forces = self.split_day.splitdayforce_set.all().order_by('hierarchy')
         if not self.exercises.all():
             if self.is_exercise_generate:
                 for force in forces:
-                    print(force)
-                    #exercise = force.force.exercise_set.filter(user=self.user).order_by('tier').first()
-                    exercises = force.force.exercise_set.filter(user=self.user)                    
+                    exercises = force.force.exercise_set.filter(user=self.user) #TODO Force model method
                     exercises = exercises.exclude(id__in=prev_exercises)
-
-                    ### TODO the querysets need to be on the same object to DIFF them!
-                    ### one is WorkoutExercise, one is Exercise
-                    print("QS post diffing: ", exercises)
-
                     exercise = exercises.order_by('tier').first()
 
                     if exercise:
@@ -116,14 +100,14 @@ class Workout(models.Model):
 
     def assign_training_day(self):
         try:
-            total_split_days = SplitDay.objects.filter(split_item__split=self.user.split).count()
-            prev_split_day_order = Workout.objects.filter(user=self.user).last().split_day.order
+            #TODO this should be a manager method
+            total_split_days = SplitDay.objects.filter(split_item__split=self.user.split).count() 
+            prev_split_day_order = self.last_split_day().order
             this_split_day_num = (prev_split_day_order % total_split_days) + 1
             self.split_day = SplitDay.objects.get(
                 split_item__split=self.user.split,
                 order = this_split_day_num
             )
-            print(self.split_day)
         except:
             # If user has no previous workout
             # Or changed TrainingSplit, assign random day
@@ -134,6 +118,9 @@ class Workout(models.Model):
         for exercise in self.exercises.all():
             el += exercise.exertion_load()
         return el
+
+    def last_split_day(self):
+        return Workout.objects.filter(user=self.user).last().split_day
 
     def prev_split_day(self):
         return Workout.objects\
