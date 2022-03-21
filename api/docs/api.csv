@@ -1,0 +1,10 @@
+HTTP Method,Resource URL,Notes
+POST,/readiness,create Readiness + associated ReadinessItems + Workout
+GET,/workout/<id>/exercises,get Exercises for specified Workout
+POST,/workout/<id>/exercises,create WorkoutExercise for specified Workout
+PUT,/workoutexercise/<id>,update WorkoutExercise
+DELETE,/workoutexercise/<id>,delete WorkoutExercise
+GET,/workoutexercise/<id>/sets,get Sets for specified WorkoutExercise
+POST,/workoutexercise/<id>/sets,create Set for specified WorkoutExercise
+PUT,/workoutexerciseset/<id>,update Set
+DELETE,/workoutexerciseset/<id>,delete Set
