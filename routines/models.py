@@ -203,8 +203,7 @@ class WorkoutExerciseSet(models.Model):
                 - User chooses set_adjust
                 - Set is complete (has weight + reps + rir)
         """
-
-        if self.check_set_completed(self):
+        if self.workout_exercise.is_set_adjust and self.check_set_completed(self):
             self.generate_next_set(exercise)
 
         

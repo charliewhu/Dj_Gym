@@ -4,7 +4,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from rest_framework import viewsets
-from api.serializers import ReadinessQuestionSerializer, WorkoutExerciseSerializer, WorkoutExerciseSetSerializer
+from api.serializers import ExerciseSerializer, ReadinessQuestionSerializer, WorkoutExerciseSerializer, WorkoutExerciseSetSerializer, WorkoutSerializer
+from exercises.models import Exercise
 from routines.models import ReadinessQuestion, Workout, WorkoutExercise, WorkoutExerciseSet
 
 
@@ -23,6 +24,21 @@ def readiness(request):
     elif request.method == 'POST':
         pass
     
+
+@api_view(['GET', 'POST'])
+def workouts(request):
+    """
+    List all ReadinessQuestions
+    Or create a new Readiness instance with associated ReadinessQuestions
+    """
+    if request.method == 'GET':
+        workouts = Workout.objects.all()
+        serializer = WorkoutSerializer(workouts, many=True)
+        return Response(serializer.data)
+
+    elif request.method == 'POST':
+        pass
+
 
 @api_view(['GET', 'POST'])
 def workout_exercises(request, pk):
@@ -71,7 +87,18 @@ def workoutexercise_sets(request, pk):
     List all Sets for a WorkoutExercise (pk)
     Or create a new WorkoutExerciseSet instance for a given WorkoutExercise (pk)
     """
-    pass
+    if request.method == 'GET':
+        workout_exercise_sets = WorkoutExerciseSet.objects.filter(workoutexercise_id=pk)
+        serializer = WorkoutExerciseSetSerializer(workout_exercise_sets, many=True)
+        return Response(serializer.data)
+
+    elif request.method == 'POST':
+        serializer = WorkoutExerciseSetSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 @api_view(['PUT', 'PATCH', 'DELETE'])
@@ -79,15 +106,40 @@ def workoutexerciseset_detail(request, pk):
     """
     Update or Delete WorkoutExerciseSet (pk)
     """
-    pass
+    try:
+        workout_exercise_set = WorkoutExerciseSet.objects.get(id=pk)
+    except WorkoutExerciseSet.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'PUT' or request.method == 'PATCH':
+        serializer = WorkoutExerciseSetSerializer(workout_exercise_set, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == 'DELETE':
+        workout_exercise_set.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 @api_view(['GET', 'POST'])
 def exercises(request):
     """
     List all Exercises
+    Or Create new Exercise
     """
-    pass
+    if request.method == 'GET':
+        exercise = Exercise.objects.all()
+        serializer = ExerciseSerializer(exercise, many=True)
+        return Response(serializer.data)
+
+    elif request.method == 'POST':
+        serializer = WorkoutExerciseSetSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET', 'PUT', 'PATCH', 'DELETE'])
