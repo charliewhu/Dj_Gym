@@ -5,7 +5,7 @@ from rest_framework.response import Response
 
 from rest_framework import viewsets
 from api.serializers import ReadinessQuestionSerializer, WorkoutExerciseSerializer, WorkoutExerciseSetSerializer
-from routines.models import ReadinessQuestion, WorkoutExercise, WorkoutExerciseSet
+from routines.models import ReadinessQuestion, Workout, WorkoutExercise, WorkoutExerciseSet
 
 
 
@@ -30,7 +30,17 @@ def workout_exercises(request, pk):
     List all Exercises for a Workout (pk)
     Or create a new WorkoutExercise instance for given Workout (pk)
     """
-    pass
+    if request.method == 'GET':
+        workout_exercises = WorkoutExercise.objects.filter(workout_id=pk)
+        serializer = WorkoutExerciseSerializer(workout_exercises, many=True)
+        return Response(serializer.data)
+
+    elif request.method == 'POST':
+        serializer = WorkoutExerciseSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['PUT', 'PATCH', 'DELETE'])
@@ -38,7 +48,21 @@ def workoutexercise_detail(request, pk):
     """
     Update or Delete WorkoutExercise (pk)
     """
-    pass
+    try:
+        workout_exercise = WorkoutExercise.objects.get(id=pk)
+    except WorkoutExercise.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'PUT' or request.method == 'PATCH':
+        serializer = WorkoutExerciseSerializer(workout_exercise, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == 'DELETE':
+        workout_exercise.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 @api_view(['GET', 'POST'])
@@ -75,8 +99,13 @@ def exercise_detail(request, pk):
     pass
 
 
-
-
+@api_view(['GET', 'PUT', 'PATCH'])
+def user_detail(request, pk):
+    """
+    Get User details (pk)
+    Or Update
+    """
+    pass
 
 
 

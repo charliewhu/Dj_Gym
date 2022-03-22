@@ -1,6 +1,6 @@
 from rest_framework.routers import SimpleRouter
 from django.urls import path
-from .views import readiness, WorkoutExerciseSetViewSet, WorkoutExerciseViewSet
+from .views import readiness, workout_exercises, workoutexercise_detail, WorkoutExerciseSetViewSet, WorkoutExerciseViewSet
 
 # router = SimpleRouter()
 # router.register('workoutexercises', WorkoutExerciseViewSet, basename='workoutexercises')
@@ -10,5 +10,6 @@ from .views import readiness, WorkoutExerciseSetViewSet, WorkoutExerciseViewSet
 
 urlpatterns = [
     path('readiness/', readiness),
-
+    path('workouts/<int:pk>/exercises/', workout_exercises),
+    path('workoutexercises/<int:pk>/', workoutexercise_detail),
 ]
