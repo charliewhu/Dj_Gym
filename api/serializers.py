@@ -12,32 +12,6 @@ class ReadinessQuestionSerializer(serializers.ModelSerializer):
         ]
 
 
-class WorkoutSerializer(serializers.ModelSerializer):
-    exercises = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
-
-    class Meta:
-        model = Workout
-        fields = [
-            'user',
-            'readiness',
-            'date',
-            'split_day',
-            'is_active',
-            'is_exercise_generate',
-            'exercises',
-        ]
-
-class WorkoutExerciseSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = WorkoutExercise
-        fields = [
-            'id',
-            'workout',
-            'exercise',
-            'is_set_adjust',
-        ]
-
-
 class WorkoutExerciseSetSerializer(serializers.ModelSerializer):
     class Meta:
         model = WorkoutExerciseSet
@@ -48,6 +22,40 @@ class WorkoutExerciseSetSerializer(serializers.ModelSerializer):
             'reps',
             'rir',
         ]
+
+class WorkoutExerciseSerializer(serializers.ModelSerializer):
+    name = serializers.StringRelatedField(
+        source = 'exercise'
+    )
+
+    class Meta:
+        model = WorkoutExercise
+        fields = [
+            'id',
+            'workout',
+            'exercise',
+            'name',
+            'is_set_adjust',
+        ]
+
+
+class WorkoutSerializer(serializers.ModelSerializer):
+    exercises = WorkoutExerciseSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Workout
+        fields = [
+            'id',
+            'user',
+            'readiness',
+            'date',
+            'split_day',
+            'is_active',
+            'is_exercise_generate',
+            'exercises',
+        ]
+
+
 
 
 class ExerciseSerializer(serializers.ModelSerializer):

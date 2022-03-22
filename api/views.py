@@ -23,17 +23,17 @@ def readiness(request):
 
     elif request.method == 'POST':
         pass
-    
+
 
 @api_view(['GET', 'POST'])
-def workouts(request):
+def workout_detail(request, pk):
     """
-    List all ReadinessQuestions
-    Or create a new Readiness instance with associated ReadinessQuestions
+    Workout instance 
+    and related exercises
     """
     if request.method == 'GET':
-        workouts = Workout.objects.all()
-        serializer = WorkoutSerializer(workouts, many=True)
+        workout = Workout.objects.filter(id=pk)
+        serializer = WorkoutSerializer(workout, many=True)
         return Response(serializer.data)
 
     elif request.method == 'POST':
@@ -161,10 +161,14 @@ def user_detail(request, pk):
 
 
 
+class WorkoutViewSet(viewsets.ModelViewSet):
+    serializer_class = WorkoutSerializer
+    queryset = Workout.objects.all().prefetch_related('exercises')
+
+
 class WorkoutExerciseViewSet(viewsets.ModelViewSet):
     serializer_class = WorkoutExerciseSerializer
     queryset = WorkoutExercise.objects.all()
-
 
 
 class WorkoutExerciseSetViewSet(viewsets.ModelViewSet):
