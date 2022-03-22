@@ -1,10 +1,14 @@
 from rest_framework.routers import SimpleRouter
+from django.urls import path
+from .views import readiness, WorkoutExerciseSetViewSet, WorkoutExerciseViewSet
 
-from .views import WorkoutExerciseSetViewSet, WorkoutExerciseViewSet
+# router = SimpleRouter()
+# router.register('workoutexercises', WorkoutExerciseViewSet, basename='workoutexercises')
+# router.register('workoutexercisesets', WorkoutExerciseSetViewSet, basename='workoutexercisesets')
+#urlpatterns = router.urls
 
-router = SimpleRouter()
-router.register('workoutexercises', WorkoutExerciseViewSet, basename='workoutexercises')
-router.register('workoutexercisesets', WorkoutExerciseSetViewSet, basename='workoutexercisesets')
 
+urlpatterns = [
+    path('readiness/', readiness),
 
-urlpatterns = router.urls
+]
