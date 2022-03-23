@@ -56,6 +56,7 @@ INSTALLED_APPS = [
 
     #3rd party
     'rest_framework',
+    'rest_framework.authtoken',
 
     #local
     'api',
@@ -64,11 +65,16 @@ INSTALLED_APPS = [
     'routines',
 ]
 
+
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',
         ],
     'COERCE_DECIMAL_TO_STRING': False,
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    ],
 }
 
 MIDDLEWARE = [
