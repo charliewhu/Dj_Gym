@@ -4,6 +4,16 @@ from exercises.models import Exercise
 from routines.models import ReadinessQuestion, Readiness, Workout, WorkoutExercise, WorkoutExerciseSet
 
 
+class ReadinessSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Readiness
+        fields = [
+            'id',
+            'user',
+            'date_created',
+        ]
+
+
 class ReadinessQuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = ReadinessQuestion
@@ -58,12 +68,15 @@ class WorkoutSerializer(serializers.ModelSerializer):
             'split_day',
             'is_active',
             'is_exercise_generate',
+            'exertion_load',
             'exercises',
         ]
     exercises = WorkoutExerciseSerializer(many=True, read_only=True)
     split_day = serializers.StringRelatedField()
+    split_day = serializers.StringRelatedField()
 
-
+    def get_exertion_load(self, instance):
+        return instance.exertion_load()
 
 
 class ExerciseSerializer(serializers.ModelSerializer):

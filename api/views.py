@@ -6,19 +6,15 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from rest_framework import viewsets
-from api.serializers import ExerciseSerializer, ReadinessQuestionSerializer, WorkoutExerciseSerializer, WorkoutExerciseSetSerializer, WorkoutSerializer
+from api.serializers import ExerciseSerializer, ReadinessQuestionSerializer, ReadinessSerializer, WorkoutExerciseSerializer, WorkoutExerciseSetSerializer, WorkoutSerializer
 from exercises.models import Exercise
-from routines.models import ReadinessQuestion, Workout, WorkoutExercise, WorkoutExerciseSet
+from routines.models import Readiness, ReadinessQuestion, Workout, WorkoutExercise, WorkoutExerciseSet
 
 
 
-@api_view(['GET', 'POST'])
-def readiness(request):
-    """
-    Create a new Readiness instance with associated ReadinessQuestions
-    """
-    if request.method == 'POST':
-        pass
+class ReadinessViewSet(viewsets.ModelViewSet):
+    serializer_class = ReadinessSerializer
+    queryset = Readiness.objects.all()
 
 
 @api_view(['GET', 'POST'])
@@ -67,6 +63,13 @@ class ExerciseViewSet(viewsets.ModelViewSet):
 
 
 
+# @api_view(['GET', 'POST'])
+# def readiness(request):
+#     """
+#     Create a new Readiness instance with associated ReadinessQuestions
+#     """
+#     if request.method == 'POST':
+#         pass
 
 
 # @api_view(['GET', 'POST'])
