@@ -6,7 +6,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from rest_framework import viewsets
-from api.serializers import ExerciseSerializer, ReadinessQuestionSerializer, ReadinessSerializer, WorkoutExerciseSerializer, WorkoutExerciseSetSerializer, WorkoutSerializer
+from api.serializers import ExerciseSerializer, ReadinessAnswerSerializer, ReadinessQuestionSerializer, ReadinessSerializer, WorkoutExerciseSerializer, WorkoutExerciseSetSerializer, WorkoutSerializer
 from exercises.models import Exercise
 from routines.models import Readiness, ReadinessQuestion, Workout, WorkoutExercise, WorkoutExerciseSet
 
@@ -21,7 +21,7 @@ class ReadinessViewSet(viewsets.ModelViewSet):
 def readiness_answer(request):
     """
     List all ReadinessQuestions
-    Or create new ReadinessAnswer instanced with associated ReadinessQuestions
+    Or create new ReadinessAnswer instances for associated Readiness/ReadinessQuestions
     """
     if request.method == 'GET':
         readiness_questions = ReadinessQuestion.objects.all()
@@ -30,7 +30,11 @@ def readiness_answer(request):
 
     elif request.method == 'POST':
         #TODO
-        pass
+        serializer = ReadinessAnswerSerializer(data=request.data, many=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class WorkoutViewSet(viewsets.ModelViewSet):
@@ -55,7 +59,6 @@ class WorkoutExerciseSetViewSet(viewsets.ModelViewSet):
 
 class ExerciseViewSet(viewsets.ModelViewSet):
     serializer_class = ExerciseSerializer
-    #queryset = Exercise.objects.all()
 
     def get_queryset(self):
         user = self.request.user

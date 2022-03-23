@@ -1,6 +1,6 @@
 from rest_framework.routers import SimpleRouter
 from django.urls import path
-from .views import ( ReadinessViewSet, readiness, readiness_answer,
+from .views import ( ReadinessViewSet, readiness_answer,
     WorkoutViewSet,  WorkoutExerciseSetViewSet, 
     WorkoutExerciseViewSet, ExerciseViewSet,
     )

@@ -1,7 +1,7 @@
 from dataclasses import fields
 from rest_framework import serializers
 from exercises.models import Exercise
-from routines.models import ReadinessQuestion, Readiness, Workout, WorkoutExercise, WorkoutExerciseSet
+from routines.models import ReadinessAnswer, ReadinessQuestion, Readiness, Workout, WorkoutExercise, WorkoutExerciseSet
 
 
 class ReadinessSerializer(serializers.ModelSerializer):
@@ -11,7 +11,11 @@ class ReadinessSerializer(serializers.ModelSerializer):
             'id',
             'user',
             'date_created',
+            'workout'
         ]
+
+        def get_workout(self, instance):
+            instance.get_workout() 
 
 
 class ReadinessQuestionSerializer(serializers.ModelSerializer):
@@ -25,6 +29,7 @@ class ReadinessQuestionSerializer(serializers.ModelSerializer):
 
 class ReadinessAnswerSerializer(serializers.ModelSerializer):
     class Meta:
+        model = ReadinessAnswer
         fields = [
             'readiness',
             'readiness_question',

@@ -29,9 +29,13 @@ class Readiness(models.Model):
     def save(self, *args, **kwargs):
         super().save(*args,**kwargs)
         try:
+            # create associated Workout instance
             Workout.objects.create(user=self.user, readiness=self)
         except:
             pass
+
+    def get_workout(self):
+        return Workout.objects.get(readiness=self)
 
     def percentage(self):
         set = self.readinessanswer_set.all()
