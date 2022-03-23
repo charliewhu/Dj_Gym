@@ -1,3 +1,4 @@
+from dataclasses import fields
 from rest_framework import serializers
 from exercises.models import Exercise
 from routines.models import ReadinessQuestion, Readiness, Workout, WorkoutExercise, WorkoutExerciseSet
@@ -12,6 +13,15 @@ class ReadinessQuestionSerializer(serializers.ModelSerializer):
         ]
 
 
+class ReadinessAnswerSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = [
+            'readiness',
+            'readiness_question',
+            'rating'
+        ]
+
+
 class WorkoutExerciseSetSerializer(serializers.ModelSerializer):
     class Meta:
         model = WorkoutExerciseSet
@@ -23,11 +33,8 @@ class WorkoutExerciseSetSerializer(serializers.ModelSerializer):
             'rir',
         ]
 
-class WorkoutExerciseSerializer(serializers.ModelSerializer):
-    name = serializers.StringRelatedField(
-        source = 'exercise'
-    )
 
+class WorkoutExerciseSerializer(serializers.ModelSerializer):
     class Meta:
         model = WorkoutExercise
         fields = [
@@ -37,11 +44,10 @@ class WorkoutExerciseSerializer(serializers.ModelSerializer):
             'name',
             'is_set_adjust',
         ]
+    name = serializers.StringRelatedField(source = 'exercise')
 
 
 class WorkoutSerializer(serializers.ModelSerializer):
-    exercises = WorkoutExerciseSerializer(many=True, read_only=True)
-
     class Meta:
         model = Workout
         fields = [
@@ -54,13 +60,13 @@ class WorkoutSerializer(serializers.ModelSerializer):
             'is_exercise_generate',
             'exercises',
         ]
+    exercises = WorkoutExerciseSerializer(many=True, read_only=True)
+    split_day = serializers.StringRelatedField()
 
 
 
 
 class ExerciseSerializer(serializers.ModelSerializer):
-    user = serializers.StringRelatedField()
-
     class Meta:
         model = Exercise
         fields = [
@@ -76,3 +82,4 @@ class ExerciseSerializer(serializers.ModelSerializer):
             'is_active',
             'is_unilateral',
         ]
+    user = serializers.StringRelatedField()
