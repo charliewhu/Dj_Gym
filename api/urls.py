@@ -1,19 +1,22 @@
+from django.urls import path, include
 from rest_framework.routers import SimpleRouter
-from django.urls import path
 from .views import ( ReadinessViewSet, readiness_answer,
     WorkoutViewSet,  WorkoutExerciseSetViewSet, 
     WorkoutExerciseViewSet, ExerciseViewSet,
     )
 
 urlpatterns = [
-    #path('readiness/', readiness),
     path('readinessanswers/', readiness_answer),
+    #path('readiness/', readiness),
     #path('workouts/<int:pk>/', workout_detail),
     #path('workouts/<int:pk>/exercises/', workout_exercises),
     #path('workoutexercises/<int:pk>/', workoutexercise_detail),
     #path('workoutexercises/<int:pk>/sets/', workoutexercise_sets),
     #path('workoutexercisesets/<int:pk>/', workoutexerciseset_detail),
     #path('exercises/', exercises),
+    path('rest-auth/', include('rest_auth.urls')),
+    path('rest-auth/registration/', include('rest_auth.registration.urls')),
+    path('account/', include('allauth.urls')),
 ]
 
 router = SimpleRouter()

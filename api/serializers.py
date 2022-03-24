@@ -1,7 +1,14 @@
 from dataclasses import fields
 from rest_framework import serializers
+from accounts.models import User
 from exercises.models import Exercise
 from routines.models import ReadinessAnswer, ReadinessQuestion, Readiness, Workout, WorkoutExercise, WorkoutExerciseSet
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['email', ]
 
 
 class ReadinessSerializer(serializers.ModelSerializer):
