@@ -37,7 +37,9 @@ DEBUG = os.environ.get('DEBUG', False)
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
+    'localhost',
     'ca-gym.herokuapp.com',
+    os.environ.get('LOCAL_IP_URL'),
 ]
 
 
@@ -62,6 +64,8 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'rest_auth.registration',
+    'corsheaders',
+    "sslserver", # sets HTTPS with python manage.py runsslserver
 
     #local
     'api',
@@ -94,6 +98,13 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 REST_AUTH_SERIALIZERS = {
     'USER_DETAILS_SERIALIZER': 'api.serializers.UserSerializer',
 }
+
+CORS_ORIGIN_WHITELIST = (
+'http://localhost:3000',
+'http://localhost:8000',
+'http://localhost:19002',
+)
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
