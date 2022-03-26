@@ -2,7 +2,8 @@ from django.db.models import Q
 
 from django.shortcuts import render
 from rest_framework import status
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from rest_framework import viewsets
@@ -10,6 +11,15 @@ from api.serializers import ExerciseSerializer, ReadinessAnswerSerializer, Readi
 from exercises.models import Exercise
 from routines.models import Readiness, ReadinessQuestion, Workout, WorkoutExercise, WorkoutExerciseSet
 
+
+
+@api_view(['GET'])
+@permission_classes((IsAuthenticated,))
+def check_token(request):
+    if request.method == 'GET':
+        return Response(status=status.HTTP_200_OK)
+    else:
+        return Response(status=status.HTTP_403_FORBIDDEN)
 
 
 class ReadinessViewSet(viewsets.ModelViewSet):
