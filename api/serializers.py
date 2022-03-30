@@ -14,12 +14,15 @@ class UserSerializer(serializers.ModelSerializer):
 class ReadinessSerializer(serializers.ModelSerializer):
     class Meta:
         model = Readiness
+    
         fields = [
             'id',
             'user',
             'date_created',
             'workout'
         ]
+
+        read_only_fields = ['workout']
 
         def get_workout(self, instance):
             instance.get_workout() 

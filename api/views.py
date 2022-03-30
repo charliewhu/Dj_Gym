@@ -16,15 +16,21 @@ from routines.models import Readiness, ReadinessQuestion, Workout, WorkoutExerci
 @api_view(['GET'])
 @permission_classes((IsAuthenticated,))
 def check_token(request):
+    """
+    Returns 200 if user IsAuthenticated
+    Returns 401 if user is not authenticated
+    """
     if request.method == 'GET':
         return Response(status=status.HTTP_200_OK)
-    else:
-        return Response(status=status.HTTP_403_FORBIDDEN)
 
 
 class ReadinessViewSet(viewsets.ModelViewSet):
     serializer_class = ReadinessSerializer
     queryset = Readiness.objects.all()
+
+    def perform_create(self, serializer):
+        print(self.request.user)
+        serializer.save(user=self.request.user)
 
 
 @api_view(['GET', 'POST'])
