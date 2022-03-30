@@ -8,6 +8,7 @@ from .utils import rounder, get_1rm_percent, get_1rm
 from django.conf import settings
 from django.db import models
 from django.core.validators import MaxValueValidator
+from django.db.models import Avg
 
 from exercises.models import Exercise, MuscleGroup, Progression, ProgressionTypeAllocation, Rir, UserRM
 from routines.managers import ReadinessAnswerManager
@@ -177,6 +178,12 @@ class WorkoutExercise(models.Model):
                 weight = weight,
                 reps = reps,
             )
+
+    def set_count(self):
+        return self.sets.count()
+
+    def avg_reps(self):
+        return self.sets.aggregate(Avg('reps'))['reps__avg']
         
     def exertion_load(self):
         el = 0

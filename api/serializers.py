@@ -66,11 +66,24 @@ class WorkoutExerciseSerializer(serializers.ModelSerializer):
             'id',
             'workout',
             'exercise',
-            'name',
             'is_set_adjust',
+            'name',
+            'sets',
+            'set_count',
+            'avg_reps',
+            'exertion_load',
         ]
     name = serializers.StringRelatedField(source = 'exercise')
+    sets = WorkoutExerciseSetSerializer(many=True)
 
+    def get_sets_count(self, instance):
+        instance.set_count()
+
+    def get_avg_reps(self, instance):
+        instance.avg_reps_count()
+
+    def get_exertion_load(self, instance):
+        instance.exertion_load()
 
 class WorkoutSerializer(serializers.ModelSerializer):
     class Meta:
