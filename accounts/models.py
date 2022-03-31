@@ -11,6 +11,7 @@ from .managers import MyUserManager
 class Gender(models.Model):
     """genders to choose from in UserProfile"""
     name = models.CharField(max_length=40)
+
     def __str__(self):
         return self.name
 
@@ -18,7 +19,7 @@ class Gender(models.Model):
 class TrainingFocus(models.Model):
     """Bodybuilding, Powerbuilding, PL Hypertrophy,PL Strength, Peaking, Bridge"""
     name = models.CharField(max_length=40)
-    #what % Bodybuilding to Powerlifting etc for each of these phases?
+    # what % Bodybuilding to Powerlifting etc for each of these phases?
 
     def __str__(self):
         return self.name
@@ -31,33 +32,40 @@ class Split(models.Model):
     def __str__(self):
         return self.name
 
+    def get_first_split_day(self):
+        """returns the first SplitDay of the Split"""
+        return self.splitday_set.first()
+
 
 class SplitItem(models.Model):
+    """eg Upper"""
     split = models.ForeignKey(Split, on_delete=models.CASCADE)
-    name  = models.CharField(max_length=40)
+    name = models.CharField(max_length=40)
 
     def __str__(self):
         return self.name
 
 
 class SplitDay(models.Model):
+    """eg Upper Push"""
     split_item = models.ForeignKey(SplitItem, on_delete=models.CASCADE)
-    name       = models.CharField(max_length=40)
-    force      = models.ManyToManyField(Force, through='SplitDayForce')
-    order      = models.PositiveIntegerField(null=True)
+    name = models.CharField(max_length=40)
+    force = models.ManyToManyField(Force, through='SplitDayForce')
+    order = models.PositiveIntegerField(null=True)
 
-    ## TODO -- add unique contraint on split_item + order
+    # TODO -- add unique contraint on split_item + order
 
     def __str__(self):
         return f'{self.order}, {self.split_item}, {self.name}'
 
-    
+
 class SplitDayForce(models.Model):
-    day       = models.ForeignKey(SplitDay, on_delete=models.CASCADE)
-    force     = models.ForeignKey(Force, on_delete=models.CASCADE)
+    """Link table between SplitDay and Force"""
+    day = models.ForeignKey(SplitDay, on_delete=models.CASCADE)
+    force = models.ForeignKey(Force, on_delete=models.CASCADE)
     hierarchy = models.PositiveIntegerField()
 
-    ## TODO -- add unique contraint on day + force + hierarchy
+    # TODO -- add unique contraint on day + force + hierarchy
 
     def __str__(self):
         return f'{self.day}, {self.force}, {self.hierarchy}'
@@ -68,18 +76,21 @@ class User(PermissionsMixin, AbstractBaseUser):
     email = models.EmailField(verbose_name="email", max_length=60, unique=True)
     date_joined = models.DateTimeField(
         verbose_name="date joined", auto_now_add=True)
-    last_login    = models.DateTimeField(verbose_name="last login", auto_now=True)
-    is_admin      = models.BooleanField(default=False)
-    is_active     = models.BooleanField(default=True)
-    is_staff      = models.BooleanField(default=False)
-    is_superuser  = models.BooleanField(default=False)
-    height        = models.PositiveSmallIntegerField(null=True)
-    weight        = models.PositiveSmallIntegerField(null=True)
-    birth_date    = models.DateField(null=True)
-    gender        = models.ForeignKey(Gender, null=True, on_delete=models.SET_NULL)
-    training_focus= models.ForeignKey(TrainingFocus, null=True,  on_delete=models.SET_NULL)
-    training_days = models.PositiveIntegerField(default=4, validators=[MinValueValidator(1), MaxValueValidator(7)])
-    split         = models.ForeignKey(Split, on_delete=models.CASCADE, null=True, blank=True)
+    last_login = models.DateTimeField(verbose_name="last login", auto_now=True)
+    is_admin = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
+    height = models.PositiveSmallIntegerField(null=True)
+    weight = models.PositiveSmallIntegerField(null=True)
+    birth_date = models.DateField(null=True)
+    gender = models.ForeignKey(Gender, null=True, on_delete=models.SET_NULL)
+    training_focus = models.ForeignKey(
+        TrainingFocus, null=True,  on_delete=models.SET_NULL)
+    training_days = models.PositiveIntegerField(
+        default=4, validators=[MinValueValidator(1), MaxValueValidator(7)])
+    split = models.ForeignKey(
+        Split, on_delete=models.CASCADE, null=True, blank=True)
 
     USERNAME_FIELD = 'email'
 
@@ -93,43 +104,48 @@ class User(PermissionsMixin, AbstractBaseUser):
 
     def save(self, *args, **kwargs):
         self.reassign_exercises()
-        super().save(*args,**kwargs)
+        super().save(*args, **kwargs)
         self.assign_split()
 
     def assign_split(self):
         if not self.split and self.training_focus and self.training_days:
             fa = FrequencyAllocation.objects.get(
-                training_focus = self.training_focus,
-                training_days  = self.training_days,
-                hierarchy      = 1,
+                training_focus=self.training_focus,
+                training_days=self.training_days,
+                hierarchy=1,
             )
 
             self.split = fa.split
             self.save()
+
+    def split_days_count(self):
+        """returns the number of days in the split"""
+        return self.split.splititem_set.count()
 
     def reassign_exercises(self):
         """
         Check if training_focus has changed
         Check first time saved / if User already has an exercise list
         """
-    
+
         try:
             current_tf = self.training_focus
         except:
             current_tf = None
 
-        if self.training_focus != current_tf: #user is creating first user profile
-            exercises = Exercise.objects.filter(user=self) or Exercise.objects.filter(user=None)
+        if self.training_focus != current_tf:  # user is creating first user profile
+            exercises = Exercise.objects.filter(
+                user=self) or Exercise.objects.filter(user=None)
             for exercise in exercises:
-                #find progression_type based on UserProfile & Exercise attributes
-                #logically equivalent to a JOIN on all of these fields
+                # find progression_type based on UserProfile & Exercise attributes
+                # logically equivalent to a JOIN on all of these fields
                 progression_type_allocation = ProgressionTypeAllocation.objects.get(
                     training_focus=self.training_focus,
                     mechanic=exercise.mechanic,
                     tier=exercise.tier,
                 )
 
-                if not exercise.user: #exercise.id remains if user has exercise list
+                if not exercise.user:  # exercise.id remains if user has exercise list
                     exercise.id = None
                 exercise.user = self
                 exercise.progression_type = progression_type_allocation.progression_type
@@ -146,7 +162,8 @@ class User(PermissionsMixin, AbstractBaseUser):
     def mean_readiness(self):
         """User's mean readiness rating over last 40 instances"""
         r = self.readiness_set.order_by('-id')[:40]
-        user = User.objects.filter(id=self.pk).prefetch_related("readiness_set")
+        user = User.objects.filter(
+            id=self.pk).prefetch_related("readiness_set")
         return user
 
 
@@ -156,14 +173,15 @@ class FrequencyAllocation(models.Model):
     When User completes profile, their choices determine their split
     """
     training_focus = models.ForeignKey(TrainingFocus, on_delete=models.CASCADE)
-    training_days = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(7)])
+    training_days = models.PositiveIntegerField(
+        validators=[MinValueValidator(1), MaxValueValidator(7)])
     hierarchy = models.PositiveIntegerField()
     split = models.ForeignKey(Split, on_delete=models.CASCADE)
 
     def __str__(self):
         return f'{self.training_focus}, {self.split}, Days: {self.training_days}, Tier: {self.hierarchy}'
 
-    ##TODO add unique constraints for hierarchy per training days per TrainingFocus
+    # TODO add unique constraints for hierarchy per training days per TrainingFocus
 
 
 class Periodization(models.Model):
@@ -176,7 +194,7 @@ class Periodization(models.Model):
 
     def __str__(self):
         return self.name
-    
+
 
 # class UserProfile(models.Model):
 #     """"Profile information for the User to input after signup"""
@@ -213,7 +231,7 @@ class Periodization(models.Model):
 #         Check if training_focus has changed
 #         Check first time saved / if User already has an exercise list
 #         """
-    
+
 #         try:
 #             current_tf = UserProfile.objects.get(pk=self.pk).training_focus
 #         except:
