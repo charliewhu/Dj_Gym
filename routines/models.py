@@ -244,6 +244,9 @@ class WorkoutExerciseSet(models.Model):
     def get_exercise_progression_type(self):
         return self.get_exercise().progression_type
 
+    def get_exercise_progression_type_allocation(self):
+        return self.get_exercise().get_progression_type_allocation()
+
     def get_following_set(self):
         """get the next set in the workout_exercise"""
         next_set = WorkoutExerciseSet.objects\
@@ -271,6 +274,7 @@ class WorkoutExerciseSet(models.Model):
     def get_progression(self):
         """Return Progression object given the Set"""
         try:
+            print("Sereaching for progression")
             return Progression.objects.get(
                 progression_type=self.get_exercise_progression_type(),
                 rep_delta=self.rep_delta(),
@@ -278,9 +282,6 @@ class WorkoutExerciseSet(models.Model):
             )
         except:
             return None
-
-    def get_progression_type(self):
-        return self.workout_exercise.exercise.progression_type
 
     def delete_next_set(self):
         next_set = self.get_following_set()
@@ -327,7 +328,7 @@ class WorkoutExerciseSet(models.Model):
 
     def rep_delta(self):
         """difference between reps just done and required rep range"""
-        prog_type = self.get_progression_type()
+        prog_type = self.get_exercise_progression_type_allocation()
         if self.reps < prog_type.min_reps:
             rep_delta = self.reps - prog_type.min_reps
         elif self.reps > prog_type.max_reps:
@@ -339,7 +340,7 @@ class WorkoutExerciseSet(models.Model):
 
     def rir_delta(self):
         """difference between rir just done and required rir range"""
-        prog_type = self.get_progression_type()
+        prog_type = self.get_exercise_progression_type_allocation()
         if self.rir < prog_type.min_rir:
             rir_delta = self.rir - prog_type.min_rir
         elif self.rir > prog_type.target_rir:
