@@ -8,17 +8,13 @@ from routines.models import Readiness, ReadinessAnswer, ReadinessQuestion, Worko
 from accounts.models import User
 
 
-class ReadinessTest(TestCase):
+class WorkoutExerciseSetTest(TestCase):
 
     def setUp(self):
 
         self.user_a = User.objects.create_superuser(
             email='test@test.com',
             password='some_123_password'
-        )
-
-        self.readiness_question = ReadinessQuestion.objects.create(
-            name='Sleep'
         )
 
         self.readiness = Readiness.objects.create(user=self.user_a)
@@ -35,6 +31,15 @@ class ReadinessTest(TestCase):
             min_rir=2
         )
 
+        self.progression = Progression.objects.create(
+            progression_type=self.prog_type,
+            rep_delta=0,
+            rir_delta=-2,
+            weight_change=5,
+            rep_change=2,
+            rir_change=2,
+        )
+
         self.exercise = Exercise.objects.create(
             name="Squat",
             user=self.user_a,
@@ -46,44 +51,65 @@ class ReadinessTest(TestCase):
         self.workout_exercise = WorkoutExercise.objects.create(
             workout=self.workout,
             exercise=self.exercise,
-            is_set_adjust=True
+            is_set_adjust=False,
+            is_set_generate=False,
         )
 
-        self.progression = Progression.objects.create(
-            progression_type=self.prog_type,
-            rep_delta=0,
-            rir_delta=-2,
-            weight_change=0.05,
-            rep_change=2,
-            rir_change=2
-        )
-
-    def test_workout_exercise_set_el_delta(self):
-        set = WorkoutExerciseSet.objects.create(
-            workout_exercise=self.workout_exercise,
-            weight=decimal.Decimal(100),
-            reps=1,
-            rir=0
-        )
-
-        self.assertEqual(set.exertion_load(), 100.0)
-        self.assertEqual(set.rep_delta(), 0)
-        self.assertEqual(set.rir_delta(), -2)
-        self.assertEqual(set.e_one_rep_max(), 103)
-
-    def test_workout_exercise_save(self):
-        WorkoutExerciseSet.objects.create(
+        self.set1 = WorkoutExerciseSet.objects.create(
             workout_exercise=self.workout_exercise,
             weight=100,
             reps=1,
             rir=0
         )
 
-        #self.assertEqual(WorkoutExerciseSet.objects.count(), 2)
+        self.set2 = WorkoutExerciseSet.objects.create(
+            workout_exercise=self.workout_exercise,
+            weight=100,
+            reps=2,
+            rir=5
+        )
 
-        # set2 = WorkoutExerciseSet.objects.get(id=2)
-        # print("Set 2:.... ", set2)
+        self.set3 = WorkoutExerciseSet.objects.create(
+            workout_exercise=self.workout_exercise,
+            weight=100,
+            rir=2
+        )
 
-        # self.assertEqual(set2.weight, 105)
-        # self.assertEqual(set2.reps, 3)
-        # self.assertEqual(set2.rir, 2)
+    def test_exertion_load(self):
+        self.assertEqual(self.set1.exertion_load(), 100.0)
+
+    def test_rep_delta(self):
+        self.assertEqual(self.set1.rep_delta(), 0)
+
+    def test_rir_delta(self):
+        self.assertEqual(self.set1.rir_delta(), -2)
+
+    def test_e_one_rep_max(self):
+        self.assertEqual(self.set1.e_one_rep_max(), 103)
+
+    def test_get_exercise_progression_type(self):
+        self.assertEqual(
+            self.set1.get_exercise_progression_type(), self.prog_type)
+
+    def test_get_following_set(self):
+        self.assertEqual(self.set1.get_following_set(), self.set2)
+
+    def test_is_set_completed(self):
+        self.assertTrue(self.set1.is_set_completed(self.set1))
+        self.assertTrue(self.set1.is_set_completed(self.set2))
+        self.assertFalse(self.set1.is_set_completed(self.set3))
+
+    def test_is_next_set_completed(self):
+        self.assertTrue(self.set1.is_next_set_completed())
+        self.assertFalse(self.set2.is_next_set_completed())
+
+    def test_should_generate_next_set(self):
+        self.assertFalse(self.set1.should_generate_next_set())
+
+    def test_get_progression(self):
+        self.assertEqual(self.set1.get_progression(), self.progression)
+        self.assertEqual(self.set2.get_progression(), None)
+
+    def test_delete_next_set(self):
+        self.set2.delete_next_set()
+        self.assertEqual(WorkoutExerciseSet.objects.count(), 2)

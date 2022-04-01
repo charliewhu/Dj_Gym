@@ -23,40 +23,7 @@ class ReadinessTest(TestCase):
 
         self.readiness = Readiness.objects.create(user=self.user_a)
 
-        self.prog_type = ProgressionType.objects.create(
-            name='Test',
-        )
-
-        self.prog_type_allocation = ProgressionTypeAllocation.objects.create(
-            progression_type=self.prog_type,
-            min_reps=1,
-            max_reps=5,
-            target_rir=3,
-            min_rir=2
-        )
-
-        self.exercise = Exercise.objects.create(
-            name="Squat",
-            user=self.user_a,
-            progression_type=self.prog_type
-        )
-
         self.workout = Workout.objects.get(readiness=self.readiness)
-
-        self.workout_exercise = WorkoutExercise.objects.create(
-            workout=self.workout,
-            exercise=self.exercise,
-            is_set_adjust=True
-        )
-
-        self.progression = Progression.objects.create(
-            progression_type=self.prog_type,
-            rep_delta=0,
-            rir_delta=-2,
-            weight_change=0.05,
-            rep_change=2,
-            rir_change=2
-        )
 
     def test_readiness_save(self):
 
@@ -76,3 +43,6 @@ class ReadinessTest(TestCase):
         )
 
         self.assertEqual(self.readiness.percentage(), 20)
+
+    def test_readiness_get_workout(self):
+        self.assertEqual(self.readiness.get_workout(), self.workout)

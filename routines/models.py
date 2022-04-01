@@ -232,7 +232,7 @@ class WorkoutExerciseSet(models.Model):
         self.save_one_rep_max()
         super().save(*args, **kwargs)
 
-        if self.is_generate_next_set():
+        if self.should_generate_next_set():
             self.generate_next_set()
 
     def get_user(self):
@@ -261,14 +261,14 @@ class WorkoutExerciseSet(models.Model):
         """Check if the set is completed (has all fields not None)
         Returns (Boolean)"""
         return set.weight is not None \
-            and set.reps \
+            and set.reps is not None \
             and set.rir is not None
 
     def is_next_set_completed(self):
         next_set = self.get_following_set()
-        return next_set and not self.is_set_completed(next_set)
+        return next_set and self.is_set_completed(next_set)
 
-    def is_generate_next_set(self):
+    def should_generate_next_set(self):
         return self.workout_exercise.is_set_generate and self.is_next_set_completed()
 
     def get_progression(self):
