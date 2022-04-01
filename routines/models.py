@@ -9,6 +9,7 @@ from django.conf import settings
 from django.db import models
 from django.core.validators import MaxValueValidator
 from django.db.models import Avg
+from django.core.exceptions import ObjectDoesNotExist
 
 from exercises.models import Exercise, MuscleGroup, Progression, ProgressionTypeAllocation, Rir, UserRM
 from routines.managers import ReadinessAnswerManager
@@ -247,7 +248,7 @@ class WorkoutExerciseSet(models.Model):
     def get_exercise_progression_type_allocation(self):
         return self.get_exercise().get_progression_type_allocation()
 
-    def get_following_set(self):
+    def get_next_set(self):
         """get the next set in the workout_exercise"""
         next_set = WorkoutExerciseSet.objects\
             .filter(workout_exercise=self.workout_exercise)\
@@ -265,58 +266,72 @@ class WorkoutExerciseSet(models.Model):
             and set.rir is not None
 
     def is_next_set_completed(self):
-        next_set = self.get_following_set()
-        return next_set and self.is_set_completed(next_set)
+        """Returns false if next set does not exist 
+        or doesnt have all fields not None"""
+        next_set = self.get_next_set()
+        if next_set:
+            return self.is_set_completed(next_set)
+        else:
+            return False
 
     def should_generate_next_set(self):
-        return self.workout_exercise.is_set_generate and self.is_next_set_completed()
+        return self.workout_exercise.is_set_adjust and not self.is_next_set_completed()
 
     def get_progression(self):
         """Return Progression object given the Set"""
         try:
-            print("Sereaching for progression")
             return Progression.objects.get(
                 progression_type=self.get_exercise_progression_type(),
                 rep_delta=self.rep_delta(),
                 rir_delta=self.rir_delta()
             )
-        except:
+        except ObjectDoesNotExist:
             return None
 
     def delete_next_set(self):
-        next_set = self.get_following_set()
+        next_set = self.get_next_set()
         next_set.delete()
+
+    def adjust_weight(self, progression):
+        if progression.weight_change is not None:
+            return rounder(
+                float(self.weight) * (1 + progression.weight_change), 2.5
+            )
+        else:
+            return None
+
+    def adjust_reps(self, progression):
+        if progression.rep_change is not None:
+            return self.reps + progression.rep_change
+        else:
+            return None
+
+    def adjust_rir(self, progression):
+        if progression.rir_change is not None:
+            return self.rir + progression.rir_change
+        else:
+            return None
 
     def generate_next_set(self):
         """
         Generate another set based on the current instance:
-            - Check if user has completed following set
             - Get Progression based on current set
             - Adjust weight/reps/rir based on Progression
-            - Create another WorkoutExerciseSet object
+            - Check if user has a completed next set
+                - If true: update it
+                - Else: Create another WorkoutExerciseSet object
         """
-
-        if self.is_next_set_completed():
-            self.delete_next_set()
 
         progression = self.get_progression()
         if progression:
-            if progression.weight_change is not None:
-                next_weight = rounder(
-                    float(self.weight) * (1 + progression.weight_change), 2.5
-                )
-            else:
-                next_weight = None
+            next_weight = self.adjust_weight(progression)
+            next_reps = self.adjust_reps(progression)
+            next_rir = self.adjust_rir(progression)
 
-            if progression.rep_change is not None:
-                next_reps = self.reps + progression.rep_change
+            if self.is_next_set_completed():
+                id = self.get_next_set().id
             else:
-                next_reps = None
-
-            if progression.rir_change is not None:
-                next_rir = self.rir + progression.rir_change
-            else:
-                next_rir = None
+                id = None
 
             WorkoutExerciseSet.objects.create(
                 id=id,

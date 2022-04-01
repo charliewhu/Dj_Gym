@@ -148,19 +148,23 @@ class Exercise(models.Model):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        self.set_progression_type()
+        if self.user:
+            if not self.progression_type:
+                self.set_progression_type()
+            if not self.min_reps and not self.max_reps:
+                self.set_min_max_reps()
         # TODO - If Exercises is added by Admin, all Users should receive the exercise to their libraries
         # duplicate with every UserID and their progression type
         # consider if they already have an exercise with this name
 
     def set_progression_type(self):
-        if self.user:
-            if not self.progression_type and not self.min_reps and not self.max_reps:
-                prog = self.get_progression_type_allocation()
-                self.progression_type = prog.progression_type
-                self.min_reps = prog.min_reps
-                self.max_reps = prog.max_reps
-                self.save()
+        self.progression_type = self.get_progression_type()
+        self.save()
+
+    def set_min_max_reps(self):
+        self.min_reps = self.get_progression_type_allocation().min_reps
+        self.max_reps = self.get_progression_type_allocation().max_reps
+        self.save()
 
     def get_progression_type_allocation(self):
         return ProgressionTypeAllocation.objects.get(
@@ -168,6 +172,9 @@ class Exercise(models.Model):
             mechanic=self.mechanic,
             tier=self.tier
         )
+
+    def get_progression_type(self):
+        return self.get_progression_type_allocation().progression_type
 
 
 class UserRM(models.Model):

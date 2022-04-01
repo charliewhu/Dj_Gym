@@ -14,7 +14,7 @@ class WorkoutExerciseSetTest(TestCase):
 
         self.user_a = User.objects.create_superuser(
             email='test@test.com',
-            password='some_123_password'
+            password='some_123_password',
         )
 
         self.readiness = Readiness.objects.create(user=self.user_a)
@@ -35,15 +35,16 @@ class WorkoutExerciseSetTest(TestCase):
             progression_type=self.prog_type,
             rep_delta=0,
             rir_delta=-2,
-            weight_change=5,
+            weight_change=0.5,
             rep_change=2,
-            rir_change=2,
         )
 
         self.exercise = Exercise.objects.create(
             name="Squat",
             user=self.user_a,
-            progression_type=self.prog_type
+            progression_type=self.prog_type,
+            min_reps=1,
+            max_reps=5,
         )
 
         self.workout = Workout.objects.get(readiness=self.readiness)
@@ -91,8 +92,8 @@ class WorkoutExerciseSetTest(TestCase):
         self.assertEqual(
             self.set1.get_exercise_progression_type(), self.prog_type)
 
-    def test_get_following_set(self):
-        self.assertEqual(self.set1.get_following_set(), self.set2)
+    def test_get_next_set(self):
+        self.assertEqual(self.set1.get_next_set(), self.set2)
 
     def test_is_set_completed(self):
         self.assertTrue(self.set1.is_set_completed(self.set1))
@@ -111,5 +112,8 @@ class WorkoutExerciseSetTest(TestCase):
         self.assertEqual(self.set2.get_progression(), None)
 
     def test_delete_next_set(self):
+        self.assertEqual(WorkoutExerciseSet.objects.count(), 3)
         self.set2.delete_next_set()
         self.assertEqual(WorkoutExerciseSet.objects.count(), 2)
+
+    # TODO - add tests for a WorkoutExercise which has is_set_adjust=True
