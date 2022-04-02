@@ -103,55 +103,60 @@ class User(PermissionsMixin, AbstractBaseUser):
         return True
 
     def save(self, *args, **kwargs):
-        self.reassign_exercises()
+        # self.reassign_exercises()
         super().save(*args, **kwargs)
-        self.assign_split()
+        # self.assign_split()
+
+    def should_have_split(self):
+        return not self.split and self.training_focus and self.training_days
+
+    def get_split_from_frequency_allocation(self):
+        return FrequencyAllocation.objects.get(
+            training_focus=self.training_focus,
+            training_days=self.training_days,
+            hierarchy=1,
+        ).split
 
     def assign_split(self):
-        if not self.split and self.training_focus and self.training_days:
-            fa = FrequencyAllocation.objects.get(
-                training_focus=self.training_focus,
-                training_days=self.training_days,
-                hierarchy=1,
-            )
-
-            self.split = fa.split
+        if self.should_have_split():
+            self.split = self.get_split_from_frequency_allocation()
             self.save()
 
     def split_days_count(self):
         """returns the number of days in the split"""
         return self.split.splititem_set.count()
 
+    def is_training_focus_changed(self):
+        """
+        Returns True if the user's training focus has changed.
+        Must be called pre-save()
+        """
+        prev_training_focus = User.objects.filter(
+            id=getattr(self.id, None)).first().training_focus
+        return prev_training_focus != self.training_focus
+
     def reassign_exercises(self):
         """
-        Check if training_focus has changed
-        Check first time saved / if User already has an exercise list
+        assign all of the default (user=null) exercises to this user
         """
+        exercises = Exercise.objects.filter(
+            user=self) or Exercise.objects.filter(user=None)
+        for exercise in exercises:
+            # find progression_type based on UserProfile & Exercise attributes
+            # logically equivalent to a JOIN on all of these fields
+            progression_type_allocation = ProgressionTypeAllocation.objects.get(
+                training_focus=self.training_focus,
+                mechanic=exercise.mechanic,
+                tier=exercise.tier,
+            )
 
-        try:
-            current_tf = self.training_focus
-        except:
-            current_tf = None
-
-        if self.training_focus != current_tf:  # user is creating first user profile
-            exercises = Exercise.objects.filter(
-                user=self) or Exercise.objects.filter(user=None)
-            for exercise in exercises:
-                # find progression_type based on UserProfile & Exercise attributes
-                # logically equivalent to a JOIN on all of these fields
-                progression_type_allocation = ProgressionTypeAllocation.objects.get(
-                    training_focus=self.training_focus,
-                    mechanic=exercise.mechanic,
-                    tier=exercise.tier,
-                )
-
-                if not exercise.user:  # exercise.id remains if user has exercise list
-                    exercise.id = None
-                exercise.user = self
-                exercise.progression_type = progression_type_allocation.progression_type
-                exercise.min_reps = progression_type_allocation.min_reps
-                exercise.max_reps = progression_type_allocation.max_reps
-                exercise.save()
+            if not exercise.user:  # exercise.id remains if user has exercise list
+                exercise.id = None
+            exercise.user = self
+            exercise.progression_type = progression_type_allocation.progression_type
+            exercise.min_reps = progression_type_allocation.min_reps
+            exercise.max_reps = progression_type_allocation.max_reps
+            exercise.save()
 
     def has_active_workout(self):
         """find out if the user currently has an active Workout instance"""
@@ -194,64 +199,3 @@ class Periodization(models.Model):
 
     def __str__(self):
         return self.name
-
-
-# class UserProfile(models.Model):
-#     """"Profile information for the User to input after signup"""
-#     user          = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
-#     height        = models.PositiveSmallIntegerField(null=True)
-#     weight        = models.PositiveSmallIntegerField(null=True)
-#     birth_date    = models.DateField(null=True)
-#     gender        = models.ForeignKey(Gender, null=True, on_delete=models.SET_NULL)
-#     training_focus= models.ForeignKey(TrainingFocus, null=True,  on_delete=models.SET_NULL)
-#     training_days = models.PositiveIntegerField(default=4, validators=[MinValueValidator(1), MaxValueValidator(7)])
-#     training_split= models.ForeignKey(TrainingSplit, on_delete=models.CASCADE, null=True, blank=True)
-
-#     def __str__(self):
-#         return f'{self.user}'
-
-#     def save(self, *args, **kwargs):
-#         self.reassign_exercises()
-#         super().save(*args,**kwargs)
-#         self.assign_split()
-
-#     def assign_split(self):
-#         if not self.training_split and self.training_focus and self.training_days:
-#             fa = FrequencyAllocation.objects.get(
-#                 training_focus = self.training_focus,
-#                 training_days  = self.training_days,
-#                 hierarchy      = 1,
-#             )
-
-#             self.training_split = fa.training_split
-#             self.save()
-
-#     def reassign_exercises(self):
-#         """
-#         Check if training_focus has changed
-#         Check first time saved / if User already has an exercise list
-#         """
-
-#         try:
-#             current_tf = UserProfile.objects.get(pk=self.pk).training_focus
-#         except:
-#             current_tf = None
-
-#         if self.training_focus != current_tf: #user is creating first user profile
-#             exercises = Exercise.objects.filter(user=self.user) or Exercise.objects.filter(user=None)
-#             for exercise in exercises:
-#                 #find progression_type based on UserProfile & Exercise attributes
-#                 #logically equivalent to a JOIN on all of these fields
-#                 progression_type_allocation = ProgressionTypeAllocation.objects.get(
-#                     training_focus=self.training_focus,
-#                     mechanic=exercise.mechanic,
-#                     tier=exercise.tier,
-#                 )
-
-#                 if not exercise.user: #exercise.id remains if user has exercise list
-#                     exercise.id = None
-#                 exercise.user = self.user
-#                 exercise.progression_type = progression_type_allocation.progression_type
-#                 exercise.min_reps = progression_type_allocation.min_reps
-#                 exercise.max_reps = progression_type_allocation.max_reps
-#                 exercise.save()
