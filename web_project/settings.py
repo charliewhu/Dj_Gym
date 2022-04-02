@@ -48,7 +48,7 @@ AUTH_USER_MODEL = 'accounts.User'
 # Application definition
 
 INSTALLED_APPS = [
-    #core
+    # core
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -57,17 +57,17 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
 
-    #3rd party
+    # 3rd party
     'rest_framework',
     'rest_framework.authtoken',
     'rest_auth',
+    'rest_auth.registration',
     'allauth',
     'allauth.account',
-    'rest_auth.registration',
     'corsheaders',
-    "sslserver", # sets HTTPS with python manage.py runsslserver
+    "sslserver",  # sets HTTPS with python manage.py runsslserver
 
-    #local
+    # local
     'api',
     'accounts',
     'exercises',
@@ -78,10 +78,10 @@ INSTALLED_APPS = [
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',
-        ],
+    ],
     'COERCE_DECIMAL_TO_STRING': False,
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        #'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
     ],
 }
@@ -100,9 +100,9 @@ REST_AUTH_SERIALIZERS = {
 }
 
 CORS_ORIGIN_WHITELIST = (
-'http://localhost:3000',
-'http://localhost:8000',
-'http://localhost:19002',
+    'http://localhost:3000',
+    'http://localhost:8000',
+    'http://localhost:19002',
 )
 
 
@@ -203,7 +203,6 @@ PROTECTED_MEDIA = BASE_DIR / 'static' / 'protected'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/'
 
@@ -214,8 +213,8 @@ if not DEBUG:
         'formatters': {
             'verbose': {
                 'format': ('%(asctime)s [%(process)d] [%(levelname)s] '
-                        'pathname=%(pathname)s lineno=%(lineno)s '
-                        'funcname=%(funcName)s %(message)s'),
+                           'pathname=%(pathname)s lineno=%(lineno)s '
+                           'funcname=%(funcName)s %(message)s'),
                 'datefmt': '%Y-%m-%d %H:%M:%S'
             },
             'simple': {

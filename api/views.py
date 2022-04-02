@@ -12,7 +12,6 @@ from exercises.models import Exercise
 from routines.models import Readiness, ReadinessQuestion, Workout, WorkoutExercise, WorkoutExerciseSet
 
 
-
 @api_view(['GET'])
 @permission_classes((IsAuthenticated,))
 def check_token(request):
@@ -41,11 +40,12 @@ def readiness_answer(request):
     """
     if request.method == 'GET':
         readiness_questions = ReadinessQuestion.objects.all()
-        serializer = ReadinessQuestionSerializer(readiness_questions, many=True)
+        serializer = ReadinessQuestionSerializer(
+            readiness_questions, many=True)
         return Response(serializer.data)
 
     elif request.method == 'POST':
-        #TODO
+        # TODO
         serializer = ReadinessAnswerSerializer(data=request.data, many=True)
         if serializer.is_valid():
             serializer.save()
@@ -78,8 +78,8 @@ class ExerciseViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
+        # TODO - should be model manager
         return Exercise.objects.filter(Q(user=user) | Q(user__isnull=True))
-
 
 
 # @api_view(['GET', 'POST'])
@@ -94,7 +94,7 @@ class ExerciseViewSet(viewsets.ModelViewSet):
 # @api_view(['GET', 'POST'])
 # def workout_detail(request, pk):
 #     """
-#     Workout instance 
+#     Workout instance
 #     and related exercises
 #     """
 #     if request.method == 'GET':
@@ -166,7 +166,6 @@ class ExerciseViewSet(viewsets.ModelViewSet):
 #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-
 # @api_view(['PUT', 'PATCH', 'DELETE'])
 # def workoutexerciseset_detail(request, pk):
 #     """
@@ -211,7 +210,7 @@ class ExerciseViewSet(viewsets.ModelViewSet):
 # @api_view(['GET', 'PUT', 'PATCH', 'DELETE'])
 # def exercise_detail(request, pk):
 #     """
-#     Get Exercise (pk) 
+#     Get Exercise (pk)
 #     Or Update/Delete
 #     """
 #     pass
