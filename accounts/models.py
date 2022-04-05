@@ -155,11 +155,12 @@ class User(PermissionsMixin, AbstractBaseUser):
             # new user has created training_focus
             return True
 
-    def reassign_default_exercises(self):
-        """
-        assign all of the default (user=null) exercises to this user
-        """
-        exercises = Exercise.objects.filter(user=None)
+    def reassign_exercises(self):
+        if self.exercise_set.all().count() > 0:
+            exercises = Exercise.objects.filter(user=self)
+        else:
+            exercises = Exercise.objects.filter(user=None)
+
         for exercise in exercises:
             # find progression_type based on UserProfile & Exercise attributes
             # logically equivalent to a JOIN on all of these fields
@@ -169,7 +170,7 @@ class User(PermissionsMixin, AbstractBaseUser):
                 tier=exercise.tier,
             )
 
-            if not exercise.user:  # exercise.id remains if user has exercise list
+            if exercise.user is None:  # exercise.id remains if user owna exercise
                 exercise.id = None
             exercise.user = self
             exercise.progression_type = progression_type_allocation.progression_type

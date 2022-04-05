@@ -223,23 +223,19 @@ class UserTestCase(TestCase):
         self.assertEqual(self.user_b.get_exercises().count(), 0)
 
     def test_reassign_exercises(self):
-        """
-        GIVEN a User with no Exercises
-        WHEN reassign_exercises is called
-        THEN all Exercises where user=null are duplicated
-        AND assigned to the user
-        AND User.exercise_set.count == Exercise.objects.filter(user=None).count
-        """
-        self.user_b.reassign_default_exercises()
+        # GIVEN a User with no Exercises
+        # WHEN
+        self.user_b.reassign_exercises()
+        # THEN
         exercises = Exercise.objects.filter(user=None).count()
-        user_exercises = Exercise.objects.filter(user=self.user_b).count()
+        user_exercises = self.user_b.exercise_set.count()
         self.assertEqual(exercises, user_exercises)
 
     def test_reassign_exercises2(self):
-        self.user_b.reassign_exercises()
-        exercises = Exercise.objects.filter(
-            Q(user=self.user) | Q(user__isnull=True))
-
-        user_exercises = self.user_b.exercise_set.all()
-
-        self.assertEqual(exercises.count(), user_exercises.count())
+        # GIVEN a User with a list of custom exercises
+        current_exercises = self.user_a.exercise_set.all().count()
+        # WHEN
+        self.user_a.reassign_exercises()
+        # THEN
+        new_exercises = self.user_a.exercise_set.all().count()
+        self.assertEqual(current_exercises, new_exercises)
