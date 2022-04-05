@@ -102,10 +102,12 @@ class User(PermissionsMixin, AbstractBaseUser):
     def has_module_perms(self, app_label):
         return True
 
-    # def save(self, *args, **kwargs):
-    #     # self.reassign_exercises()
-    #     super().save(*args, **kwargs)
-    #     # self.assign_split()
+    def save(self, *args, **kwargs):
+        if self.is_training_focus_changed():
+            self.reassign_exercises()
+        super().save(*args, **kwargs)
+        if self.should_have_split():
+            self.assign_split()
 
     def has_exercises(self):
         return Exercise.objects.filter(user=self).count() > 0
@@ -179,12 +181,14 @@ class User(PermissionsMixin, AbstractBaseUser):
             exercise.save()
 
     def has_active_workout(self):
+        # TODO this should be a manager method
         """find out if the user currently has an active Workout instance"""
         set = self.workouts.all()
         active_wo = set.filter(is_active=True).count()
         return active_wo
 
     def mean_readiness(self):
+        # TODO this should be a manager method
         """User's mean readiness rating over last 40 instances"""
         r = self.readiness_set.order_by('-id')[:40]
         user = User.objects.filter(

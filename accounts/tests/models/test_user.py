@@ -175,7 +175,6 @@ class UserTestCase(TestCase):
     def test_should_have_split(self):
         self.user_a.training_focus = self.trainingfocus
         self.user_a.training_days = 4
-        self.user_a.save()
         self.assertTrue(self.user_a.should_have_split())
 
     def test_get_split_from_frequency_allocation(self):
