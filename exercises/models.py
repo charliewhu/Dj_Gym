@@ -2,6 +2,7 @@ from django.conf import settings
 from django.db import models
 
 from .managers import UserRMManager
+from django.db.models import Q
 
 
 class Rir(models.Model):
@@ -122,7 +123,7 @@ class MuscleGroup(models.Model):
 
 class Exercise(models.Model):
     name = models.CharField(max_length=60)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+    user = models.ForeignKey("accounts.User",
                              on_delete=models.CASCADE, null=True, blank=True)
     mechanic = models.ForeignKey(Mechanic, on_delete=models.CASCADE, null=True)
     force = models.ForeignKey(Force, on_delete=models.CASCADE, null=True)
@@ -148,33 +149,48 @@ class Exercise(models.Model):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        if self.user:
-            if not self.progression_type:
-                self.set_progression_type()
-            if not self.min_reps and not self.max_reps:
-                self.set_min_max_reps()
+        # if self.user:
+        #     self.set_progression_type()
+        #     self.set_min_max_reps()
         # TODO - If Exercises is added by Admin, all Users should receive the exercise to their libraries
         # duplicate with every UserID and their progression type
         # consider if they already have an exercise with this name
 
+    # TODO - add as manager method
+    # def get_user_or_null(self):
+    #     return Exercise.objects.filter(
+    #         Q(user=self.user) | Q(user__isnull=True))
+
     def set_progression_type(self):
-        self.progression_type = self.get_progression_type()
-        self.save()
+        try:
+            self.progression_type = self.get_progression_type()
+            self.save()
+        except:
+            pass
 
     def set_min_max_reps(self):
-        self.min_reps = self.get_progression_type_allocation().min_reps
-        self.max_reps = self.get_progression_type_allocation().max_reps
-        self.save()
+        try:
+            self.min_reps = self.get_progression_type_allocation().min_reps
+            self.max_reps = self.get_progression_type_allocation().max_reps
+            self.save()
+        except:
+            pass
 
     def get_progression_type_allocation(self):
-        return ProgressionTypeAllocation.objects.get(
-            training_focus=self.user.training_focus,
-            mechanic=self.mechanic,
-            tier=self.tier
-        )
+        try:
+            return ProgressionTypeAllocation.objects.get(
+                training_focus=self.user.training_focus,
+                mechanic=self.mechanic,
+                tier=self.tier
+            )
+        except:
+            return None
 
     def get_progression_type(self):
-        return self.get_progression_type_allocation().progression_type
+        try:
+            return self.get_progression_type_allocation().progression_type
+        except:
+            return None
 
 
 class UserRM(models.Model):
