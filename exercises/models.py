@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.apps import apps
 
 from .managers import UserRMManager
 from django.db.models import Q
@@ -135,8 +136,6 @@ class Exercise(models.Model):
     max_reps = models.PositiveIntegerField(null=True, blank=True)
     is_active = models.BooleanField(default=1)
     is_unilateral = models.BooleanField(default=0)
-    # User should see exercises where user is NULL (mixed exercises)
-    # and where user==currentUser
 
     class Meta:
         constraints = [
@@ -145,21 +144,41 @@ class Exercise(models.Model):
         ]
 
     def __str__(self):
-        return self.name
+        return f'{self.name} - {self.user}'
 
     def save(self, *args, **kwargs):
+        is_new = self.pk is None
         super().save(*args, **kwargs)
+        if is_new and self.user is None:
+            self.set_exercise_to_users()
+
         # if self.user:
         #     self.set_progression_type()
         #     self.set_min_max_reps()
-        # TODO - If Exercises is added by Admin, all Users should receive the exercise to their libraries
-        # duplicate with every UserID and their progression type
-        # consider if they already have an exercise with this name
 
     # TODO - add as manager method
     # def get_user_or_null(self):
     #     return Exercise.objects.filter(
     #         Q(user=self.user) | Q(user__isnull=True))
+
+    def set_exercise_to_users(self):
+        """
+        Sets the exercise to all users
+        """
+        User = apps.get_model('accounts.User')
+        users = User.objects.all()
+        for user in users:
+            try:
+                Exercise.objects.get(
+                    user=user, name=self.name)
+                user_has_exercise = True
+            except:
+                user_has_exercise = False
+
+            if not user_has_exercise:
+                self.id = None
+                self.user = user
+                self.save()
 
     def set_progression_type(self):
         try:

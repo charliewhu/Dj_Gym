@@ -2,7 +2,7 @@ from os import read
 import decimal
 from django.db.utils import IntegrityError
 from django.test import TestCase
-from exercises.models import Exercise, Mechanic, Progression, ProgressionType, ProgressionTypeAllocation, Purpose, Tier
+from exercises.models import Exercise, Force, Mechanic, Progression, ProgressionType, ProgressionTypeAllocation, Purpose, Tier
 
 from accounts.models import FrequencyAllocation, Split, TrainingFocus, User
 
@@ -33,6 +33,10 @@ class ExerciseTest(TestCase):
 
         self.user_a.training_focus = self.training_focus
         self.user_a.save()
+
+        self.force = Force.objects.create(
+            name="Pull",
+        )
 
         self.tier = Tier.objects.create(
             name='T1'
@@ -96,3 +100,59 @@ class ExerciseTest(TestCase):
             min_reps=1,
             max_reps=5,
         )
+
+    def test_admin_added_exercise(self):
+        # GIVEN an admin user
+        # WHEN they add a new exercise
+        # AND user is not set
+        exercise = Exercise.objects.create(
+            name="Squat2",
+            user=None,
+            mechanic=self.mechanic,
+            force=self.force,
+            tier=self.tier,
+        )
+        # THEN the exercise should be copied out to all users
+        # AND every user should have a copy of the exercise
+        user_exercise = Exercise.objects.get(
+            name="Squat2", user=self.user_a)
+        self.assertEqual(exercise.name, user_exercise.name)
+
+    def test_admin_added_exercise_fail(self):
+        """
+        What if user already has an exercise with the same name?
+        It does not get overwritten (success)
+        """
+        # GIVEN an admin user
+        # WHEN they add a new exercise
+        # AND user is not set
+
+        Exercise.objects.create(
+            name="Squat2",
+            user=self.user_a,
+            mechanic=self.mechanic,
+            force=self.force,
+            tier=self.tier,
+        )
+
+        exercise = Exercise.objects.create(
+            name="Squat2",
+            user=None,
+            mechanic=self.mechanic,
+            force=self.force,
+            tier=self.tier,
+        )
+        # THEN the exercise should be copied out to all users
+        # AND every user should have a copy of the exercise
+        user_exercise = Exercise.objects.get(
+            name="Squat2", user=self.user_a)
+        self.assertEqual(exercise.name, user_exercise.name)
+
+    def test_create_new_exercise(self):
+        # GIVEN a user: user_a who has a training_focus
+        # WHEN user_a creates a new exercise
+        # THEN the exercise should be created
+        # AND a progression_type should be set
+        # AND min_reps should be set
+        # AND max_reps should be set
+        pass

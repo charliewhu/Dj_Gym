@@ -211,7 +211,11 @@ class UserTestCase(TestCase):
         self.assertTrue(self.user_d.is_training_focus_changed())
 
     def test_has_exercises(self):
-        self.assertFalse(self.user_b.has_exercises())
+        new_user = User(
+            email='new_user@test.com',
+        )
+
+        self.assertFalse(new_user.has_exercises())
 
     def test_has_exercises_true(self):
         self.assertTrue(self.user_a.has_exercises())
@@ -219,7 +223,7 @@ class UserTestCase(TestCase):
     def test_get_exercises(self):
         self.assertEqual(Exercise.objects.filter(user=self.user_a).count(),
                          self.user_a.get_exercises().count())
-        self.assertEqual(self.user_b.get_exercises().count(), 0)
+        self.assertEqual(self.user_b.get_exercises().count(), 1)
 
     def test_reassign_exercises(self):
         # GIVEN a User with no Exercises

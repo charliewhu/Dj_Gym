@@ -110,7 +110,10 @@ class User(PermissionsMixin, AbstractBaseUser):
             self.assign_split()
 
     def has_exercises(self):
-        return Exercise.objects.filter(user=self).count() > 0
+        try:
+            return self.exercise_set.count() > 0
+        except:
+            return False
 
     def get_exercises(self):
         """returns all exercises for this user"""
@@ -166,19 +169,22 @@ class User(PermissionsMixin, AbstractBaseUser):
         for exercise in exercises:
             # find progression_type based on UserProfile & Exercise attributes
             # logically equivalent to a JOIN on all of these fields
-            progression_type_allocation = ProgressionTypeAllocation.objects.get(
-                training_focus=self.training_focus,
-                mechanic=exercise.mechanic,
-                tier=exercise.tier,
-            )
+            try:
+                progression_type_allocation = ProgressionTypeAllocation.objects.get(
+                    training_focus=self.training_focus,
+                    mechanic=exercise.mechanic,
+                    tier=exercise.tier,
+                )
 
-            if exercise.user is None:  # exercise.id remains if user owna exercise
-                exercise.id = None
-            exercise.user = self
-            exercise.progression_type = progression_type_allocation.progression_type
-            exercise.min_reps = progression_type_allocation.min_reps
-            exercise.max_reps = progression_type_allocation.max_reps
-            exercise.save()
+                if exercise.user is None:  # exercise.id remains if user owna exercise
+                    exercise.id = None
+                exercise.user = self
+                exercise.progression_type = progression_type_allocation.progression_type
+                exercise.min_reps = progression_type_allocation.min_reps
+                exercise.max_reps = progression_type_allocation.max_reps
+                exercise.save()
+            except:
+                pass
 
     def has_active_workout(self):
         # TODO this should be a manager method
