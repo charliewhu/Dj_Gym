@@ -151,8 +151,29 @@ class ExerciseTest(TestCase):
     def test_create_new_exercise(self):
         # GIVEN a user: user_a who has a training_focus
         # WHEN user_a creates a new exercise
+        Exercise.objects.create(
+            name="Squat2",
+            user=self.user_a,
+            mechanic=self.mechanic,
+            force=self.force,
+            tier=self.tier,
+        )
         # THEN the exercise should be created
+        new_exercise = Exercise.objects.get(
+            name="Squat2", user=self.user_a
+        )
         # AND a progression_type should be set
-        # AND min_reps should be set
-        # AND max_reps should be set
-        pass
+        self.assertEqual(
+            new_exercise.progression_type,
+            self.prog_type
+        )
+        # AND min_reps should be 1
+        self.assertEqual(
+            new_exercise.min_reps,
+            1
+        )
+        # AND max_reps should be 5
+        self.assertEqual(
+            new_exercise.max_reps,
+            5
+        )

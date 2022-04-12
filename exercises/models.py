@@ -152,9 +152,9 @@ class Exercise(models.Model):
         if is_new and self.user is None:
             self.set_exercise_to_users()
 
-        # if self.user:
-        #     self.set_progression_type()
-        #     self.set_min_max_reps()
+        if is_new and self.user:
+            self.set_progression_type()
+            self.set_min_max_reps()
 
     # TODO - add as manager method
     # def get_user_or_null(self):

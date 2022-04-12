@@ -201,6 +201,12 @@ class UserTestCase(TestCase):
             name='test_training_focus2')
         self.user_a.training_focus = self.trainingfocus2
         self.assertTrue(self.user_a.is_training_focus_changed())
+        FrequencyAllocation.objects.create(
+            training_focus=self.trainingfocus2,
+            training_days=4,
+            split=self.split,
+            hierarchy=1
+        )
         self.user_a.save()
         self.assertFalse(self.user_a.is_training_focus_changed())
         self.user_c = User(email='test3@test.com')
