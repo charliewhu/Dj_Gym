@@ -5,12 +5,14 @@ from django.contrib import auth
 from django.db.models import Q
 
 from accounts.models import User, FrequencyAllocation, Split, SplitDay, SplitDayForce, SplitItem, TrainingFocus
+from accounts.tests.models.factory import ForceFactory, FrequencyAllocationFactory, SplitDayFactory, SplitDayForceFactory, SplitFactory, SplitItemFactory, TrainingFocusFactory, UserFactory
 from exercises.models import Exercise, Force, Mechanic, Progression, ProgressionType, ProgressionTypeAllocation, Purpose, Tier
+from exercises.tests.models.factory import MechanicFactory, ProgressionTypeFactory, PurposeFactory, TierFactory
 
 # Create your tests here.
 
 
-class UserTestCase(TestCase):
+class CustomUserTestCase(TestCase):
 
     def setUp(self):  # create a user
         user_a = User(email='test@test.com')
@@ -248,3 +250,121 @@ class UserTestCase(TestCase):
         # THEN
         new_exercises = self.user_a.exercise_set.all().count()
         self.assertEqual(current_exercises, new_exercises)
+
+
+class UserTestCase(TestCase):
+
+    def setUp(self):  # create a user
+        self.user = UserFactory()
+        self.force = ForceFactory()
+        self.split = SplitFactory()
+        self.splititem = SplitItemFactory()
+        self.splitday = SplitDayFactory()
+        self.splitdayforce = SplitDayForceFactory(
+            day=self.splitday,
+            force=self.force
+        )
+        self.training_focus = TrainingFocusFactory()
+        self.frequencyallocation = FrequencyAllocationFactory(
+            training_focus=self.training_focus,
+        )
+        self.tier = TierFactory()
+        self.purpose = PurposeFactory()
+        self.mechanic = MechanicFactory()
+        self.prog_type = ProgressionTypeFactory()
+
+    def test_should_not_have_split(self):
+        """
+        GIVEN a user
+        WHEN the user has no training focus set
+        OR the user has no training days set
+        THEN the user should not need a split
+        """
+        self.assertFalse(self.user.should_have_split())
+
+        self.user.training_days = 4
+        self.user.save()
+        self.assertFalse(self.user.should_have_split())
+
+    def test_should_have_split(self):
+        """
+        GIVEN a user
+        WHEN the user has no training focus set
+        OR the user has no training days set
+        THEN the user should not need a split
+        """
+        self.user.training_focus = TrainingFocusFactory()
+        self.user.training_days = 4
+        self.assertTrue(self.user.should_have_split())
+
+    def test_get_split_from_frequency_allocation(self):
+        self.user.training_focus = self.training_focus
+        self.user.training_days = 4
+        self.user.save()
+        self.assertEqual(
+            self.user.get_split_from_frequency_allocation(),
+            self.frequencyallocation.split
+        )
+
+    # def test_assign_split(self):
+    #     self.user_a.training_focus = self.trainingfocus
+    #     self.user_a.training_days = 4
+    #     self.user_a.save()
+    #     self.user_a.assign_split()
+    #     self.assertEqual(self.split, self.user_a.split)
+
+    # def test_split_days_count(self):
+    #     self.assertEqual(self.user_a.split_days_count(), 0)
+
+    # def test_is_training_focus_changed(self):
+    #     self.trainingfocus2 = TrainingFocus.objects.create(
+    #         name='test_training_focus2')
+    #     self.user_a.training_focus = self.trainingfocus2
+    #     self.assertTrue(self.user_a.is_training_focus_changed())
+    #     FrequencyAllocation.objects.create(
+    #         training_focus=self.trainingfocus2,
+    #         training_days=4,
+    #         split=self.split,
+    #         hierarchy=1
+    #     )
+    #     self.user_a.save()
+    #     self.assertFalse(self.user_a.is_training_focus_changed())
+    #     self.user_c = User(email='test3@test.com')
+    #     self.assertFalse(self.user_c.is_training_focus_changed())
+    #     self.user_d = User(email='test3@test.com',
+    #                        training_focus=self.trainingfocus
+    #                        )
+    #     self.assertTrue(self.user_d.is_training_focus_changed())
+
+    # def test_has_exercises(self):
+    #     new_user = User(
+    #         email='new_user@test.com',
+    #     )
+
+    #     self.assertFalse(new_user.has_exercises())
+
+    # def test_has_exercises_true(self):
+    #     self.assertTrue(self.user_a.has_exercises())
+
+    # def test_get_exercises(self):
+    #     self.assertEqual(Exercise.objects.filter(user=self.user_a).count(),
+    #                      self.user_a.get_exercises().count())
+    #     self.assertEqual(self.user_b.get_exercises().count(), 1)
+
+    # def test_reassign_exercises(self):
+    #     # GIVEN a User with no Exercises
+    #     # WHEN
+    #     self.user_b.reassign_exercises()
+    #     # THEN
+    #     exercises = Exercise.objects.filter(user=None).count()
+    #     user_exercises = self.user_b.exercise_set.count()
+    #     self.assertEqual(exercises, user_exercises)
+
+    # def test_reassign_exercises2(self):
+    #     # GIVEN a User with a list of custom exercises
+    #     current_exercises = self.user_a.exercise_set.all().count()
+    #     # WHEN
+    #     self.user_a.reassign_exercises()
+    #     # THEN
+    #     new_exercises = self.user_a.exercise_set.all().count()
+    #     self.assertEqual(current_exercises, new_exercises)

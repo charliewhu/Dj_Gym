@@ -106,8 +106,7 @@ class User(PermissionsMixin, AbstractBaseUser):
         if self.is_training_focus_changed():
             self.reassign_exercises()
         super().save(*args, **kwargs)
-        if self.should_have_split():
-            self.assign_split()
+        self.assign_split()
 
     def has_exercises(self):
         try:
@@ -214,7 +213,7 @@ class FrequencyAllocation(models.Model):
     split = models.ForeignKey(Split, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'{self.training_focus}, {self.split}, Days: {self.training_days}, Tier: {self.hierarchy}'
+        return f'{self.training_focus}, {self.split}, Days: {self.training_days}, Hierarchy: {self.hierarchy}'
 
     # TODO add unique constraints for hierarchy per training days per TrainingFocus
 

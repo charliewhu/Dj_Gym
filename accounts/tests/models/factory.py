@@ -21,6 +21,7 @@ class ForceFactory(DjangoModelFactory):
         model = 'exercises.Force'
 
     name = 'test_force'
+    base_weekly_sets = 10
 
 
 class SplitFactory(DjangoModelFactory):
@@ -43,7 +44,6 @@ class SplitDayFactory(DjangoModelFactory):
         model = 'accounts.SplitDay'
 
     split_item = SubFactory(SplitItemFactory)
-    force = SubFactory(ForceFactory)
     name = 'test_split_day'
     order = 1
 
@@ -52,8 +52,6 @@ class SplitDayForceFactory(DjangoModelFactory):
     class Meta:
         model = 'accounts.SplitDayForce'
 
-    day = SubFactory(SplitDayFactory)
-    force = SubFactory(ForceFactory)
     hierarchy = 1
 
 
