@@ -124,7 +124,7 @@ class MuscleGroup(models.Model):
 
 class Exercise(models.Model):
     name = models.CharField(max_length=60)
-    user = models.ForeignKey("accounts.User",
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
                              on_delete=models.CASCADE, null=True, blank=True)
     mechanic = models.ForeignKey(Mechanic, on_delete=models.CASCADE, null=True)
     force = models.ForeignKey(Force, on_delete=models.CASCADE, null=True)
