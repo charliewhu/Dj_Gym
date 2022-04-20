@@ -4,83 +4,48 @@ from django.db.utils import IntegrityError
 from django.test import TestCase
 from exercises.models import Exercise, Force, Mechanic, Progression, ProgressionType, ProgressionTypeAllocation, Purpose, Tier
 
+
 from accounts.models import FrequencyAllocation, Split, TrainingFocus, User
+from exercises.tests.models.factory import ExerciseFactory, MechanicFactory, ProgressionFactory, ProgressionTypeAllocationFactory, ProgressionTypeFactory, PurposeFactory, TierFactory, TrainingFocusFactory
+from accounts.tests.models.factory import ForceFactory, FrequencyAllocationFactory, SplitFactory, UserFactory
 
 
 class ExerciseTest(TestCase):
 
     def setUp(self):
-
-        self.split = Split.objects.create(
-            name="Split",
+        
+        self.split = SplitFactory()
+        self.training_focus = TrainingFocusFactory()
+        self.frequency_allocation = FrequencyAllocationFactory(
+            split=self.split, 
+            training_focus=self.training_focus
         )
+        self.user = UserFactory()
+        self.force = ForceFactory()
+        self.tier = TierFactory()
+        self.purpose = PurposeFactory()
+        self.mechanic = MechanicFactory()
+        self.prog_type = ProgressionTypeFactory()
 
-        self.training_focus = TrainingFocus.objects.create(
-            name="Bodybuilding",
-        )
-
-        self.frequency_allocation = FrequencyAllocation.objects.create(
-            training_focus=self.training_focus,
-            training_days=4,
-            hierarchy=1,
-            split=self.split
-        )
-
-        self.user_a = User.objects.create_superuser(
-            email='test@test.com',
-            password='some_123_password',
-        )
-
-        self.user_a.training_focus = self.training_focus
-        self.user_a.save()
-
-        self.force = Force.objects.create(
-            name="Pull",
-        )
-
-        self.tier = Tier.objects.create(
-            name='T1'
-        )
-
-        self.purpose = Purpose.objects.create(
-            name='Squat'
-        )
-
-        self.mechanic = Mechanic.objects.create(
-            name='Compound'
-        )
-
-        self.prog_type = ProgressionType.objects.create(
-            name='Test',
-        )
-
-        self.prog_type_allocation = ProgressionTypeAllocation.objects.create(
-            training_focus=self.user_a.training_focus,
+        self.prog_type_allocation = ProgressionTypeAllocationFactory(
+            training_focus=self.user.training_focus,
             mechanic=self.mechanic,
             tier=self.tier,
             progression_type=self.prog_type,
-            min_reps=1,
-            max_reps=5,
-            target_rir=3,
-            min_rir=2
         )
 
-        self.progression = Progression.objects.create(
+        self.progression = ProgressionFactory(
             progression_type=self.prog_type,
-            rep_delta=0,
-            rir_delta=-2,
-            weight_change=0.5,
-            rep_change=2,
         )
 
-        self.exercise = Exercise.objects.create(
+        self.exercise = ExerciseFactory(
             name="Squat",
-            user=self.user_a,
-            progression_type=self.prog_type,
-            min_reps=1,
-            max_reps=5,
+            user=self.user,
+            force=self.force,
+            purpose=self.purpose,
             mechanic=self.mechanic,
             tier=self.tier,
+            progression_type=self.prog_type,
         )
 
     def test_get_progression_type_allocation(self):
@@ -93,13 +58,7 @@ class ExerciseTest(TestCase):
             self.exercise.get_progression_type(), self.prog_type)
 
     def test_set_progression_type(self):
-        self.exercise2 = Exercise(
-            name="Squat",
-            user=self.user_a,
-            progression_type=self.prog_type,
-            min_reps=1,
-            max_reps=5,
-        )
+        pass
 
     def test_admin_added_exercise(self):
         # GIVEN an admin user
@@ -115,7 +74,7 @@ class ExerciseTest(TestCase):
         # THEN the exercise should be copied out to all users
         # AND every user should have a copy of the exercise
         user_exercise = Exercise.objects.get(
-            name="Squat2", user=self.user_a)
+            name="Squat2", user=self.user)
         self.assertEqual(exercise.name, user_exercise.name)
 
     def test_admin_added_exercise_fail(self):
@@ -129,7 +88,7 @@ class ExerciseTest(TestCase):
 
         Exercise.objects.create(
             name="Squat2",
-            user=self.user_a,
+            user=self.user,
             mechanic=self.mechanic,
             force=self.force,
             tier=self.tier,
@@ -145,7 +104,7 @@ class ExerciseTest(TestCase):
         # THEN the exercise should be copied out to all users
         # AND every user should have a copy of the exercise
         user_exercise = Exercise.objects.get(
-            name="Squat2", user=self.user_a)
+            name="Squat2", user=self.user)
         self.assertEqual(exercise.name, user_exercise.name)
 
     def test_create_new_exercise(self):
@@ -153,14 +112,14 @@ class ExerciseTest(TestCase):
         # WHEN user_a creates a new exercise
         Exercise.objects.create(
             name="Squat2",
-            user=self.user_a,
+            user=self.user,
             mechanic=self.mechanic,
             force=self.force,
             tier=self.tier,
         )
         # THEN the exercise should be created
         new_exercise = Exercise.objects.get(
-            name="Squat2", user=self.user_a
+            name="Squat2", user=self.user
         )
         # AND a progression_type should be set
         self.assertEqual(

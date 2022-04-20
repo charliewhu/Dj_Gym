@@ -44,10 +44,10 @@ class ProgressionTypeAllocationFactory(DjangoModelFactory):
     training_focus = SubFactory(TrainingFocusFactory)
     mechanic = SubFactory(MechanicFactory)
     tier = SubFactory(TierFactory)
-    min_reps = 5
-    max_reps = 10
-    target_rir = 2
-    min_rir = 1
+    min_reps = 1
+    max_reps = 5
+    target_rir = 3
+    min_rir = 2
 
 
 class ProgressionFactory(DjangoModelFactory):

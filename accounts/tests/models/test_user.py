@@ -29,101 +29,6 @@ class CustomUserTestCase(TestCase):
         self.superuser = User.objects.create_superuser(
             email='t@t.com', password='123')
 
-        self.trainingfocus = TrainingFocus.objects.create(
-            name='test_training_focus')
-
-        self.split = Split.objects.create(
-            name='test_split')
-
-        self.splititem = SplitItem.objects.create(
-            split=self.split,
-            name='test_splititem')
-
-        self.force = Force.objects.create(
-            name='test_force',
-            base_weekly_sets=10,
-        )
-
-        self.splitday = SplitDay.objects.create(
-            split_item=self.splititem,
-            name='test_splitday',
-            # force=self.splitdayforce,
-            order=1)
-
-        self.splitdayforce = SplitDayForce.objects.create(
-            day=self.splitday,
-            force=self.force,
-            hierarchy=1)
-
-        self.frequencyallocation = FrequencyAllocation.objects.create(
-            training_focus=self.trainingfocus,
-            training_days=4,
-            split=self.split,
-            hierarchy=1
-        )
-
-        self.tier = Tier.objects.create(
-            name='T1'
-        )
-
-        self.purpose = Purpose.objects.create(
-            name='Squat'
-        )
-
-        self.mechanic = Mechanic.objects.create(
-            name='Compound'
-        )
-
-        self.prog_type = ProgressionType.objects.create(
-            name='Test',
-        )
-
-        self.prog_type_allocation = ProgressionTypeAllocation.objects.create(
-            training_focus=self.user_a.training_focus,
-            mechanic=self.mechanic,
-            tier=self.tier,
-            progression_type=self.prog_type,
-            min_reps=1,
-            max_reps=5,
-            target_rir=3,
-            min_rir=2
-        )
-
-        self.progression = Progression.objects.create(
-            progression_type=self.prog_type,
-            rep_delta=0,
-            rir_delta=-2,
-            weight_change=0.5,
-            rep_change=2,
-        )
-
-        self.exercise1 = Exercise.objects.create(
-            name="test_exercise",
-            mechanic=self.mechanic,
-            force=self.force,
-            purpose=self.purpose,
-            tier=self.tier,
-            progression_type=self.prog_type,
-            min_reps=1,
-            max_reps=5,
-            is_active=1,
-            is_unilateral=0,
-        )
-
-        self.exercise2 = Exercise.objects.create(
-            name="test_exercise2",
-            user=self.user_a,
-            mechanic=self.mechanic,
-            force=self.force,
-            purpose=self.purpose,
-            tier=self.tier,
-            progression_type=self.prog_type,
-            min_reps=1,
-            max_reps=5,
-            is_active=1,
-            is_unilateral=0,
-        )
-
     def test_users_exist(self):
         user_count = User.objects.all().count()
         self.assertEqual(user_count, 3)
@@ -267,20 +172,22 @@ class UserTestCase(TestCase):
         self.assertEqual(Exercise.objects.filter(user=self.user).count(),
                          self.user.get_exercises().count())
 
-    # def test_reassign_exercises(self):
-    #     # GIVEN a User with no Exercises
-    #     # WHEN
-    #     self.user_b.reassign_exercises()
-    #     # THEN
-    #     exercises = Exercise.objects.filter(user=None).count()
-    #     user_exercises = self.user_b.exercise_set.count()
-    #     self.assertEqual(exercises, user_exercises)
+    def test_reassign_exercises(self):
+        # GIVEN a User with no Exercises
+        # WHEN
+        self.user.reassign_exercises()
+        # THEN the user receives all default Exercises
+        exercises = Exercise.objects.filter(user=None).count()
+        user_exercises = self.user.exercise_set.count()
+        self.assertEqual(exercises, user_exercises)
 
-    # def test_reassign_exercises2(self):
-    #     # GIVEN a User with a list of custom exercises
-    #     current_exercises = self.user_a.exercise_set.all().count()
-    #     # WHEN
-    #     self.user_a.reassign_exercises()
-    #     # THEN
-    #     new_exercises = self.user_a.exercise_set.all().count()
-    #     self.assertEqual(current_exercises, new_exercises)
+    def test_reassign_exercises2(self):
+        # GIVEN a User with a list of custom exercises
+        current_exercises = self.user.exercise_set.all().count()
+        # WHEN exercises are reassigned 
+        # (due to changing training_focus)
+        self.user.reassign_exercises()
+        # THEN the user should still have the same exercises
+        new_exercises = self.user.exercise_set.all().count()
+        self.assertEqual(current_exercises, new_exercises)
+

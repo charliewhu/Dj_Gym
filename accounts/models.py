@@ -160,7 +160,7 @@ class User(PermissionsMixin, AbstractBaseUser):
             return True
 
     def reassign_exercises(self):
-        if self.exercise_set.all().count() > 0:
+        if self.has_exercises():
             exercises = Exercise.objects.filter(user=self)
         else:
             exercises = Exercise.objects.filter(user=None)
