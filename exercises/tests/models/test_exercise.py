@@ -1,5 +1,6 @@
 from os import read
 import decimal
+from unicodedata import name
 from django.db.utils import IntegrityError
 from django.test import TestCase
 from exercises.models import Exercise, Force, Mechanic, Progression, ProgressionType, ProgressionTypeAllocation, Purpose, Tier
@@ -50,7 +51,8 @@ class ExerciseTest(TestCase):
 
     def test_get_progression_type_allocation(self):
         self.assertEqual(
-            self.exercise.get_progression_type_allocation(), self.prog_type_allocation
+            self.exercise.get_progression_type_allocation(), 
+            self.prog_type_allocation
         )
 
     def test_get_progression_type(self):
@@ -58,7 +60,40 @@ class ExerciseTest(TestCase):
             self.exercise.get_progression_type(), self.prog_type)
 
     def test_set_progression_type(self):
-        pass
+        #GIVEN a user
+        #WHEN user creates an exercise
+        #AND ProgressionTypeAllocation exists
+        new_exercise = Exercise(
+            user=self.user,
+            name="Squat2",
+            mechanic=self.mechanic,
+            tier=self.tier,
+        )
+
+        new_exercise.set_progression_type()
+
+        #THEN the exercise should have a progression_type
+        self.assertEqual(
+            new_exercise.progression_type,
+            self.prog_type
+        )
+
+    def test_set_progression_type_fail(self):
+        #GIVEN a user
+        #WHEN user creates an exercise
+        #AND ProgressionTypeAllocation does not exist
+        new_tier = TierFactory(name="Tier2")
+        new_exercise = Exercise(
+            user=self.user,
+            name="Squat2",
+            mechanic=self.mechanic,
+            tier=new_tier,
+        )
+
+        new_exercise.set_progression_type()
+
+        #THEN the exercise should not have a progression_type
+        self.assertTrue(new_exercise.progression_type is None)
 
     def test_admin_added_exercise(self):
         # GIVEN an admin user
@@ -86,36 +121,30 @@ class ExerciseTest(TestCase):
         # WHEN they add a new exercise
         # AND user is not set
 
-        Exercise.objects.create(
-            name="Squat2",
-            user=self.user,
-            mechanic=self.mechanic,
-            force=self.force,
-            tier=self.tier,
-        )
-
-        exercise = Exercise.objects.create(
-            name="Squat2",
+        exercise = ExerciseFactory(
+            name="Squat",
             user=None,
             mechanic=self.mechanic,
             force=self.force,
             tier=self.tier,
+            purpose=self.purpose,
         )
         # THEN the exercise should be copied out to all users
         # AND every user should have a copy of the exercise
         user_exercise = Exercise.objects.get(
-            name="Squat2", user=self.user)
+            name="Squat", user=self.user)
         self.assertEqual(exercise.name, user_exercise.name)
 
     def test_create_new_exercise(self):
-        # GIVEN a user: user_a who has a training_focus
-        # WHEN user_a creates a new exercise
-        Exercise.objects.create(
+        # GIVEN a user: user who has a training_focus
+        # WHEN user creates a new exercise
+        ExerciseFactory(
             name="Squat2",
             user=self.user,
             mechanic=self.mechanic,
             force=self.force,
             tier=self.tier,
+            purpose=self.purpose,
         )
         # THEN the exercise should be created
         new_exercise = Exercise.objects.get(

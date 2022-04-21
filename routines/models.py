@@ -16,16 +16,22 @@ from routines.managers import ReadinessAnswerManager
 
 
 class ReadinessQuestion(models.Model):
-    name = models.CharField(max_length=40, unique=True)
+    name = models.CharField(
+        max_length=40, 
+        unique=True)
 
     def __str__(self):
         return f'{self.name}'
 
 
 class Readiness(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL,
-                             on_delete=models.CASCADE, null=True)
-    date_created = models.DateField(auto_now_add=True, null=True)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE, 
+        null=True)
+    date_created = models.DateField(
+        auto_now_add=True, 
+        null=True)
 
     def __str__(self):
         return f'{self.date_created}'
