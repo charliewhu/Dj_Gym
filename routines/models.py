@@ -91,9 +91,9 @@ class Workout(models.Model):
         return f'{self.id} - {self.user} - {self.date}'
 
     def save(self, *args, **kwargs):
-        self.assign_training_day()
+        #self.assign_training_day()
         super().save(*args, **kwargs)
-        self.create_exercises()
+        #self.create_exercises()
 
     def create_exercises(self):
         """
@@ -152,10 +152,12 @@ class Workout(models.Model):
         Input: Workout instance
         Output: Users previous Workout instance with the same SplitDay as the input
         """
-        return Workout.objects\
-            .filter(split_day__split_item=self.split_day.split_item, user=self.user)\
-            .exclude(pk=self.id)\
-            .last()
+        if self.last_split_day is not None:
+            return Workout.objects\
+                .filter(split_day__split_item=self.split_day.split_item, user=self.user)\
+                .exclude(pk=self.id)\
+                .last()
+        return None
 
     def prev_split_day_exercises(self):
         """

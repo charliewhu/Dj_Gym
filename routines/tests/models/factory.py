@@ -6,20 +6,20 @@ from exercises.tests.models.factory import ExerciseFactory
 
 class ReadinessQuestionFactory(DjangoModelFactory):
     class Meta:
-        model = 'readiness.ReadinessQuestion'
+        model = 'routines.ReadinessQuestion'
 
     name = "test_question"
 
 class ReadinessFactory(DjangoModelFactory):
     class Meta:
-        model = 'readiness.Readiness'
+        model = 'routines.Readiness'
 
     user = SubFactory(UserFactory)
     date_created = "2017-01-01"
 
 class ReadinessAnswerFactory(DjangoModelFactory):
     class Meta:
-        model = 'readiness.ReadinessAnswer'
+        model = 'routines.ReadinessAnswer'
 
     readiness = SubFactory(ReadinessFactory)
     readiness_question = SubFactory(ReadinessQuestionFactory)
@@ -27,24 +27,23 @@ class ReadinessAnswerFactory(DjangoModelFactory):
 
 class WorkoutFactory(DjangoModelFactory):
     class Meta:
-        model = 'workouts.Workout'
+        model = 'routines.Workout'
 
     user = SubFactory(UserFactory)
-    readiness = SubFactory(ReadinessFactory)
     date = "2017-01-01"
 
 class WorkoutExerciseFactory(DjangoModelFactory):
     class Meta:
-        model = 'workouts.WorkoutExercise'
+        model = 'routines.WorkoutExercise'
 
     workout = SubFactory(WorkoutFactory)
     exercise = SubFactory(ExerciseFactory)
 
 class WorkoutExerciseSetFactory(DjangoModelFactory):
     class Meta:
-        model = 'workouts.WorkoutExerciseSet'
+        model = 'routines.WorkoutExerciseSet'
 
     workout_exercise = SubFactory(WorkoutExerciseFactory)
     weight = 100
-    reps = 5
-    rir = 1
+    reps = 1
+    rir = 0

@@ -2,27 +2,21 @@ from os import read
 import decimal
 from django.db.utils import IntegrityError
 from django.test import TestCase
+from accounts.tests.models.factory import UserFactory
 from exercises.models import Exercise, Progression, ProgressionType, ProgressionTypeAllocation
 
 from routines.models import Readiness, ReadinessAnswer, ReadinessQuestion, Workout, WorkoutExercise, WorkoutExerciseSet
 from accounts.models import User
+from routines.tests.models.factory import ReadinessFactory, WorkoutExerciseFactory, WorkoutExerciseSetFactory, WorkoutFactory
+from exercises.tests.models.factory import ProgressionFactory, ProgressionTypeFactory
 
 
 class WorkoutExerciseSetTest(TestCase):
 
     def setUp(self):
-
-        self.user_a = User.objects.create_superuser(
-            email='test@test.com',
-            password='some_123_password',
-        )
-
-        self.readiness = Readiness.objects.create(user=self.user_a)
-
-        self.prog_type = ProgressionType.objects.create(
-            name='Test',
-        )
-
+        self.user = UserFactory()
+        self.readiness = ReadinessFactory(user=self.user)
+        self.prog_type = ProgressionTypeFactory()
         self.prog_type_allocation = ProgressionTypeAllocation.objects.create(
             progression_type=self.prog_type,
             min_reps=1,
@@ -31,62 +25,67 @@ class WorkoutExerciseSetTest(TestCase):
             min_rir=2
         )
 
-        self.progression = Progression.objects.create(
+        self.progression = ProgressionFactory(
             progression_type=self.prog_type,
             rep_delta=0,
             rir_delta=-2,
             weight_change=0.5,
             rep_change=2,
         )
-
         self.exercise = Exercise.objects.create(
             name="Squat",
-            user=self.user_a,
+            user=self.user,
             progression_type=self.prog_type,
             min_reps=1,
             max_reps=5,
         )
 
-        self.workout = Workout.objects.get(readiness=self.readiness)
-
-        self.workout_exercise = WorkoutExercise.objects.create(
+        self.workout = WorkoutFactory(user=self.user)
+        self.workout_exercise = WorkoutExerciseFactory(
             workout=self.workout,
-            exercise=self.exercise,
-            is_set_adjust=False,
-            is_set_generate=False,
+            exercise=self.exercise
         )
-
-        self.set1 = WorkoutExerciseSet.objects.create(
+        self.set1 = WorkoutExerciseSetFactory(
             workout_exercise=self.workout_exercise,
             weight=100,
             reps=1,
             rir=0
         )
 
-        self.set2 = WorkoutExerciseSet.objects.create(
+        self.set2 = WorkoutExerciseSetFactory(
             workout_exercise=self.workout_exercise,
             weight=100,
             reps=2,
             rir=5
         )
 
-        self.set3 = WorkoutExerciseSet.objects.create(
+        self.set3 = WorkoutExerciseSetFactory(
             workout_exercise=self.workout_exercise,
             weight=100,
-            rir=2
+            reps=None,
+            rir=2,
         )
 
     def test_exertion_load(self):
         self.assertEqual(self.set1.exertion_load(), 100.0)
 
     def test_rep_delta(self):
-        self.assertEqual(self.set1.rep_delta(), 0)
+        set1 = WorkoutExerciseSetFactory(
+            workout_exercise=self.workout_exercise,
+            weight=100,
+            reps=1,
+            rir=0
+        )
+        self.assertEqual(set1.rep_delta(), 0)
 
     def test_rir_delta(self):
         self.assertEqual(self.set1.rir_delta(), -2)
 
     def test_e_one_rep_max(self):
         self.assertEqual(self.set1.e_one_rep_max(), 103)
+
+    def test_get_exercise(self):
+        self.assertEqual(self.set1.get_exercise(), self.exercise)
 
     def test_get_exercise_progression_type(self):
         self.assertEqual(
