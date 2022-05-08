@@ -11,14 +11,10 @@
   >
     {% csrf_token %}
     <div class="row align-items-center my-3">
-
-      <div class="col-4">
-        {{ form.muscle_group }}
-      </div>
-      <div class="col-5">
+      <div class="col-7">
         {{ form.exercise }}
       </div>
-      <div class="col-2">
+      <div class="col-3">
         <button
           type="submit"
           hx-post="{% url 'routines:workout_exercise_update' workout_exercise.id %}"
@@ -26,7 +22,7 @@
           Add
         </button>
       </div>
-      <div class="col-1">
+      <div class="col-2">
         <button
           type="button"
           hx-get="{% url 'routines:workout_exercise_detail' workout_exercise.id %}"
@@ -51,13 +47,10 @@
     {% csrf_token %}
     <div class="row align-items-center my-3">
 
-      <div class="col-4">
-        {{ form.muscle_group }}
-      </div>
-      <div class="col-5">
+      <div class="col-7">
         {{ form.exercise }}
       </div>
-      <div class="col-2">
+      <div class="col-3">
         <button
           type="submit"
           hx-post="{% url 'routines:workout_exercise_create' object.id %}"
@@ -65,7 +58,7 @@
           Add
         </button>
       </div>
-      <div class="col-1">
+      <div class="col-2">
         <button
           id="clearItemCreateForm"
           class="btn btn-outline-danger mt-2"

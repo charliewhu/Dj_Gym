@@ -11,18 +11,19 @@ from .models import Exercise, ReadinessAnswer, ReadinessQuestion, Workout, Worko
 from .mixins import UserWorkoutExerciseSetMixin, UserWorkoutMixin, UserWorkoutExerciseMixin
 
 
-
 def home(request):
     context = {}
     return render(request, 'home.html', context)
 
+
 class ReadinessCreateView(CreateView):
-    model         = ReadinessAnswer
-    fields        = ['readiness_question','rating']
+    model = ReadinessAnswer
+    fields = ['readiness_question', 'rating']
     template_name = 'routines/workout_readiness/_form.html'
     try:
-        initial_data = [{'readiness_question':q} for q in ReadinessQuestion.objects.all()]
-    except: 
+        initial_data = [{'readiness_question': q}
+                        for q in ReadinessQuestion.objects.all()]
+    except:
         initial_data = []
 
     def post(self, request, *args, **kwargs):
@@ -30,7 +31,7 @@ class ReadinessCreateView(CreateView):
         if formset.is_valid():
             return self.form_valid(formset)
         return super().post(request, *args, **kwargs)
-    
+
     def form_valid(self, formset):
         """
         When form is submitted:
@@ -40,7 +41,7 @@ class ReadinessCreateView(CreateView):
         (using the initial_data and answers from the form the User submitted)
         """
         readiness = Readiness.objects.create(user=self.request.user)
-        
+
         for idx, form in enumerate(formset):
             cd = form.cleaned_data
             readiness_question = self.initial_data[idx]['readiness_question']
@@ -54,9 +55,9 @@ class ReadinessCreateView(CreateView):
         workout = Workout.objects.get(readiness=readiness)
         return HttpResponseRedirect(
             reverse_lazy(
-                'routines:workout_exercise_list', 
-                kwargs={'pk':workout.id})
-            )
+                'routines:workout_exercise_list',
+                kwargs={'pk': workout.id})
+        )
 
     def get_context_data(self, **kwargs):
         """Render initial form"""
@@ -66,10 +67,10 @@ class ReadinessCreateView(CreateView):
 
 
 class WorkoutListView(LoginRequiredMixin, ListView):
-    model         = Workout
-    ordering      = ['-date', '-id']
+    model = Workout
+    ordering = ['-date', '-id']
     template_name = 'routines/workout/_list.html'
-    extra_context = {'title':'My Workouts'}
+    extra_context = {'title': 'My Workouts'}
 
     def get_queryset(self):
         """only get user's workouts"""
@@ -85,10 +86,10 @@ class WorkoutListView(LoginRequiredMixin, ListView):
 
 
 class WorkoutCreateView(LoginRequiredMixin, CreateView):
-    model         = Workout
-    form_class    = WorkoutForm
+    model = Workout
+    form_class = WorkoutForm
     template_name = 'routines/workout/_form.html'
-    extra_context = {'title':'Create Workout'}
+    extra_context = {'title': 'Create Workout'}
 
     def form_valid(self, form):
         form.instance.user = self.request.user
@@ -99,15 +100,15 @@ class WorkoutCreateView(LoginRequiredMixin, CreateView):
 
 
 class WorkoutUpdateView(LoginRequiredMixin, UserWorkoutMixin, UpdateView):
-    model           = Workout
-    form_class      = WorkoutForm
-    template_name   = 'routines/workout/_form.html'
-    extra_context   = {'title':'Update Workout'}
-    success_url     = reverse_lazy('routines:workout_list')
+    model = Workout
+    form_class = WorkoutForm
+    template_name = 'routines/workout/_form.html'
+    extra_context = {'title': 'Update Workout'}
+    success_url = reverse_lazy('routines:workout_list')
 
 
 class WorkoutDeleteView(LoginRequiredMixin, UserWorkoutMixin, DeleteView):
-    model       = Workout
+    model = Workout
     success_url = reverse_lazy('routines:workout_list')
 
 
@@ -117,23 +118,23 @@ def end_workout_view(request, pk):
     """
     workout = Workout.objects.get(id=pk)
     user = request.user
-    if request.POST and workout.user==user:
+    if request.POST and workout.user == user:
         workout.end_workout()
         return HttpResponseRedirect(reverse_lazy('routines:workout_list'))
     return HttpResponseRedirect(reverse_lazy('routines:workout_list'))
 
 
 class WorkoutExerciseListView(LoginRequiredMixin, UserWorkoutMixin, ListView):
-    model         = WorkoutExercise
+    model = WorkoutExercise
     template_name = 'routines/workout_exercise/_list.html'
-    extra_context = {'title':'Workout Items'}
+    extra_context = {'title': 'Workout Items'}
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         w = Workout.objects.get(pk=self.kwargs['pk'])
         context['object'] = w
         context['object_list'] = w.exercises.all()
-        context['workout_readiness'] = w.readiness.percentage()
+        #context['workout_readiness'] = w.readiness.percentage()
         return context
 
 
@@ -142,21 +143,21 @@ class WorkoutExerciseDetailView(LoginRequiredMixin, UserWorkoutExerciseMixin, De
     template_name = 'routines/workout_exercise/_detail.html'
 
 
-# def load_exercises(request):
-#     """
-#     For AJAX request to allow dependent dropdown
-#     MuscleGroup --> Exercise
-#     """
-#     muscle_group_id = request.GET.get('muscle_group')
-#     exercises = Exercise.objects.filter(muscle_group_id=muscle_group_id).order_by('name')
-#     return render(request, 'routines/workout_exercise/partials/exercises_dropdown.html', {'exercises': exercises})
-    
+def load_exercises(request):
+    """
+    For AJAX request to allow dependent dropdown
+    MuscleGroup --> Exercise
+    """
+    #muscle_group_id = request.GET.get('muscle_group')
+    exercises = Exercise.objects.filter(user=request.user).order_by('name')
+    return render(request, 'routines/workout_exercise/partials/exercises_dropdown.html', {'exercises': exercises})
+
 
 class WorkoutExerciseCreateView(LoginRequiredMixin, UserWorkoutMixin, CreateView):
-    model         = WorkoutExercise
-    form_class    = WorkoutExerciseForm
+    model = WorkoutExercise
+    form_class = WorkoutExerciseForm
     template_name = 'routines/workout_exercise/_form.html'
-    extra_context = {'title':'Add Exercise'}
+    extra_context = {'title': 'Add Exercise'}
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -172,10 +173,10 @@ class WorkoutExerciseCreateView(LoginRequiredMixin, UserWorkoutMixin, CreateView
 
 
 class WorkoutExerciseUpdateView(LoginRequiredMixin, UserWorkoutExerciseMixin, UpdateView):
-    model         = WorkoutExercise
-    form_class    = WorkoutExerciseForm
+    model = WorkoutExercise
+    form_class = WorkoutExerciseForm
     template_name = 'routines/workout_exercise/_form.html'
-    extra_context = {'title':'Edit Exercise'}
+    extra_context = {'title': 'Edit Exercise'}
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -190,18 +191,19 @@ class WorkoutExerciseUpdateView(LoginRequiredMixin, UserWorkoutExerciseMixin, Up
 
 class WorkoutExerciseDeleteView(LoginRequiredMixin, UserWorkoutExerciseMixin, DeleteView):
     model = WorkoutExercise
+
     def get_success_url(self):
         wi = WorkoutExercise.objects.get(pk=self.kwargs['pk'])
         pk = wi.workout_id
-        return reverse_lazy('routines:workout_exercise_list', kwargs={'pk':pk})
-        
+        return reverse_lazy('routines:workout_exercise_list', kwargs={'pk': pk})
+
 
 class WorkoutExerciseSetListView(LoginRequiredMixin, UserWorkoutExerciseMixin, ListView):
-    model         = WorkoutExerciseSet
+    model = WorkoutExerciseSet
     template_name = 'routines/workout_exercise_set/_list.html'
     extra_context = {
-        'title':'Workout Exercise Sets'
-        }
+        'title': 'Workout Exercise Sets'
+    }
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -218,10 +220,10 @@ class WorkoutExerciseSetDetailView(LoginRequiredMixin, UserWorkoutExerciseSetMix
 
 
 class WorkoutExerciseSetCreateView(LoginRequiredMixin, UserWorkoutExerciseMixin, CreateView):
-    model         = WorkoutExerciseSet
-    form_class    = WorkoutExerciseSetForm
+    model = WorkoutExerciseSet
+    form_class = WorkoutExerciseSetForm
     template_name = 'routines/workout_exercise_set/_form.html'
-    extra_context = {'title':'Add Set'}
+    extra_context = {'title': 'Add Set'}
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -230,7 +232,8 @@ class WorkoutExerciseSetCreateView(LoginRequiredMixin, UserWorkoutExerciseMixin,
         return context
 
     def form_valid(self, form):
-        form.instance.workout_exercise = WorkoutExercise.objects.get(pk=self.kwargs['pk'])
+        form.instance.workout_exercise = WorkoutExercise.objects.get(
+            pk=self.kwargs['pk'])
         return super().form_valid(form)
 
     def get_success_url(self):
@@ -238,10 +241,10 @@ class WorkoutExerciseSetCreateView(LoginRequiredMixin, UserWorkoutExerciseMixin,
 
 
 class WorkoutExerciseSetUpdateView(LoginRequiredMixin, UserWorkoutExerciseSetMixin, UpdateView):
-    model         = WorkoutExerciseSet
-    form_class    = WorkoutExerciseSetForm
+    model = WorkoutExerciseSet
+    form_class = WorkoutExerciseSetForm
     template_name = 'routines/workout_exercise_set/_form.html'
-    extra_context = {'title':'Update Set'}
+    extra_context = {'title': 'Update Set'}
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -256,22 +259,23 @@ class WorkoutExerciseSetUpdateView(LoginRequiredMixin, UserWorkoutExerciseSetMix
 
 class WorkoutExerciseSetDeleteView(LoginRequiredMixin, UserWorkoutExerciseSetMixin, DeleteView):
     model = WorkoutExerciseSet
+
     def get_success_url(self):
         wes = WorkoutExerciseSet.objects.get(pk=self.kwargs['pk'])
         pk = wes.workout_exercise_id
-        return reverse_lazy('routines:wo_ex_set_list', kwargs={'pk':pk})
+        return reverse_lazy('routines:wo_ex_set_list', kwargs={'pk': pk})
 
 
 def test_view(request):
     if request.method == "POST":
         print("this is a post request")
-        return JsonResponse({'Json':'Response'})
+        return JsonResponse({'Json': 'Response'})
 
-    mean   = ReadinessAnswer.manager.mean(request.user)
+    mean = ReadinessAnswer.manager.mean(request.user)
     stddev = ReadinessAnswer.manager.stddev(request.user)
 
     context = {
         'mean': mean,
         'stddev': stddev,
-        }
+    }
     return render(request, 'test.html', context)

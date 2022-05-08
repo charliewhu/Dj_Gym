@@ -5,22 +5,19 @@
   hx-swap="outerHTML"
 >
   <div class="row align-items-center my-3" >
-    <div class="col-4">
-        {{ object.muscle_group }}
-    </div>
-    <div class="col-5">
+    <div class="col-7">
       <a href="{% url 'routines:wo_ex_set_list' object.id %}">
         {{ object.exercise }}
       </a>
     </div>
-    <div class="col-2">
+    <div class="col-3">
       <button 
         class="btn btn-outline-primary"
         hx-get="{% url 'routines:workout_exercise_update' object.id %}">
         Edit
       </button>
     </div>
-    <div class="col-1">
+    <div class="col-2">
       <button
         class="btn btn-outline-danger"
         data-bs-toggle="modal"

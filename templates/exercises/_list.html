@@ -13,7 +13,7 @@
 </div>
 
 <ul>
-{% regroup exercises by pltier as tier_list %}
+{% regroup exercises by tier as tier_list %}
 {% for tier in tier_list %}
   <li>{{ tier.grouper }}
     <ul>
