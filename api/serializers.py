@@ -14,7 +14,7 @@ class UserSerializer(serializers.ModelSerializer):
 class ReadinessSerializer(serializers.ModelSerializer):
     class Meta:
         model = Readiness
-    
+
         fields = [
             'id',
             'user',
@@ -25,7 +25,7 @@ class ReadinessSerializer(serializers.ModelSerializer):
         read_only_fields = ['workout']
 
         def get_workout(self, instance):
-            instance.get_workout() 
+            instance.get_workout()
 
 
 class ReadinessQuestionSerializer(serializers.ModelSerializer):
@@ -82,8 +82,7 @@ class WorkoutExerciseSerializer(serializers.ModelSerializer):
             'exertion_load',
         ]
 
-
-    name = serializers.StringRelatedField(source = 'exercise')
+    name = serializers.StringRelatedField(source='exercise')
     sets = WorkoutExerciseSetSerializer(many=True, read_only=True)
 
     def get_sets_count(self, instance):
@@ -95,6 +94,7 @@ class WorkoutExerciseSerializer(serializers.ModelSerializer):
     def get_exertion_load(self, instance):
         instance.exertion_load()
 
+
 class WorkoutSerializer(serializers.ModelSerializer):
     class Meta:
         model = Workout
@@ -105,9 +105,9 @@ class WorkoutSerializer(serializers.ModelSerializer):
             'date',
             'is_active',
             'is_exercise_generate',
-            'exercises',
             'split_day',
             'exertion_load',
+            'exercises',
         ]
 
         read_only_fields = [

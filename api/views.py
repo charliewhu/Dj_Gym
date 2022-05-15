@@ -79,7 +79,7 @@ class ExerciseViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         user = self.request.user
         # TODO - should be model manager
-        return Exercise.objects.filter(Q(user=user) | Q(user__isnull=True))
+        return Exercise.objects.filter(user=user).order_by('name')
 
 
 # @api_view(['GET', 'POST'])

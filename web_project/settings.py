@@ -40,6 +40,7 @@ ALLOWED_HOSTS = [
     'localhost',
     'ca-gym.herokuapp.com',
     os.environ.get('LOCAL_IP_URL'),
+    'http://localhost:19006',
 ]
 
 
@@ -103,10 +104,12 @@ CORS_ORIGIN_WHITELIST = (
     'http://localhost:3000',
     'http://localhost:8000',
     'http://localhost:19002',
+    'http://localhost:19006',
 )
 
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
