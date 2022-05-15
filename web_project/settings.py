@@ -105,6 +105,7 @@ CORS_ORIGIN_WHITELIST = (
     'http://localhost:8000',
     'http://localhost:19002',
     'http://localhost:19006',
+    'https://gymboost.netlify.app/'
 )
 
 
