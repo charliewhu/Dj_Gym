@@ -141,3 +141,39 @@ class ExerciseSerializer(serializers.ModelSerializer):
             'is_unilateral',
         ]
     user = serializers.StringRelatedField()
+
+
+class MechanicSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Exercise
+        fields = [
+            'id',
+            'name',
+        ]
+
+
+class ForceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Exercise
+        fields = [
+            'id',
+            'name',
+        ]
+
+
+class PurposeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Exercise
+        fields = [
+            'id',
+            'name',
+        ]
+
+
+class TierSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Exercise
+        fields = [
+            'id',
+            'name',
+        ]

@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import SimpleRouter
-from .views import (check_token, ReadinessViewSet, readiness_answer,
+from .views import (ForceViewSet, MechanicViewSet, PurposeViewSet, TierViewSet, check_token, ReadinessViewSet, readiness_answer,
                     WorkoutViewSet,  WorkoutExerciseSetViewSet,
                     WorkoutExerciseViewSet, ExerciseViewSet,
                     )
@@ -29,5 +29,10 @@ router.register('workoutexercises', WorkoutExerciseViewSet,
 router.register('workoutexercisesets', WorkoutExerciseSetViewSet,
                 basename='workoutexercisesets')
 router.register('exercises', ExerciseViewSet, basename='exercises')
+router.register('mechanics', MechanicViewSet, basename='mechanics')
+router.register('forces', ForceViewSet, basename='forces')
+router.register('purposes', PurposeViewSet, basename='purposes')
+router.register('tiers', TierViewSet, basename='tiers')
+
 
 urlpatterns += router.urls

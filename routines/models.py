@@ -17,7 +17,7 @@ from routines.managers import ReadinessAnswerManager
 
 class ReadinessQuestion(models.Model):
     name = models.CharField(
-        max_length=40, 
+        max_length=40,
         unique=True)
 
     def __str__(self):
@@ -27,10 +27,10 @@ class ReadinessQuestion(models.Model):
 class Readiness(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE, 
+        on_delete=models.CASCADE,
         null=True)
     date_created = models.DateField(
-        auto_now_add=True, 
+        auto_now_add=True,
         null=True)
 
     def __str__(self):
@@ -91,9 +91,9 @@ class Workout(models.Model):
         return f'{self.id} - {self.user} - {self.date}'
 
     def save(self, *args, **kwargs):
-        #self.assign_training_day()
+        # self.assign_training_day()
         super().save(*args, **kwargs)
-        #self.create_exercises()
+        # self.create_exercises()
 
     def create_exercises(self):
         """
@@ -183,6 +183,12 @@ class WorkoutExercise(models.Model):
         return f'{self.workout} - {self.exercise}'
 
     def save(self, *args, **kwargs):
+        if self.id is not None:
+            prev_exercise_id = WorkoutExercise.objects.filter(
+                id=self.id).first().exercise
+            if prev_exercise_id != self.exercise:
+                WorkoutExerciseSet.objects.filter(
+                    workout_exercise=self.id).delete()
         super().save(*args, **kwargs)
         if self.is_set_generate:
             self.generate_sets()

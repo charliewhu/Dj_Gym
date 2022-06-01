@@ -7,8 +7,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from rest_framework import viewsets
-from api.serializers import ExerciseSerializer, ReadinessAnswerSerializer, ReadinessQuestionSerializer, ReadinessSerializer, WorkoutExerciseSerializer, WorkoutExerciseSetSerializer, WorkoutSerializer
-from exercises.models import Exercise
+from api.serializers import ExerciseSerializer, ForceSerializer, MechanicSerializer, PurposeSerializer, ReadinessAnswerSerializer, ReadinessQuestionSerializer, ReadinessSerializer, TierSerializer, WorkoutExerciseSerializer, WorkoutExerciseSetSerializer, WorkoutSerializer
+from exercises.models import Exercise, Force, Mechanic, Purpose, Tier
 from routines.models import Readiness, ReadinessQuestion, Workout, WorkoutExercise, WorkoutExerciseSet
 
 
@@ -79,6 +79,26 @@ class ExerciseViewSet(viewsets.ModelViewSet):
         user = self.request.user
         # TODO - should be model manager
         return Exercise.objects.filter(user=user).order_by('name')
+
+
+class MechanicViewSet(viewsets.ModelViewSet):
+    serializer_class = MechanicSerializer
+    queryset = Mechanic.objects.all()
+
+
+class ForceViewSet(viewsets.ModelViewSet):
+    serializer_class = ForceSerializer
+    queryset = Force.objects.all()
+
+
+class PurposeViewSet(viewsets.ModelViewSet):
+    serializer_class = PurposeSerializer
+    queryset = Purpose.objects.all()
+
+
+class TierViewSet(viewsets.ModelViewSet):
+    serializer_class = TierSerializer
+    queryset = Tier.objects.all()
 
 
 # @api_view(['GET', 'POST'])
