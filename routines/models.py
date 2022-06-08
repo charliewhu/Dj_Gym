@@ -11,7 +11,7 @@ from django.core.validators import MaxValueValidator
 from django.db.models import Avg
 from django.core.exceptions import ObjectDoesNotExist
 
-from exercises.models import Exercise, MuscleGroup, Progression, ProgressionTypeAllocation, Rir, UserRM
+from exercises.models import Exercise, MuscleGroup, Rir, UserRM
 from routines.managers import ReadinessAnswerManager
 
 
@@ -193,30 +193,6 @@ class WorkoutExercise(models.Model):
         if self.is_set_generate:
             self.generate_sets()
 
-    def generate_sets(self):
-
-        # TODO what if user doesnt have a 1rm?
-        one_rm = UserRM.manager.latest_one_rm(self.workout.user, self.exercise)
-
-        pta = self.exercise.get_progression_type_allocation()
-
-        reps = self.exercise.max_reps
-
-        # TODO create manager on RIR Model for this
-        percentage = Rir.objects.get(
-            rir=pta.target_rir,
-            reps=reps,
-        ).percent
-
-        weight = rounder(one_rm * percentage, 2.5)
-
-        for r in range(4):
-            WorkoutExerciseSet.objects.create(
-                workout_exercise=self,
-                weight=weight,
-                reps=reps,
-            )
-
     def set_count(self):
         return self.sets.count()
 
@@ -290,17 +266,6 @@ class WorkoutExerciseSet(models.Model):
 
     def should_generate_next_set(self):
         return self.workout_exercise.is_set_adjust and not self.is_next_set_completed()
-
-    def get_progression(self):
-        """Return Progression object given the Set"""
-        try:
-            return Progression.objects.get(
-                progression_type=self.get_exercise_progression_type(),
-                rep_delta=self.rep_delta(),
-                rir_delta=self.rir_delta()
-            )
-        except ObjectDoesNotExist:
-            return None
 
     def delete_next_set(self):
         next_set = self.get_next_set()

@@ -46,65 +46,6 @@ class Mechanic(models.Model):
         return self.name
 
 
-class ProgressionType(models.Model):
-    """
-    Topset Backdown eg 100x5, 80x5x5, 
-    Topset-RepLower eg 100x5, 100x3x2, 
-    Straight eg 100x5x5, 
-    Rep-drop eg 100x9,8,7,5, 
-    Technique eg 8x3 @ 5+RIR, 
-    Ladder eg 100x2,9,3,8,4,6,5, 
-    Pyramid eg 2,4,6,8,6,4,2
-    """
-    name = models.CharField(max_length=40, unique=True)
-
-    def __str__(self):
-        return self.name
-
-
-class ProgressionTypeAllocation(models.Model):
-    """Allocates training focus to exercises depending on User TrainingFocus"""
-    training_focus = models.ForeignKey(
-        "accounts.TrainingFocus", on_delete=models.CASCADE, null=True)
-    mechanic = models.ForeignKey(Mechanic, on_delete=models.CASCADE, null=True)
-    tier = models.ForeignKey(Tier, on_delete=models.CASCADE, null=True)
-    progression_type = models.ForeignKey(
-        ProgressionType, on_delete=models.CASCADE, null=True)
-    min_reps = models.PositiveIntegerField(null=True)
-    max_reps = models.PositiveIntegerField(null=True)
-    target_rir = models.PositiveIntegerField(null=True)
-    min_rir = models.PositiveIntegerField(null=True, default=1)
-
-    def __str__(self):
-        return f'{self.training_focus}, {self.mechanic}, {self.tier}, {self.progression_type}'
-
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                fields=['training_focus', 'mechanic', 'tier'], name="UniqueProgressionTypeCheck")
-        ]
-
-
-class Progression(models.Model):
-    """
-    Lookup table to see how much to change reps/rir for the next set
-    Lookup progression_type, rep_delta, rir_delta
-    """
-    progression_type = models.ForeignKey(
-        ProgressionType, on_delete=models.CASCADE)
-    rep_delta = models.IntegerField()
-    rir_delta = models.IntegerField()
-    weight_change = models.FloatField(null=True, blank=True)
-    rep_change = models.IntegerField(null=True, blank=True)
-    rir_change = models.IntegerField(null=True, blank=True)
-
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                fields=['progression_type', 'rep_delta', 'rir_delta'], name="UniqueProgressionCheck")
-        ]
-
-
 class Force(models.Model):
     """Hip Hinge, Vertical Push etc"""
     name = models.CharField(max_length=60, unique=True)
@@ -130,8 +71,6 @@ class Exercise(models.Model):
     force = models.ForeignKey(Force, on_delete=models.CASCADE, null=True)
     purpose = models.ForeignKey(Purpose, on_delete=models.CASCADE, null=True)
     tier = models.ForeignKey(Tier, on_delete=models.CASCADE, null=True)
-    progression_type = models.ForeignKey(
-        ProgressionType, on_delete=models.CASCADE, null=True, blank=True)
     min_reps = models.PositiveIntegerField(null=True, blank=True)
     max_reps = models.PositiveIntegerField(null=True, blank=True)
     is_active = models.BooleanField(default=1)
@@ -146,15 +85,15 @@ class Exercise(models.Model):
     def __str__(self):
         return self.name
 
-    def save(self, *args, **kwargs):
-        is_new = self.pk is None
-        super().save(*args, **kwargs)
-        if is_new and self.user is None:
-            self.set_exercise_to_users()
+    # def save(self, *args, **kwargs):
+    #     is_new = self.pk is None
+    #     super().save(*args, **kwargs)
+    #     if is_new and self.user is None:
+    #         self.set_exercise_to_users()
 
-        if is_new and self.user:
-            self.set_progression_type()
-            self.set_min_max_reps()
+    #     if is_new and self.user:
+    #         self.set_progression_type()
+    #         self.set_min_max_reps()
 
     # TODO - add as manager method
     # def get_user_or_null(self):
@@ -179,37 +118,6 @@ class Exercise(models.Model):
                 self.id = None
                 self.user = user
                 self.save()
-
-    def set_progression_type(self):
-        try:
-            self.progression_type = self.get_progression_type()
-            self.save()
-        except:
-            pass
-
-    def set_min_max_reps(self):
-        try:
-            self.min_reps = self.get_progression_type_allocation().min_reps
-            self.max_reps = self.get_progression_type_allocation().max_reps
-            self.save()
-        except:
-            pass
-
-    def get_progression_type_allocation(self):
-        try:
-            return ProgressionTypeAllocation.objects.get(
-                training_focus=self.user.training_focus,
-                mechanic=self.mechanic,
-                tier=self.tier
-            )
-        except:
-            return None
-
-    def get_progression_type(self):
-        try:
-            return self.get_progression_type_allocation().progression_type
-        except:
-            return None
 
 
 class UserRM(models.Model):
