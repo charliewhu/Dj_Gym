@@ -10,7 +10,7 @@ from accounts.models import User
 from accounts.tests.models.factory import UserFactory
 from exercises.models import Exercise
 
-from ..factory import ExerciseFactory
+from .factory import ExerciseFactory
 
 
 class TestNewUserExercises(TestCase):
