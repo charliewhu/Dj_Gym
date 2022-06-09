@@ -2,13 +2,6 @@ from factory import SubFactory
 from factory.django import DjangoModelFactory
 
 
-class TrainingFocusFactory(DjangoModelFactory):
-    class Meta:
-        model = 'accounts.TrainingFocus'
-
-    name = 'test_training_focus'
-
-
 class TierFactory(DjangoModelFactory):
     class Meta:
         model = 'exercises.Tier'
@@ -30,35 +23,35 @@ class MechanicFactory(DjangoModelFactory):
     name = 'test_mechanic'
 
 
-class ProgressionTypeFactory(DjangoModelFactory):
-    class Meta:
-        model = 'exercises.ProgressionType'
+# class ProgressionTypeFactory(DjangoModelFactory):
+#     class Meta:
+#         model = 'exercises.ProgressionType'
 
-    name = 'test_progression_type'
-
-
-class ProgressionTypeAllocationFactory(DjangoModelFactory):
-    class Meta:
-        model = 'exercises.ProgressionTypeAllocation'
-
-    training_focus = SubFactory(TrainingFocusFactory)
-    mechanic = SubFactory(MechanicFactory)
-    tier = SubFactory(TierFactory)
-    min_reps = 1
-    max_reps = 5
-    target_rir = 3
-    min_rir = 2
+#     name = 'test_progression_type'
 
 
-class ProgressionFactory(DjangoModelFactory):
-    class Meta:
-        model = 'exercises.Progression'
+# class ProgressionTypeAllocationFactory(DjangoModelFactory):
+#     class Meta:
+#         model = 'exercises.ProgressionTypeAllocation'
 
-    progression_type = SubFactory(ProgressionTypeFactory)
-    rep_delta = 0
-    rir_delta = -2
-    weight_change = 0.5
-    rep_change = 2
+#     training_focus = SubFactory(TrainingFocusFactory)
+#     mechanic = SubFactory(MechanicFactory)
+#     tier = SubFactory(TierFactory)
+#     min_reps = 1
+#     max_reps = 5
+#     target_rir = 3
+#     min_rir = 2
+
+
+# class ProgressionFactory(DjangoModelFactory):
+#     class Meta:
+#         model = 'exercises.Progression'
+
+#     progression_type = SubFactory(ProgressionTypeFactory)
+#     rep_delta = 0
+#     rir_delta = -2
+#     weight_change = 0.5
+#     rep_change = 2
 
 
 class ForceFactory(DjangoModelFactory):

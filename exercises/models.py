@@ -85,15 +85,46 @@ class Exercise(models.Model):
     def __str__(self):
         return self.name
 
-    # def save(self, *args, **kwargs):
-    #     is_new = self.pk is None
-    #     super().save(*args, **kwargs)
-    #     if is_new and self.user is None:
-    #         self.set_exercise_to_users()
+    def save(self, *args, **kwargs):
+        is_new = self.is_new_exercise()
+        super().save(*args, **kwargs)
+        if is_new and not self.has_user():
+            self.set_exercise_to_users()
 
-    #     if is_new and self.user:
-    #         self.set_progression_type()
-    #         self.set_min_max_reps()
+    # def set_exercise_to_users(self):
+    #     """
+    #     Sets the exercise to all users
+    #     """
+    #     if self.is_new_exercise() and self.has_user():
+    #         User = apps.get_model('accounts.User')
+    #         users = User.objects.all()
+    #         for user in users:
+    #             if self.user_has_exercise(user):
+    #                 self.id = None
+    #                 self.user = user
+    #                 self.save()
+
+    # def user_has_exercise(self, user):
+    #     """
+    #     Returns True if the user has the exercise
+    #     """
+    #     try:
+    #         Exercise.objects.get(user=user, name=self.name)
+    #         return True
+    #     except:
+    #         return False
+
+    # def has_user(self):
+    #     """
+    #     Returns True if the exercise has a user
+    #     """
+    #     return self.user is not None
+
+    def is_new_exercise(self):
+        """
+        Returns True if the exercise is new
+        """
+        return self.pk is None
 
     # TODO - add as manager method
     # def get_user_or_null(self):
