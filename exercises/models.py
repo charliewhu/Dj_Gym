@@ -86,7 +86,7 @@ class Exercise(models.Model):
         return self.name
 
     def save(self, *args, **kwargs):
-        is_new = self.is_new_exercise()
+        is_new = self.is_new()
         super().save(*args, **kwargs)
         if is_new and not self.has_user():
             self.set_exercise_to_users()
@@ -119,7 +119,7 @@ class Exercise(models.Model):
         """
         return self.user is not None
 
-    def is_new_exercise(self):
+    def is_new(self):
         """
         Returns True if the exercise is new
         """

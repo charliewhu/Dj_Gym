@@ -60,11 +60,11 @@ class TestNewUserExercises(TestCase):
 
         self.assertFalse(exercises)
 
-    def test_unit_is_new_exercise(self):
+    def test_unit_is_new(self):
         self.exercise = Exercise(name="test_exercise")
-        self.assertTrue(self.exercise.is_new_exercise())
+        self.assertTrue(self.exercise.is_new())
         self.exercise = Exercise(id=1, name="test_exercise")
-        self.assertFalse(self.exercise.is_new_exercise())
+        self.assertFalse(self.exercise.is_new())
 
     def test_unit_has_user(self):
         self.exercise = Exercise(name="test_exercise")

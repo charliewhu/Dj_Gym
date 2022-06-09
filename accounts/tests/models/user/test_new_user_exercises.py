@@ -18,7 +18,6 @@ class TestNewUserExercises(TestCase):
 
     def test_e2e_new_user_exercises(self):
         self.user = UserFactory()
-        self.user.save()
 
         created_exercise = Exercise.objects.filter(
             name=self.exercise.name,
@@ -26,3 +25,21 @@ class TestNewUserExercises(TestCase):
         )
 
         self.assertTrue(created_exercise)
+
+    def test_unit_is_new(self):
+        self.user = User(email="test@test.com")
+        self.assertTrue(self.user.is_new())
+
+        self.user.id = 1
+        self.assertFalse(self.user.is_new())
+
+    def test_unit_get_exercises(self):
+        self.user = User(id=1, email="test@test.com")
+        self.user.save()
+        self.exercise.user = self.user
+        self.exercise.save()
+
+        self.assertEquals(
+            self.user.get_exercises()[0],
+            Exercise.objects.all()[0]
+        )
