@@ -23,7 +23,7 @@ class TestNewUserExercises(TestCase):
 
         self.exercise = ExerciseFactory()
 
-        created_exercise = Exercise.objects.get(
+        created_exercise = Exercise.objects.filter(
             name=self.exercise.name,
             user=self.user
         )
@@ -63,6 +63,20 @@ class TestNewUserExercises(TestCase):
     def test_unit_is_new_exercise(self):
         self.exercise = Exercise(name="test_exercise")
         self.assertTrue(self.exercise.is_new_exercise())
+        self.exercise = Exercise(id=1, name="test_exercise")
+        self.assertFalse(self.exercise.is_new_exercise())
 
     def test_unit_has_user(self):
-        pass
+        self.exercise = Exercise(name="test_exercise")
+        self.assertFalse(self.exercise.has_user())
+
+        self.exercise.user = self.user
+        self.assertTrue(self.exercise.has_user())
+
+    def test_unit_user_has_exercise(self):
+        self.exercise = Exercise(name="test_exercise")
+        self.assertFalse(self.exercise.user_has_exercise(self.user))
+
+        self.exercise.user = self.user
+        self.exercise.save()
+        self.assertTrue(self.exercise.user_has_exercise(self.user))

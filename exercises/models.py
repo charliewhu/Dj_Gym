@@ -91,34 +91,33 @@ class Exercise(models.Model):
         if is_new and not self.has_user():
             self.set_exercise_to_users()
 
-    # def set_exercise_to_users(self):
-    #     """
-    #     Sets the exercise to all users
-    #     """
-    #     if self.is_new_exercise() and self.has_user():
-    #         User = apps.get_model('accounts.User')
-    #         users = User.objects.all()
-    #         for user in users:
-    #             if self.user_has_exercise(user):
-    #                 self.id = None
-    #                 self.user = user
-    #                 self.save()
+    def set_exercise_to_users(self):
+        """
+        Sets the exercise to all users
+        """
+        User = apps.get_model('accounts.User')
+        users = User.objects.all()
+        for user in users:
+            if not self.user_has_exercise(user):
+                self.id = None
+                self.user = user
+                self.save()
 
-    # def user_has_exercise(self, user):
-    #     """
-    #     Returns True if the user has the exercise
-    #     """
-    #     try:
-    #         Exercise.objects.get(user=user, name=self.name)
-    #         return True
-    #     except:
-    #         return False
+    def user_has_exercise(self, user):
+        """
+        Returns True if the user has the exercise
+        """
+        try:
+            Exercise.objects.get(user=user, name=self.name)
+            return True
+        except:
+            return False
 
-    # def has_user(self):
-    #     """
-    #     Returns True if the exercise has a user
-    #     """
-    #     return self.user is not None
+    def has_user(self):
+        """
+        Returns True if the exercise has a user
+        """
+        return self.user is not None
 
     def is_new_exercise(self):
         """
@@ -130,25 +129,6 @@ class Exercise(models.Model):
     # def get_user_or_null(self):
     #     return Exercise.objects.filter(
     #         Q(user=self.user) | Q(user__isnull=True))
-
-    def set_exercise_to_users(self):
-        """
-        Sets the exercise to all users
-        """
-        User = apps.get_model('accounts.User')
-        users = User.objects.all()
-        for user in users:
-            try:
-                Exercise.objects.get(
-                    user=user, name=self.name)
-                user_has_exercise = True
-            except:
-                user_has_exercise = False
-
-            if not user_has_exercise:
-                self.id = None
-                self.user = user
-                self.save()
 
 
 class UserRM(models.Model):
