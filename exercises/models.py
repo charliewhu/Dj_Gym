@@ -4,6 +4,7 @@ from django.apps import apps
 
 from .managers import UserRMManager
 from django.db.models import Q
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 
 class Rir(models.Model):
@@ -63,6 +64,49 @@ class MuscleGroup(models.Model):
         return self.name
 
 
+class ProgressionType(models.Model):
+    """
+    Topset Backdown eg 100x5, 80x5x5, 
+    Topset-RepLower eg 100x5, 100x3x2, 
+    Straight eg 100x5x5, 
+    Rep-drop eg 100x9,8,7,5, 
+    Technique eg 8x3 @ 5+RIR, 
+    Ladder eg 100x2,9,3,8,4,6,5, 
+    Pyramid eg 2,4,6,8,6,4,2
+    """
+    name = models.CharField(max_length=40, unique=True)
+
+    def __str__(self):
+        return self.name
+
+
+class ProgressionTypeAllocation(models.Model):
+    """Allocates training focus to exercises depending on User TrainingFocus"""
+    training_focus = models.ForeignKey(
+        "accounts.TrainingFocus", on_delete=models.CASCADE, null=True)
+    mechanic = models.ForeignKey(Mechanic, on_delete=models.CASCADE, null=True)
+    tier = models.ForeignKey(Tier, on_delete=models.CASCADE, null=True)
+    progression_type = models.ForeignKey(
+        ProgressionType, on_delete=models.CASCADE, null=True)
+    min_reps = models.PositiveIntegerField(
+        null=True, validators=[MaxValueValidator(20)])
+    max_reps = models.PositiveIntegerField(
+        null=True, validators=[MaxValueValidator(30)])
+    min_rir = models.PositiveIntegerField(
+        null=True, default=1, validators=[MaxValueValidator(5)])
+    max_rir = models.PositiveIntegerField(
+        null=True, validators=[MaxValueValidator(5)])
+
+    def __str__(self):
+        return f'{self.training_focus}, {self.mechanic}, {self.tier}, {self.progression_type}'
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['training_focus', 'mechanic', 'tier'], name="UniqueProgressionTypeCheck")
+        ]
+
+
 class Exercise(models.Model):
     name = models.CharField(max_length=60)
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
@@ -71,8 +115,14 @@ class Exercise(models.Model):
     force = models.ForeignKey(Force, on_delete=models.CASCADE, null=True)
     purpose = models.ForeignKey(Purpose, on_delete=models.CASCADE, null=True)
     tier = models.ForeignKey(Tier, on_delete=models.CASCADE, null=True)
-    min_reps = models.PositiveIntegerField(null=True, blank=True)
-    max_reps = models.PositiveIntegerField(null=True, blank=True)
+    min_reps = models.PositiveIntegerField(
+        null=True, blank=True, validators=[MaxValueValidator(20)])
+    max_reps = models.PositiveIntegerField(
+        null=True, blank=True, validators=[MaxValueValidator(30)])
+    min_rir = models.PositiveIntegerField(
+        null=True, blank=True, validators=[MaxValueValidator(5)])
+    max_rir = models.PositiveIntegerField(
+        null=True, blank=True, validators=[MaxValueValidator(5)])
     is_active = models.BooleanField(default=1)
     is_unilateral = models.BooleanField(default=0)
 

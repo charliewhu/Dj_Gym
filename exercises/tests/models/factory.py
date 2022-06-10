@@ -23,11 +23,11 @@ class MechanicFactory(DjangoModelFactory):
     name = 'test_mechanic'
 
 
-# class ProgressionTypeFactory(DjangoModelFactory):
-#     class Meta:
-#         model = 'exercises.ProgressionType'
+class ProgressionTypeFactory(DjangoModelFactory):
+    class Meta:
+        model = 'exercises.ProgressionType'
 
-#     name = 'test_progression_type'
+    name = 'test_progression_type'
 
 
 # class ProgressionTypeAllocationFactory(DjangoModelFactory):

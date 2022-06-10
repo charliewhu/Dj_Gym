@@ -17,14 +17,12 @@ lookup reps/rir to progression table
 from django.test import TestCase
 from exercises.tests.models.factory import ExerciseFactory, MechanicFactory, TierFactory, ProgressionTypeFactory
 from accounts.tests.models.factory import TrainingFocusFactory, UserFactory
+from exercises.models import ProgressionTypeAllocation
 
 
 class TestSetProgressionType(TestCase):
     def setUp(self):
         self.training_focus = TrainingFocusFactory()
-        self.user = UserFactory(
-            training_focus=self.training_focus
-        )
 
         self.mechanic = MechanicFactory()
         self.tier = TierFactory()
@@ -33,7 +31,7 @@ class TestSetProgressionType(TestCase):
             training_focus=self.training_focus,
             mechanic=self.mechanic,
             tier=self.tier,
-            progression_type=self.progression_type
+            progression_type=self.progression_type,
             min_reps=8,
             max_reps=12,
             min_rir=1,
@@ -47,4 +45,6 @@ class TestSetProgressionType(TestCase):
 
         self.exercise = ExerciseFactory(
             user=self.user,
+            mechanic=self.mechanic,
+            tier=self.tier
         )
