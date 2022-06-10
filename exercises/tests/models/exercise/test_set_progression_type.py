@@ -48,3 +48,8 @@ class TestSetProgressionType(TestCase):
             mechanic=self.mechanic,
             tier=self.tier
         )
+
+        self.assertEqual(self.exercise.min_reps, 8)
+        self.assertEqual(self.exercise.max_reps, 12)
+        self.assertEqual(self.exercise.min_rir, 1)
+        self.assertEqual(self.exercise.max_rir, 3)
