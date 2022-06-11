@@ -11,7 +11,7 @@ from django.core.validators import MaxValueValidator
 from django.db.models import Avg
 from django.core.exceptions import ObjectDoesNotExist
 
-from exercises.models import Exercise, MuscleGroup, Rir, UserRM
+from exercises.models import Exercise, MuscleGroup, Progression, Rir, UserRM
 from routines.managers import ReadinessAnswerManager
 
 
@@ -255,6 +255,23 @@ class WorkoutExerciseSet(models.Model):
                 reps=next_reps,
                 rir=next_rir
             )
+
+    def get_progression(self):
+        """Return Progression object for the given Set"""
+        try:
+            return Progression.objects.get(
+                progression_type=self.get_exercise_progression_type(),
+                rep_delta=self.rep_delta(),
+                rir_delta=self.rir_delta()
+            )
+        except ObjectDoesNotExist:
+            return None
+
+    def get_exercise(self):
+        return self.workout_exercise.exercise
+
+    def get_exercise_progression_type(self):
+        return self.get_exercise().progression_type
 
     def exertion_load(self):
         """Total exertion load for a set"""

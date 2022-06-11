@@ -71,6 +71,30 @@ class TestSetGenerate(TestCase):
             self.progression
         )
 
+    def test_unit_get_exercise_progression_type(self):
+        self.workout_exercise_set = WorkoutExerciseSet(
+            workout_exercise=self.workout_exercise,
+            weight=100,
+            reps=6,
+            rir=0
+        )
+        self.assertEqual(
+            self.workout_exercise_set.get_exercise_progression_type(),
+            self.exercise.progression_type
+        )
+
+    def test_unit_get_exercise(self):
+        self.workout_exercise_set = WorkoutExerciseSet(
+            workout_exercise=self.workout_exercise,
+            weight=100,
+            reps=6,
+            rir=0
+        )
+        self.assertEqual(
+            self.workout_exercise_set.get_exercise(),
+            self.exercise
+        )
+
     def test_unit_should_generate_next_set(self):
         """
         GIVEN a workout_exercise_set
