@@ -139,10 +139,14 @@ class Exercise(models.Model):
 
     def save(self, *args, **kwargs):
         is_new = self.is_new()
-        self.set_progression_type()
+        if not self.has_progression_type():
+            self.set_progression_type()
         super().save(*args, **kwargs)
         if is_new and not self.has_user():
             self.set_exercise_to_users()
+
+    def has_progression_type(self):
+        return self.progression_type is not None
 
     def set_progression_type(self):
         try:

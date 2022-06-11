@@ -57,9 +57,9 @@ class TestSetProgressionType(TestCase):
     def test_e2e_user_already_has_progression_type(self):
         """
         GIVEN user has overwritten the progression type 
-        and min/max reps/rir
+        AND min/max reps/rir
         WHEN the exercise is saved
-        THEN the exercise attributes should'nrt be overwritten
+        THEN the exercise attributes shouldn't be overwritten
         """
         self.user = UserFactory(
             training_focus=self.training_focus
@@ -69,8 +69,32 @@ class TestSetProgressionType(TestCase):
             user=self.user,
             mechanic=self.mechanic,
             tier=self.tier,
+            progression_type=self.progression_type,
+            min_reps=10,
+            max_reps=20,
+            min_rir=2,
+            max_rir=4
+        )
+
+        self.assertEqual(self.exercise.min_reps, 10)
+        self.assertEqual(self.exercise.max_reps, 20)
+        self.assertEqual(self.exercise.min_rir, 2)
+        self.assertEqual(self.exercise.max_rir, 4)
+
+    def test_unit_has_progression_type(self):
+        self.user = UserFactory(
+            training_focus=self.training_focus
+        )
+
+        self.exercise = Exercise(
+            name='test',
+            user=self.user,
+            mechanic=self.mechanic,
+            tier=self.tier,
             progression_type=self.progression_type
         )
+
+        self.assertTrue(self.exercise.has_progression_type())
 
     def test_unit_set_progression_type(self):
         self.user = UserFactory(
