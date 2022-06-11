@@ -42,15 +42,15 @@ class ProgressionTypeAllocationFactory(DjangoModelFactory):
     max_rir = 3
 
 
-# class ProgressionFactory(DjangoModelFactory):
-#     class Meta:
-#         model = 'exercises.Progression'
+class ProgressionFactory(DjangoModelFactory):
+    class Meta:
+        model = 'exercises.Progression'
 
-#     progression_type = SubFactory(ProgressionTypeFactory)
-#     rep_delta = 0
-#     rir_delta = -2
-#     weight_change = 0.5
-#     rep_change = 2
+    progression_type = SubFactory(ProgressionTypeFactory)
+    rep_delta = 0
+    rir_delta = -2
+    weight_change = 0.5
+    rep_change = 2
 
 
 class ForceFactory(DjangoModelFactory):
