@@ -30,17 +30,16 @@ class ProgressionTypeFactory(DjangoModelFactory):
     name = 'test_progression_type'
 
 
-# class ProgressionTypeAllocationFactory(DjangoModelFactory):
-#     class Meta:
-#         model = 'exercises.ProgressionTypeAllocation'
+class ProgressionTypeAllocationFactory(DjangoModelFactory):
+    class Meta:
+        model = 'exercises.ProgressionTypeAllocation'
 
-#     training_focus = SubFactory(TrainingFocusFactory)
-#     mechanic = SubFactory(MechanicFactory)
-#     tier = SubFactory(TierFactory)
-#     min_reps = 1
-#     max_reps = 5
-#     target_rir = 3
-#     min_rir = 2
+    mechanic = SubFactory(MechanicFactory)
+    tier = SubFactory(TierFactory)
+    min_reps = 8
+    max_reps = 12
+    min_rir = 1
+    max_rir = 3
 
 
 # class ProgressionFactory(DjangoModelFactory):

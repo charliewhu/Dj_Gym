@@ -81,7 +81,7 @@ class ProgressionType(models.Model):
 
 
 class ProgressionTypeAllocation(models.Model):
-    """Allocates training focus to exercises depending on User TrainingFocus"""
+    """Allocates progression_type to exercises depending on User TrainingFocus"""
     training_focus = models.ForeignKey(
         "accounts.TrainingFocus", on_delete=models.CASCADE, null=True)
     mechanic = models.ForeignKey(Mechanic, on_delete=models.CASCADE, null=True)
@@ -115,6 +115,8 @@ class Exercise(models.Model):
     force = models.ForeignKey(Force, on_delete=models.CASCADE, null=True)
     purpose = models.ForeignKey(Purpose, on_delete=models.CASCADE, null=True)
     tier = models.ForeignKey(Tier, on_delete=models.CASCADE, null=True)
+    progression_type = models.ForeignKey(
+        ProgressionType, on_delete=models.CASCADE, null=True, blank=True)
     min_reps = models.PositiveIntegerField(
         null=True, blank=True, validators=[MaxValueValidator(20)])
     max_reps = models.PositiveIntegerField(
@@ -137,9 +139,23 @@ class Exercise(models.Model):
 
     def save(self, *args, **kwargs):
         is_new = self.is_new()
+        self.set_progression_type()
         super().save(*args, **kwargs)
         if is_new and not self.has_user():
             self.set_exercise_to_users()
+
+    def set_progression_type(self):
+        self.progression_type = self.get_progression_type()
+
+    def get_progression_type(self):
+        return self.get_progression_type_allocation().progression_type
+
+    def get_progression_type_allocation(self):
+        return ProgressionTypeAllocation.objects.get(
+            training_focus=self.user.training_focus,
+            mechanic=self.mechanic,
+            tier=self.tier
+        )
 
     def set_exercise_to_users(self):
         """

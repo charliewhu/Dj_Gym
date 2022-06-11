@@ -15,9 +15,9 @@ lookup reps/rir to progression table
 """
 
 from django.test import TestCase
-from exercises.tests.models.factory import ExerciseFactory, MechanicFactory, TierFactory, ProgressionTypeFactory
+from exercises.tests.models.factory import ExerciseFactory, MechanicFactory, ProgressionTypeAllocationFactory, TierFactory, ProgressionTypeFactory
 from accounts.tests.models.factory import TrainingFocusFactory, UserFactory
-from exercises.models import ProgressionTypeAllocation
+from exercises.models import Exercise, ProgressionTypeAllocation
 
 
 class TestSetProgressionType(TestCase):
@@ -27,7 +27,7 @@ class TestSetProgressionType(TestCase):
         self.mechanic = MechanicFactory()
         self.tier = TierFactory()
         self.progression_type = ProgressionTypeFactory()
-        self.progression_type_allocation = ProgressionTypeAllocation(
+        self.progression_type_allocation = ProgressionTypeAllocationFactory(
             training_focus=self.training_focus,
             mechanic=self.mechanic,
             tier=self.tier,
@@ -53,3 +53,50 @@ class TestSetProgressionType(TestCase):
         self.assertEqual(self.exercise.max_reps, 12)
         self.assertEqual(self.exercise.min_rir, 1)
         self.assertEqual(self.exercise.max_rir, 3)
+
+    def test_unit_set_progression_type(self):
+        self.user = UserFactory(
+            training_focus=self.training_focus
+        )
+        self.exercise = Exercise(
+            name='test',
+            user=self.user,
+            mechanic=self.mechanic,
+            tier=self.tier
+        )
+
+        self.exercise.set_progression_type()
+        self.assertEqual(self.exercise.progression_type, self.progression_type)
+
+    def test_unit_get_progression_type(self):
+        self.user = UserFactory(
+            training_focus=self.training_focus
+        )
+
+        self.exercise = Exercise(
+            name='test',
+            user=self.user,
+            mechanic=self.mechanic,
+            tier=self.tier,
+            progression_type=self.progression_type
+        )
+
+        self.assertEqual(self.exercise.get_progression_type(),
+                         self.progression_type)
+
+    def test_unit_get_progression_type_allocation(self):
+        self.user = UserFactory(
+            training_focus=self.training_focus
+        )
+
+        self.exercise = Exercise(
+            name='test',
+            user=self.user,
+            mechanic=self.mechanic,
+            tier=self.tier
+        )
+
+        self.assertEqual(
+            self.exercise.get_progression_type_allocation(),
+            self.progression_type_allocation
+        )
