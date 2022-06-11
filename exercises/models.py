@@ -4,6 +4,7 @@ from django.apps import apps
 
 from .managers import UserRMManager
 from django.db.models import Q
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 
 class Rir(models.Model):
@@ -46,6 +47,23 @@ class Mechanic(models.Model):
         return self.name
 
 
+class Force(models.Model):
+    """Hip Hinge, Vertical Push etc"""
+    name = models.CharField(max_length=60, unique=True)
+    base_weekly_sets = models.PositiveIntegerField(null=True)
+
+    def __str__(self):
+        return self.name
+
+
+class MuscleGroup(models.Model):
+    name = models.CharField(max_length=20, unique=True)
+    force = models.ManyToManyField(Force)
+
+    def __str__(self):
+        return self.name
+
+
 class ProgressionType(models.Model):
     """
     Topset Backdown eg 100x5, 80x5x5, 
@@ -63,17 +81,21 @@ class ProgressionType(models.Model):
 
 
 class ProgressionTypeAllocation(models.Model):
-    """Allocates training focus to exercises depending on User TrainingFocus"""
+    """Allocates progression_type to exercises depending on User TrainingFocus"""
     training_focus = models.ForeignKey(
         "accounts.TrainingFocus", on_delete=models.CASCADE, null=True)
     mechanic = models.ForeignKey(Mechanic, on_delete=models.CASCADE, null=True)
     tier = models.ForeignKey(Tier, on_delete=models.CASCADE, null=True)
     progression_type = models.ForeignKey(
         ProgressionType, on_delete=models.CASCADE, null=True)
-    min_reps = models.PositiveIntegerField(null=True)
-    max_reps = models.PositiveIntegerField(null=True)
-    target_rir = models.PositiveIntegerField(null=True)
-    min_rir = models.PositiveIntegerField(null=True, default=1)
+    min_reps = models.PositiveIntegerField(
+        null=True, validators=[MaxValueValidator(20)])
+    max_reps = models.PositiveIntegerField(
+        null=True, validators=[MaxValueValidator(30)])
+    min_rir = models.PositiveIntegerField(
+        null=True, default=1, validators=[MaxValueValidator(5)])
+    max_rir = models.PositiveIntegerField(
+        null=True, validators=[MaxValueValidator(5)])
 
     def __str__(self):
         return f'{self.training_focus}, {self.mechanic}, {self.tier}, {self.progression_type}'
@@ -105,23 +127,6 @@ class Progression(models.Model):
         ]
 
 
-class Force(models.Model):
-    """Hip Hinge, Vertical Push etc"""
-    name = models.CharField(max_length=60, unique=True)
-    base_weekly_sets = models.PositiveIntegerField(null=True)
-
-    def __str__(self):
-        return self.name
-
-
-class MuscleGroup(models.Model):
-    name = models.CharField(max_length=20, unique=True)
-    force = models.ManyToManyField(Force)
-
-    def __str__(self):
-        return self.name
-
-
 class Exercise(models.Model):
     name = models.CharField(max_length=60)
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
@@ -132,8 +137,14 @@ class Exercise(models.Model):
     tier = models.ForeignKey(Tier, on_delete=models.CASCADE, null=True)
     progression_type = models.ForeignKey(
         ProgressionType, on_delete=models.CASCADE, null=True, blank=True)
-    min_reps = models.PositiveIntegerField(null=True, blank=True)
-    max_reps = models.PositiveIntegerField(null=True, blank=True)
+    min_reps = models.PositiveIntegerField(
+        null=True, blank=True, validators=[MaxValueValidator(20)])
+    max_reps = models.PositiveIntegerField(
+        null=True, blank=True, validators=[MaxValueValidator(30)])
+    min_rir = models.PositiveIntegerField(
+        null=True, blank=True, validators=[MaxValueValidator(5)])
+    max_rir = models.PositiveIntegerField(
+        null=True, blank=True, validators=[MaxValueValidator(5)])
     is_active = models.BooleanField(default=1)
     is_unilateral = models.BooleanField(default=0)
 
@@ -147,19 +158,36 @@ class Exercise(models.Model):
         return self.name
 
     def save(self, *args, **kwargs):
-        is_new = self.pk is None
+        is_new = self.is_new()
+        if not self.has_progression_type():
+            self.set_progression_type()
         super().save(*args, **kwargs)
-        if is_new and self.user is None:
+        if is_new and not self.has_user():
             self.set_exercise_to_users()
 
-        if is_new and self.user:
-            self.set_progression_type()
-            self.set_min_max_reps()
+    def has_progression_type(self):
+        return self.progression_type is not None
 
-    # TODO - add as manager method
-    # def get_user_or_null(self):
-    #     return Exercise.objects.filter(
-    #         Q(user=self.user) | Q(user__isnull=True))
+    def set_progression_type(self):
+        try:
+            prog_type_allocation = self.get_progression_type_allocation()
+            self.progression_type = prog_type_allocation.progression_type
+            self.min_reps = prog_type_allocation.min_reps
+            self.max_reps = prog_type_allocation.max_reps
+            self.min_rir = prog_type_allocation.min_rir
+            self.max_rir = prog_type_allocation.max_rir
+        except:
+            self.progression_type = None
+
+    def get_progression_type(self):
+        return self.get_progression_type_allocation().progression_type
+
+    def get_progression_type_allocation(self):
+        return ProgressionTypeAllocation.objects.get(
+            training_focus=self.user.training_focus,
+            mechanic=self.mechanic,
+            tier=self.tier
+        )
 
     def set_exercise_to_users(self):
         """
@@ -168,48 +196,37 @@ class Exercise(models.Model):
         User = apps.get_model('accounts.User')
         users = User.objects.all()
         for user in users:
-            try:
-                Exercise.objects.get(
-                    user=user, name=self.name)
-                user_has_exercise = True
-            except:
-                user_has_exercise = False
-
-            if not user_has_exercise:
+            if not self.user_has_exercise(user):
                 self.id = None
                 self.user = user
                 self.save()
 
-    def set_progression_type(self):
+    def user_has_exercise(self, user):
+        """
+        Returns True if the user has the exercise
+        """
         try:
-            self.progression_type = self.get_progression_type()
-            self.save()
+            Exercise.objects.get(user=user, name=self.name)
+            return True
         except:
-            pass
+            return False
 
-    def set_min_max_reps(self):
-        try:
-            self.min_reps = self.get_progression_type_allocation().min_reps
-            self.max_reps = self.get_progression_type_allocation().max_reps
-            self.save()
-        except:
-            pass
+    def has_user(self):
+        """
+        Returns True if the exercise has a user
+        """
+        return self.user is not None
 
-    def get_progression_type_allocation(self):
-        try:
-            return ProgressionTypeAllocation.objects.get(
-                training_focus=self.user.training_focus,
-                mechanic=self.mechanic,
-                tier=self.tier
-            )
-        except:
-            return None
+    def is_new(self):
+        """
+        Returns True if the exercise is new
+        """
+        return self.pk is None
 
-    def get_progression_type(self):
-        try:
-            return self.get_progression_type_allocation().progression_type
-        except:
-            return None
+    # TODO - add as manager method
+    # def get_user_or_null(self):
+    #     return Exercise.objects.filter(
+    #         Q(user=self.user) | Q(user__isnull=True))
 
 
 class UserRM(models.Model):

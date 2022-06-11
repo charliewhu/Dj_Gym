@@ -134,7 +134,6 @@ class ExerciseSerializer(serializers.ModelSerializer):
             'force',
             'purpose',
             'tier',
-            'progression_type',
             'min_reps',
             'max_reps',
             'is_active',
