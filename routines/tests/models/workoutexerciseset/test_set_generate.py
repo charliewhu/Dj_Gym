@@ -119,3 +119,16 @@ class TestSetGenerate(TestCase):
             self.workout_exercise_set.get_next_set(),
             self.workout_exercise_set2
         )
+
+    def test_unit_is_set_completed(self):
+        self.workout_exercise_set = WorkoutExerciseSet(
+            workout_exercise=self.workout_exercise,
+            weight=100,
+            reps=None,
+            rir=0
+        )
+
+        self.assertFalse(self.workout_exercise_set.is_set_completed())
+
+        self.workout_exercise_set.reps = 6
+        self.assertTrue(self.workout_exercise_set.is_set_completed())

@@ -202,8 +202,22 @@ class WorkoutExerciseSet(models.Model):
         if self.should_generate_next_set():
             self.generate_next_set()
 
+    def get_next_set(self):
+        """get the next set in the workout_exercise"""
+        next_set = WorkoutExerciseSet.objects\
+            .filter(workout_exercise=self.workout_exercise)\
+            .filter(id__gt=self.id)\
+            .order_by('id')\
+            .first()
+        return next_set
+
     def should_generate_next_set(self):
         return self.workout_exercise.is_set_adjust and self.is_next_set_completed()
+
+    def is_set_completed(self):
+        return self.weight is not None \
+            and self.reps is not None \
+            and self.rir is not None
 
     def is_next_set_completed(self):
         """Returns false if next set does not exist 
