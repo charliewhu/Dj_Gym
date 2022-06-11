@@ -287,6 +287,18 @@ class WorkoutExerciseSet(models.Model):
 
         return rep_delta
 
+    def get_rir_delta(self):
+        """difference between rir just done and required rir range"""
+        prog_type = self.get_exercise_progression_type_allocation()
+        if self.rir < prog_type.min_rir:
+            rir_delta = self.rir - prog_type.min_rir
+        elif self.rir > prog_type.max_rir:
+            rir_delta = self.rir - prog_type.max_rir
+        else:
+            rir_delta = 0
+
+        return rir_delta
+
     def exertion_load(self):
         """Total exertion load for a set"""
         el = 0
