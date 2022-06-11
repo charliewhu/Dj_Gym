@@ -202,6 +202,18 @@ class WorkoutExerciseSet(models.Model):
         if self.should_generate_next_set():
             self.generate_next_set()
 
+    def should_generate_next_set(self):
+        return self.workout_exercise.is_set_adjust and self.is_next_set_completed()
+
+    def is_next_set_completed(self):
+        """Returns false if next set does not exist 
+        or if any field is None"""
+        next_set = self.get_next_set()
+        if next_set:
+            return next_set.is_set_completed()
+        else:
+            return False
+
     def generate_next_set(self):
         """
         Generate another set based on the current instance:
@@ -212,24 +224,7 @@ class WorkoutExerciseSet(models.Model):
                 - Else: Create another WorkoutExerciseSet object
         """
 
-        progression = self.get_progression()
-        if progression:
-            next_weight = self.adjust_weight(progression)
-            next_reps = self.adjust_reps(progression)
-            next_rir = self.adjust_rir(progression)
-
-            if self.is_next_set_completed():
-                id = self.get_next_set().id
-            else:
-                id = None
-
-            WorkoutExerciseSet.objects.create(
-                id=id,
-                workout_exercise=self.workout_exercise,
-                weight=next_weight,
-                reps=next_reps,
-                rir=next_rir
-            )
+        pass
 
     def exertion_load(self):
         """Total exertion load for a set"""

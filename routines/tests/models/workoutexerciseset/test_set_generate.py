@@ -36,7 +36,7 @@ class TestSetGenerate(TestCase):
         self.workout_exercise = WorkoutExerciseFactory(
             workout=self.workout,
             exercise=self.exercise,
-            is_set_generate=True
+            is_set_adjust=True
         )
 
     def test_e2e_set_generate(self):
@@ -53,5 +53,43 @@ class TestSetGenerate(TestCase):
         self.assertTrue(next_set.reps == None)
         self.assertTrue(next_set.rir == 2)
 
-    def test_unit_generate_next_set(self):
-        pass
+    def test_unit_should_generate_next_set(self):
+        """
+        GIVEN a workout_exercise_set
+        AND .workout_exercise.is_set_generate = True
+        AND the next set is not complete or doesnt exist
+        WHEN the workout_exercise_set is created
+        THEN we should generate the next set
+        """
+        self.workout_exercise_set = WorkoutExerciseSet.objects.create(
+            workout_exercise=self.workout_exercise,
+            weight=100,
+            reps=6,
+            rir=0
+        )
+
+        self.assertTrue(self.workout_exercise_set.should_generate_next_set())
+
+    def test_unit_is_next_set_completed(self):
+        workout_exercise = WorkoutExerciseFactory(
+            workout=self.workout,
+            exercise=self.exercise,
+            is_set_adjust=False
+        )
+        self.workout_exercise_set = WorkoutExerciseSet.objects.create(
+            workout_exercise=workout_exercise,
+            weight=100,
+            reps=6,
+            rir=0
+        )
+
+        self.assertFalse(self.workout_exercise_set.is_next_set_completed())
+
+        self.workout_exercise_set2 = WorkoutExerciseSet.objects.create(
+            workout_exercise=workout_exercise,
+            weight=100,
+            reps=6,
+            rir=0
+        )
+
+        self.assertTrue(self.workout_exercise_set.is_next_set_completed())
