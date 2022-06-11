@@ -134,12 +134,6 @@ class Workout(models.Model):
             self.split_day = SplitDay.objects.filter(
                 split_item__split=self.user.split).first()
 
-    def exertion_load(self):
-        el = 0
-        for exercise in self.exercises.all():
-            el += exercise.exertion_load()
-        return el
-
     def last_split_day(self):
         """
         Input: Workout instance
@@ -167,6 +161,12 @@ class Workout(models.Model):
         """
         return self.prev_split_day().exercises.all()
 
+    def exertion_load(self):
+        el = 0
+        for exercise in self.exercises.all():
+            el += exercise.exertion_load()
+        return el
+
     def end_workout(self):
         self.is_active = False
         self.save()
@@ -181,6 +181,18 @@ class WorkoutExercise(models.Model):
 
     def __str__(self):
         return f'{self.workout} - {self.exercise}'
+
+    def set_count(self):
+        return self.sets.count()
+
+    def avg_reps(self):
+        return self.sets.aggregate(Avg('reps'))['reps__avg']
+
+    def exertion_load(self):
+        el = 0
+        for set in self.sets.all():
+            el += set.exertion_load()
+        return el
 
 
 class WorkoutExerciseSet(models.Model):
