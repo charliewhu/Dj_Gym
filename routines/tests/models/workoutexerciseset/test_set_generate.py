@@ -101,6 +101,18 @@ class TestSetGenerate(TestCase):
             -2
         )
 
+    def test_unit_get_rir_delta(self):
+        self.workout_exercise_set = WorkoutExerciseSet(
+            workout_exercise=self.workout_exercise,
+            weight=100,
+            reps=6,
+            rir=0
+        )
+        self.assertEqual(
+            self.workout_exercise_set.get_rir_delta(),
+            -1
+        )
+
     def test_unit_get_progression(self):
         self.workout_exercise_set = WorkoutExerciseSet(
             workout_exercise=self.workout_exercise,
