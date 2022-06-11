@@ -117,7 +117,6 @@ class User(PermissionsMixin, AbstractBaseUser):
         exercises = Exercise.objects.all()
 
         for exercise in exercises:
-            print("exercises: ", exercise)
             if exercise.user is None:  # exercise.id remains if user owns exercise
                 exercise.id = None
             exercise.user = self

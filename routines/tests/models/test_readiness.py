@@ -1,10 +1,6 @@
-from os import read
-import decimal
-from django.db.utils import IntegrityError
 from django.test import TestCase
-from exercises.models import Exercise, Progression, ProgressionType, ProgressionTypeAllocation
 
-from routines.models import Readiness, ReadinessAnswer, ReadinessQuestion, Workout, WorkoutExercise, WorkoutExerciseSet
+from routines.models import Readiness, ReadinessAnswer, ReadinessQuestion, Workout
 from accounts.models import User
 
 
