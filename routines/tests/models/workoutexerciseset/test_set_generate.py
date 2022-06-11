@@ -93,3 +93,29 @@ class TestSetGenerate(TestCase):
         )
 
         self.assertTrue(self.workout_exercise_set.is_next_set_completed())
+
+    def test_unit_get_next_set(self):
+        workout_exercise = WorkoutExerciseFactory(
+            workout=self.workout,
+            exercise=self.exercise,
+            is_set_adjust=False
+        )
+
+        self.workout_exercise_set = WorkoutExerciseSet.objects.create(
+            workout_exercise=workout_exercise,
+            weight=100,
+            reps=6,
+            rir=0
+        )
+
+        self.workout_exercise_set2 = WorkoutExerciseSet.objects.create(
+            workout_exercise=workout_exercise,
+            weight=100,
+            reps=6,
+            rir=0
+        )
+
+        self.assertEqual(
+            self.workout_exercise_set.get_next_set(),
+            self.workout_exercise_set2
+        )
