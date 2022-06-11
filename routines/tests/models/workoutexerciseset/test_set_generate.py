@@ -31,7 +31,7 @@ class TestSetGenerate(TestCase):
         )
         self.exercise = ExerciseFactory(
             user=self.user,
-            prgoression_type=self.progression.progression_type,
+            progression_type=self.progression.progression_type,
             min_reps=8,
             max_reps=10,
             min_rir=2,

@@ -107,6 +107,26 @@ class ProgressionTypeAllocation(models.Model):
         ]
 
 
+class Progression(models.Model):
+    """
+    Lookup table to see how much to change reps/rir for the next set
+    Lookup progression_type, rep_delta, rir_delta
+    """
+    progression_type = models.ForeignKey(
+        ProgressionType, on_delete=models.CASCADE)
+    rep_delta = models.IntegerField()
+    rir_delta = models.IntegerField()
+    weight_change = models.FloatField(null=True, blank=True)
+    rep_change = models.IntegerField(null=True, blank=True)
+    rir_change = models.IntegerField(null=True, blank=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['progression_type', 'rep_delta', 'rir_delta'], name="UniqueProgressionCheck")
+        ]
+
+
 class Exercise(models.Model):
     name = models.CharField(max_length=60)
     user = models.ForeignKey(settings.AUTH_USER_MODEL,
