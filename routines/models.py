@@ -212,7 +212,9 @@ class WorkoutExerciseSet(models.Model):
         return next_set
 
     def should_generate_next_set(self):
-        return self.workout_exercise.is_set_adjust and not self.is_next_set_completed()
+        return self.workout_exercise.is_set_adjust\
+            and self.is_set_completed()\
+            and not self.is_next_set_completed()
 
     def is_set_completed(self):
         return self.weight is not None \
@@ -298,6 +300,26 @@ class WorkoutExerciseSet(models.Model):
             rir_delta = 0
 
         return rir_delta
+
+    def adjust_weight(self, progression):
+        if progression.weight_change is not None:
+            return rounder(
+                float(self.weight) * (1 + progression.weight_change), 2.5
+            )
+        else:
+            return None
+
+    def adjust_reps(self, progression):
+        if progression.rep_change is not None:
+            return self.reps + progression.rep_change
+        else:
+            return None
+
+    def adjust_rir(self, progression):
+        if progression.rir_change is not None:
+            return self.rir + progression.rir_change
+        else:
+            return None
 
     def exertion_load(self):
         """Total exertion load for a set"""

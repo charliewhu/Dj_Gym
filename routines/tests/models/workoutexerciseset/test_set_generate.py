@@ -29,7 +29,7 @@ class TestSetGenerate(TestCase):
         self.progression = ProgressionFactory(
             rep_delta=0,
             rir_delta=-1,
-            weight_change=0.5,
+            weight_change=-0.5,
             rep_change=2
         )
         self.exercise = ExerciseFactory(
@@ -69,9 +69,47 @@ class TestSetGenerate(TestCase):
 
         next_set = WorkoutExerciseSet.objects.get(id=2)
 
-        self.assertTrue(next_set.weight == 90)
-        self.assertTrue(next_set.reps == None)
-        self.assertTrue(next_set.rir == 2)
+        self.assertTrue(next_set.weight == 50)
+        self.assertTrue(next_set.reps == 10)
+        self.assertTrue(next_set.rir == None)
+
+    def test_unit_adjust_weight(self):
+        self.workout_exercise_set = WorkoutExerciseSet(
+            workout_exercise=self.workout_exercise,
+            weight=100,
+            reps=8,
+            rir=0
+        )
+        self.assertEqual(
+            self.workout_exercise_set.adjust_weight(self.progression),
+            50
+        )
+
+    def test_unit_adjust_reps(self):
+        self.workout_exercise_set = WorkoutExerciseSet(
+            workout_exercise=self.workout_exercise,
+            weight=100,
+            reps=8,
+            rir=0
+        )
+        self.assertEqual(
+            self.workout_exercise_set.adjust_reps(self.progression),
+            10
+        )
+
+    def test_unit_adjust_rir(self):
+        self.progression.rir_change = 1
+        self.progression.save()
+        self.workout_exercise_set = WorkoutExerciseSet(
+            workout_exercise=self.workout_exercise,
+            weight=100,
+            reps=6,
+            rir=0
+        )
+        self.assertEqual(
+            self.workout_exercise_set.adjust_rir(self.progression),
+            1
+        )
 
     def test_unit_get_progression(self):
         self.workout_exercise_set = WorkoutExerciseSet(
@@ -157,6 +195,7 @@ class TestSetGenerate(TestCase):
         """
         GIVEN a workout_exercise_set
         AND .workout_exercise.is_set_generate = True
+        AND the wotkout_exercise_set is complete
         AND the next set is not complete or doesnt exist
         WHEN the workout_exercise_set is created
         THEN we should generate the next set
@@ -174,10 +213,10 @@ class TestSetGenerate(TestCase):
             workout_exercise=self.workout_exercise,
             weight=100,
             reps=6,
-            rir=0
+            rir=None
         )
 
-        self.assertFalse(self.workout_exercise_set.should_generate_next_set())
+        self.assertFalse(self.workout_exercise_set2.should_generate_next_set())
 
     def test_unit_is_next_set_completed(self):
         workout_exercise = WorkoutExerciseFactory(
