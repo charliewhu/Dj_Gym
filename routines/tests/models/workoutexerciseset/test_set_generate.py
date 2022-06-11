@@ -4,6 +4,7 @@ and workout_exercise.is_set_generate = True
 WHEN the workout_exercise_set is created
 AND the workout_exercise_set is not within rep range
 AND the workout_exercise_set is not within RIR range
+AND the next set hasnt already been completed
 THEN the following set should be created
 """
 
@@ -13,7 +14,10 @@ from exercises.models import Exercise
 from exercises.tests.models.factory import ExerciseFactory
 
 from routines.models import WorkoutExerciseSet
-from routines.tests.models.factory import WorkoutExerciseFactory, WorkoutExerciseSetFactory, WorkoutFactory
+from routines.tests.models.factory import (
+    WorkoutExerciseFactory,
+    WorkoutFactory
+)
 
 
 class TestSetGenerate(TestCase):
@@ -32,6 +36,7 @@ class TestSetGenerate(TestCase):
         self.workout_exercise = WorkoutExerciseFactory(
             workout=self.workout,
             exercise=self.exercise,
+            is_set_generate=True
         )
 
     def test_e2e_set_generate(self):
@@ -47,3 +52,6 @@ class TestSetGenerate(TestCase):
         self.assertTrue(next_set.weight == 90)
         self.assertTrue(next_set.reps == None)
         self.assertTrue(next_set.rir == 2)
+
+    def test_unit_generate_next_set(self):
+        pass
