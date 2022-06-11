@@ -145,7 +145,15 @@ class Exercise(models.Model):
             self.set_exercise_to_users()
 
     def set_progression_type(self):
-        self.progression_type = self.get_progression_type()
+        try:
+            prog_type_allocation = self.get_progression_type_allocation()
+            self.progression_type = prog_type_allocation.progression_type
+            self.min_reps = prog_type_allocation.min_reps
+            self.max_reps = prog_type_allocation.max_reps
+            self.min_rir = prog_type_allocation.min_rir
+            self.max_rir = prog_type_allocation.max_rir
+        except:
+            self.progression_type = None
 
     def get_progression_type(self):
         return self.get_progression_type_allocation().progression_type
