@@ -261,17 +261,31 @@ class WorkoutExerciseSet(models.Model):
         try:
             return Progression.objects.get(
                 progression_type=self.get_exercise_progression_type(),
-                rep_delta=self.rep_delta(),
-                rir_delta=self.rir_delta()
+                rep_delta=self.get_rep_delta(),
+                rir_delta=self.get_rir_delta()
             )
         except ObjectDoesNotExist:
             return None
+
+    def get_exercise_progression_type_allocation(self):
+        return self.get_exercise().get_progression_type_allocation()
 
     def get_exercise(self):
         return self.workout_exercise.exercise
 
     def get_exercise_progression_type(self):
         return self.get_exercise().progression_type
+
+    def get_rep_delta(self):
+        prog_type = self.get_exercise_progression_type_allocation()
+        if self.reps < prog_type.min_reps:
+            rep_delta = self.reps - prog_type.min_reps
+        elif self.reps > prog_type.max_reps:
+            rep_delta = self.reps - prog_type.max_reps
+        else:
+            rep_delta = 0
+
+        return rep_delta
 
     def exertion_load(self):
         """Total exertion load for a set"""

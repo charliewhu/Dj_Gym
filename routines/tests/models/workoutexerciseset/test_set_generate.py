@@ -10,8 +10,8 @@ THEN the following set should be created
 
 from django.test import TestCase
 from accounts.tests.models.factory import UserFactory
-from exercises.models import Exercise
-from exercises.tests.models.factory import ExerciseFactory, ProgressionFactory
+from exercises.models import Exercise, ProgressionTypeAllocation
+from exercises.tests.models.factory import ExerciseFactory, ProgressionFactory, ProgressionTypeAllocationFactory
 
 from routines.models import WorkoutExerciseSet
 from routines.tests.models.factory import (
@@ -38,6 +38,17 @@ class TestSetGenerate(TestCase):
             max_rir=3
         )
 
+        self.progression_type_allocation = ProgressionTypeAllocationFactory(
+            training_focus=self.user.training_focus,
+            mechanic=self.exercise.mechanic,
+            tier=self.exercise.tier,
+            progression_type=self.progression.progression_type,
+            min_reps=8,
+            max_reps=12,
+            min_rir=1,
+            max_rir=3
+        )
+
         self.workout = WorkoutFactory(user=self.user)
         self.workout_exercise = WorkoutExerciseFactory(
             workout=self.workout,
@@ -58,6 +69,37 @@ class TestSetGenerate(TestCase):
         self.assertTrue(next_set.weight == 90)
         self.assertTrue(next_set.reps == None)
         self.assertTrue(next_set.rir == 2)
+
+    def test_unit_get_exercise_progression_type_allocation(self):
+        self.workout_exercise_set = WorkoutExerciseSet(
+            workout_exercise=self.workout_exercise,
+            weight=100,
+            reps=6,
+            rir=0
+        )
+
+        pta = ProgressionTypeAllocation.objects.get(
+            training_focus=self.user.training_focus,
+            mechanic=self.exercise.mechanic,
+            tier=self.exercise.tier
+        )
+
+        self.assertEqual(
+            self.workout_exercise_set.get_exercise_progression_type_allocation(),
+            pta
+        )
+
+    def test_unit_get_rep_delta(self):
+        self.workout_exercise_set = WorkoutExerciseSet(
+            workout_exercise=self.workout_exercise,
+            weight=100,
+            reps=6,
+            rir=0
+        )
+        self.assertEqual(
+            self.workout_exercise_set.get_rep_delta(),
+            -2
+        )
 
     def test_unit_get_progression(self):
         self.workout_exercise_set = WorkoutExerciseSet(
