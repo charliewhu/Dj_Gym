@@ -11,7 +11,7 @@ from django.core.validators import MaxValueValidator
 from django.db.models import Avg
 from django.core.exceptions import ObjectDoesNotExist
 
-from exercises.models import Exercise, MuscleGroup, Progression, ProgressionTypeAllocation, Rir, UserRM
+from exercises.models import Exercise, MuscleGroup, Progression, Rir, UserRM
 from routines.managers import ReadinessAnswerManager
 
 
@@ -134,12 +134,6 @@ class Workout(models.Model):
             self.split_day = SplitDay.objects.filter(
                 split_item__split=self.user.split).first()
 
-    def exertion_load(self):
-        el = 0
-        for exercise in self.exercises.all():
-            el += exercise.exertion_load()
-        return el
-
     def last_split_day(self):
         """
         Input: Workout instance
@@ -167,6 +161,12 @@ class Workout(models.Model):
         """
         return self.prev_split_day().exercises.all()
 
+    def exertion_load(self):
+        el = 0
+        for exercise in self.exercises.all():
+            el += exercise.exertion_load()
+        return el
+
     def end_workout(self):
         self.is_active = False
         self.save()
@@ -181,41 +181,6 @@ class WorkoutExercise(models.Model):
 
     def __str__(self):
         return f'{self.workout} - {self.exercise}'
-
-    def save(self, *args, **kwargs):
-        if self.id is not None:
-            prev_exercise_id = WorkoutExercise.objects.filter(
-                id=self.id).first().exercise
-            if prev_exercise_id != self.exercise:
-                WorkoutExerciseSet.objects.filter(
-                    workout_exercise=self.id).delete()
-        super().save(*args, **kwargs)
-        if self.is_set_generate:
-            self.generate_sets()
-
-    def generate_sets(self):
-
-        # TODO what if user doesnt have a 1rm?
-        one_rm = UserRM.manager.latest_one_rm(self.workout.user, self.exercise)
-
-        pta = self.exercise.get_progression_type_allocation()
-
-        reps = self.exercise.max_reps
-
-        # TODO create manager on RIR Model for this
-        percentage = Rir.objects.get(
-            rir=pta.target_rir,
-            reps=reps,
-        ).percent
-
-        weight = rounder(one_rm * percentage, 2.5)
-
-        for r in range(4):
-            WorkoutExerciseSet.objects.create(
-                workout_exercise=self,
-                weight=weight,
-                reps=reps,
-            )
 
     def set_count(self):
         return self.sets.count()
@@ -244,23 +209,10 @@ class WorkoutExerciseSet(models.Model):
 
     def save(self, *args, **kwargs):
         # create user-rep-max instance
-        self.save_one_rep_max()
         super().save(*args, **kwargs)
 
         if self.should_generate_next_set():
             self.generate_next_set()
-
-    def get_user(self):
-        return self.workout_exercise.workout.user
-
-    def get_exercise(self):
-        return self.workout_exercise.exercise
-
-    def get_exercise_progression_type(self):
-        return self.get_exercise().progression_type
-
-    def get_exercise_progression_type_allocation(self):
-        return self.get_exercise().get_progression_type_allocation()
 
     def get_next_set(self):
         """get the next set in the workout_exercise"""
@@ -271,40 +223,95 @@ class WorkoutExerciseSet(models.Model):
             .first()
         return next_set
 
-    @staticmethod
-    def is_set_completed(set):
-        """Check if the set is completed (has all fields not None)
-        Returns (Boolean)"""
-        return set.weight is not None \
-            and set.reps is not None \
-            and set.rir is not None
+    def should_generate_next_set(self):
+        return self.workout_exercise.is_set_adjust\
+            and self.is_set_completed()\
+            and not self.is_next_set_completed()
+
+    def is_set_completed(self):
+        return self.weight is not None \
+            and self.reps is not None \
+            and self.rir is not None
 
     def is_next_set_completed(self):
         """Returns false if next set does not exist 
-        or doesnt have all fields not None"""
+        or if any field is None"""
         next_set = self.get_next_set()
         if next_set:
-            return self.is_set_completed(next_set)
+            return next_set.is_set_completed()
         else:
             return False
 
-    def should_generate_next_set(self):
-        return self.workout_exercise.is_set_adjust and not self.is_next_set_completed()
+    def generate_next_set(self):
+        """
+        Generate another set based on the current instance:
+            - Get Progression based on current set
+            - Adjust weight/reps/rir based on Progression
+            - Check is_next_set_completed():
+                - If true: update it
+                - Else: Create a new WorkoutExerciseSet object
+        """
+        progression = self.get_progression()
+        if progression:
+            next_weight = self.adjust_weight(progression)
+            next_reps = self.adjust_reps(progression)
+            next_rir = self.adjust_rir(progression)
+
+            if self.is_next_set_completed():
+                id = self.get_next_set().id
+            else:
+                id = None
+
+            WorkoutExerciseSet.objects.create(
+                id=id,
+                workout_exercise=self.workout_exercise,
+                weight=next_weight,
+                reps=next_reps,
+                rir=next_rir
+            )
 
     def get_progression(self):
-        """Return Progression object given the Set"""
+        """Return Progression object for the given Set"""
         try:
             return Progression.objects.get(
                 progression_type=self.get_exercise_progression_type(),
-                rep_delta=self.rep_delta(),
-                rir_delta=self.rir_delta()
+                rep_delta=self.get_rep_delta(),
+                rir_delta=self.get_rir_delta()
             )
         except ObjectDoesNotExist:
             return None
 
-    def delete_next_set(self):
-        next_set = self.get_next_set()
-        next_set.delete()
+    def get_exercise_progression_type_allocation(self):
+        return self.get_exercise().get_progression_type_allocation()
+
+    def get_exercise(self):
+        return self.workout_exercise.exercise
+
+    def get_exercise_progression_type(self):
+        return self.get_exercise().progression_type
+
+    def get_rep_delta(self):
+        prog_type = self.get_exercise_progression_type_allocation()
+        if self.reps < prog_type.min_reps:
+            rep_delta = self.reps - prog_type.min_reps
+        elif self.reps > prog_type.max_reps:
+            rep_delta = self.reps - prog_type.max_reps
+        else:
+            rep_delta = 0
+
+        return rep_delta
+
+    def get_rir_delta(self):
+        """difference between rir just done and required rir range"""
+        prog_type = self.get_exercise_progression_type_allocation()
+        if self.rir < prog_type.min_rir:
+            rir_delta = self.rir - prog_type.min_rir
+        elif self.rir > prog_type.max_rir:
+            rir_delta = self.rir - prog_type.max_rir
+        else:
+            rir_delta = 0
+
+        return rir_delta
 
     def adjust_weight(self, progression):
         if progression.weight_change is not None:
@@ -325,79 +332,6 @@ class WorkoutExerciseSet(models.Model):
             return self.rir + progression.rir_change
         else:
             return None
-
-    def generate_next_set(self):
-        """
-        Generate another set based on the current instance:
-            - Get Progression based on current set
-            - Adjust weight/reps/rir based on Progression
-            - Check if user has a completed next set
-                - If true: update it
-                - Else: Create another WorkoutExerciseSet object
-        """
-
-        progression = self.get_progression()
-        if progression:
-            next_weight = self.adjust_weight(progression)
-            next_reps = self.adjust_reps(progression)
-            next_rir = self.adjust_rir(progression)
-
-            if self.is_next_set_completed():
-                id = self.get_next_set().id
-            else:
-                id = None
-
-            WorkoutExerciseSet.objects.create(
-                id=id,
-                workout_exercise=self.workout_exercise,
-                weight=next_weight,
-                reps=next_reps,
-                rir=next_rir
-            )
-
-    def rep_delta(self):
-        """difference between reps just done and required rep range"""
-        prog_type = self.get_exercise_progression_type_allocation()
-        if self.reps < prog_type.min_reps:
-            rep_delta = self.reps - prog_type.min_reps
-        elif self.reps > prog_type.max_reps:
-            rep_delta = self.reps - prog_type.max_reps
-        else:
-            rep_delta = 0
-
-        return rep_delta
-
-    def rir_delta(self):
-        """difference between rir just done and required rir range"""
-        prog_type = self.get_exercise_progression_type_allocation()
-        if self.rir < prog_type.min_rir:
-            rir_delta = self.rir - prog_type.min_rir
-        elif self.rir > prog_type.target_rir:
-            rir_delta = self.rir - prog_type.target_rir
-        else:
-            rir_delta = 0
-
-        return rir_delta
-
-    def e_one_rep_max(self):
-        # calculate the estimated 1RM for that exercise for that set
-        """
-        Change to use RIR table for E1RM instead of formular
-        """
-        reps_divider = self.reps/30
-        rm = float(self.weight) * (1 + reps_divider)
-        rounded_rm = round(rm)
-        return rounded_rm
-
-    def save_one_rep_max(self):
-        if self.is_set_completed(self):
-            if self.rir < 5 and self.reps <= 10:  # only set 1rm on hard sets
-                user_rm = UserRM(
-                    user=self.get_user(),
-                    exercise=self.get_exercise(),
-                    one_rep_max=self.e_one_rep_max()
-                )
-                user_rm.save()
 
     def exertion_load(self):
         """Total exertion load for a set"""

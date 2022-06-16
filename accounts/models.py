@@ -4,7 +4,7 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db.models import Q
 
-from exercises.models import Exercise, Force, ProgressionTypeAllocation
+from exercises.models import Exercise, Force
 from .managers import MyUserManager
 
 
@@ -103,102 +103,28 @@ class User(PermissionsMixin, AbstractBaseUser):
         return True
 
     def save(self, *args, **kwargs):
-        if self.is_training_focus_changed():
-            self.reassign_exercises()
+        is_new = self.is_new()
         super().save(*args, **kwargs)
-        self.assign_split()
+        if is_new:
+            self.assign_default_exercises()
+        # self.assign_split()
 
-    def has_exercises(self):
-        try:
-            return self.exercise_set.count() > 0
-        except:
-            return False
+    def is_new(self):
+        """returns true if user is new"""
+        return self.pk is None
+
+    def assign_default_exercises(self):
+        exercises = Exercise.objects.all()
+
+        for exercise in exercises:
+            if exercise.user is None:  # exercise.id remains if user owns exercise
+                exercise.id = None
+            exercise.user = self
+            exercise.save()
 
     def get_exercises(self):
         """returns all exercises for this user"""
         return Exercise.objects.filter(user=self)
-
-    def should_have_split(self):
-        return self.split is None\
-            and self.training_focus is not None\
-            and self.training_days is not None
-
-    def get_split_from_frequency_allocation(self):
-        return FrequencyAllocation.objects.get(
-            training_focus=self.training_focus,
-            training_days=self.training_days,
-            hierarchy=1,
-        ).split
-
-    def assign_split(self):
-        if self.should_have_split():
-            self.split = self.get_split_from_frequency_allocation()
-            self.save()
-
-    def split_days_count(self):
-        """returns the number of days in the split"""
-        try:
-            return self.split.splitday_set.count()
-        except:
-            return 0
-
-    def is_training_focus_changed(self):
-        """
-        Returns True if the user's training focus has changed.
-        Must be called pre-save()
-        """
-        if self.id is not None:
-            # existing user
-            prev_training_focus = User.objects.filter(
-                id=self.id).first().training_focus
-            return prev_training_focus != self.training_focus
-        elif self.id is None and self.training_focus is None:
-            # new user has not created training_focus
-            return False
-        else:
-            # new user has created training_focus
-            return True
-
-    def reassign_exercises(self):
-        if self.has_exercises():
-            exercises = Exercise.objects.filter(user=self)
-        else:
-            exercises = Exercise.objects.filter(user=None)
-
-        for exercise in exercises:
-            # find progression_type based on UserProfile & Exercise attributes
-            # logically equivalent to a JOIN on all of these fields
-            try:
-                progression_type_allocation = ProgressionTypeAllocation.objects.get(
-                    training_focus=self.training_focus,
-                    mechanic=exercise.mechanic,
-                    tier=exercise.tier,
-                )
-
-                if exercise.user is None:  # exercise.id remains if user owna exercise
-                    exercise.id = None
-                exercise.user = self
-                exercise.progression_type = progression_type_allocation.progression_type
-                exercise.min_reps = progression_type_allocation.min_reps
-                exercise.max_reps = progression_type_allocation.max_reps
-                exercise.save()
-            except:
-                pass
-
-    def has_active_workout(self):
-        # TODO this should be a manager method
-        """find out if the user currently has an active Workout instance"""
-        set = self.workouts.all()
-        active_wo = set.filter(is_active=True).count()
-        return active_wo
-
-    def mean_readiness(self):
-        # TODO this should be a manager method
-        """User's mean readiness rating over last 40 instances"""
-        r = self.readiness_set.order_by('-id')[:40]
-        user = User.objects.filter(
-            id=self.pk).prefetch_related("readiness_set")
-        return user
 
 
 class FrequencyAllocation(models.Model):

@@ -2,13 +2,6 @@ from factory import SubFactory
 from factory.django import DjangoModelFactory
 
 
-class TrainingFocusFactory(DjangoModelFactory):
-    class Meta:
-        model = 'accounts.TrainingFocus'
-
-    name = 'test_training_focus'
-
-
 class TierFactory(DjangoModelFactory):
     class Meta:
         model = 'exercises.Tier'
@@ -41,13 +34,12 @@ class ProgressionTypeAllocationFactory(DjangoModelFactory):
     class Meta:
         model = 'exercises.ProgressionTypeAllocation'
 
-    training_focus = SubFactory(TrainingFocusFactory)
     mechanic = SubFactory(MechanicFactory)
     tier = SubFactory(TierFactory)
-    min_reps = 1
-    max_reps = 5
-    target_rir = 3
-    min_rir = 2
+    min_reps = 8
+    max_reps = 12
+    min_rir = 1
+    max_rir = 3
 
 
 class ProgressionFactory(DjangoModelFactory):
