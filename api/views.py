@@ -54,7 +54,7 @@ def readiness_answer(request):
 
 class WorkoutViewSet(viewsets.ModelViewSet):
     serializer_class = WorkoutSerializer
-    queryset = Workout.objects.all().prefetch_related('exercises')
+    queryset = Workout.objects.all().prefetch_related('exercises').order_by("-date")
 
 
 class WorkoutExerciseViewSet(viewsets.ModelViewSet):
