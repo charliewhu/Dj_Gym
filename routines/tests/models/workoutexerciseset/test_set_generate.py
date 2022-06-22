@@ -67,7 +67,7 @@ class TestSetGenerate(TestCase):
             rir=0
         )
 
-        next_set = WorkoutExerciseSet.objects.get(id=2)
+        next_set = self.workout_exercise_set.generate_next_set()
 
         self.assertTrue(next_set.weight == 50)
         self.assertTrue(next_set.reps == 10)

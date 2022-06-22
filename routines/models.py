@@ -211,8 +211,8 @@ class WorkoutExerciseSet(models.Model):
         # create user-rep-max instance
         super().save(*args, **kwargs)
 
-        if self.should_generate_next_set():
-            self.generate_next_set()
+        # if self.should_generate_next_set():
+        #     self.generate_next_set()
 
     def get_next_set(self):
         """get the next set in the workout_exercise"""
@@ -262,7 +262,7 @@ class WorkoutExerciseSet(models.Model):
             else:
                 id = None
 
-            WorkoutExerciseSet.objects.create(
+            return WorkoutExerciseSet(
                 id=id,
                 workout_exercise=self.workout_exercise,
                 weight=next_weight,
@@ -335,8 +335,11 @@ class WorkoutExerciseSet(models.Model):
 
     def exertion_load(self):
         """Total exertion load for a set"""
-        el = 0
-        for i in range(self.reps):
-            el += math.exp(-0.215 * (self.rir + self.reps - (i+1)))
-        el = decimal.Decimal(el) * self.weight
-        return round(el, 1)
+        if self.is_set_completed():
+            el = 0
+            for i in range(self.reps):
+                el += math.exp(-0.215 * (self.rir + self.reps - (i+1)))
+            el = decimal.Decimal(el) * self.weight
+            return round(el, 1)
+        else:
+            return 0
