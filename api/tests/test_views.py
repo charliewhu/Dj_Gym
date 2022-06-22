@@ -78,10 +78,10 @@ class TestWorkoutExerciseSetGenerate(TestCase):
         self.assertEqual(
             response.data,
             {
-                'id': 1,
+                'id': 2,
                 'workout_exercise': 1,
-                'weight': Decimal('100.0'),
-                'reps': 8,
-                'rir': 0
+                'weight': Decimal("50.0"),
+                'reps': 10,
+                'rir': None
             }
         )

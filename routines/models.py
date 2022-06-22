@@ -262,7 +262,7 @@ class WorkoutExerciseSet(models.Model):
             else:
                 id = None
 
-            return WorkoutExerciseSet(
+            return WorkoutExerciseSet.objects.create(
                 id=id,
                 workout_exercise=self.workout_exercise,
                 weight=next_weight,
