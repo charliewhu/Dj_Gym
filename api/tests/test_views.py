@@ -1,7 +1,12 @@
+from decimal import Decimal
+import json
 from django.test import TestCase
-from rest_framework.test import force_authenticate
+
+from rest_framework.authtoken.models import Token
+from rest_framework.test import APIClient
 
 from accounts.tests.models.factory import TrainingFocusFactory, UserFactory
+from api.views import generate_next_set
 from exercises.tests.models.factory import ExerciseFactory, ProgressionFactory, ProgressionTypeAllocationFactory
 from routines.models import WorkoutExerciseSet
 from routines.tests.models.factory import WorkoutExerciseFactory, WorkoutFactory
@@ -46,6 +51,9 @@ class TestWorkoutExerciseSetGenerate(TestCase):
             is_set_adjust=True
         )
 
+        client = APIClient()
+        client.force_authenticate(user=self.user)
+
     def test_e2e_api_set_generate(self):
         """
         GIVEN an authenticated user
@@ -61,9 +69,19 @@ class TestWorkoutExerciseSetGenerate(TestCase):
             rir=0
         )
 
-        url = f'api/workout_exercise_sets/{self.workout_exercise_set.id}/next_set/'
+        view = generate_next_set
+        pk = self.workout_exercise_set.id
+        url = f'/api/workoutexercisesets/{pk}/generate_next_set/'
+
         response = self.client.post(url)
 
-        self.assertTrue(response.data.weight == 50)
-        self.assertTrue(response.data.reps == 10)
-        self.assertTrue(response.data.rir == None)
+        self.assertEqual(
+            response.data,
+            {
+                'id': 1,
+                'workout_exercise': 1,
+                'weight': Decimal('100.0'),
+                'reps': 8,
+                'rir': 0
+            }
+        )

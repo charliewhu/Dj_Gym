@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import SimpleRouter
-from .views import (ForceViewSet, MechanicViewSet, PurposeViewSet, TierViewSet, check_token, ReadinessViewSet, readiness_answer,
+from .views import (ForceViewSet, MechanicViewSet, PurposeViewSet, TierViewSet, check_token, ReadinessViewSet, generate_next_set, readiness_answer,
                     WorkoutViewSet,  WorkoutExerciseSetViewSet,
                     WorkoutExerciseViewSet, ExerciseViewSet,
                     )
@@ -19,6 +19,7 @@ urlpatterns = [
     path('rest-auth/registration/', include('rest_auth.registration.urls')),
     path('account/', include('allauth.urls')),
     path('rest-auth/check_token/', check_token),
+    path('workoutexercisesets/<int:pk>/generate_next_set/', generate_next_set),
 ]
 
 router = SimpleRouter()

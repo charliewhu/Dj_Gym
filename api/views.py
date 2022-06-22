@@ -72,6 +72,16 @@ class WorkoutExerciseSetViewSet(viewsets.ModelViewSet):
     #     return WorkoutExerciseSet.objects.filter(user=user)
 
 
+@api_view(['POST'])
+def generate_next_set(request, pk):
+    if request.method == 'POST':
+        set = WorkoutExerciseSet.objects.get(id=pk)
+        next_set = set.generate_next_set()
+        serializer = WorkoutExerciseSetSerializer(set)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 class ExerciseViewSet(viewsets.ModelViewSet):
     serializer_class = ExerciseSerializer
 
