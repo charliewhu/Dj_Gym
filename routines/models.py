@@ -278,8 +278,9 @@ class WorkoutExerciseSet(models.Model):
                 rep_delta=self.get_rep_delta(),
                 rir_delta=self.get_rir_delta()
             )
-        except ObjectDoesNotExist:
-            return None
+        except:
+            raise ObjectDoesNotExist(
+                "A Progression does not exist for this set")
 
     def get_exercise_progression_type_allocation(self):
         return self.get_exercise().get_progression_type_allocation()
